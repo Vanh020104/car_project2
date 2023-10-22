@@ -25,4 +25,11 @@ class Product extends Model
         "mileage",
         "color"
     ];
+    public function Category(){ // model relationship
+        return $this->belongsTo(Category::class);
+    }
+
+    public function Orders(){
+        return $this->belongsToMany(Order::class,"order_products");
+    }
 }

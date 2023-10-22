@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Events\CreateNewOrder;
+use App\Mail\OrderMail;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
 
@@ -72,11 +74,26 @@ class HomeController extends Controller
     }
 
 
-    public function checkout()
+//    public function checkout()
+//    {
+//        $cart = session()->has("cart")?session("cart"):[];
+//
+//        return view("user.pages.checkout",compact("cart"));
+//    }
+    public function checkout(Request $request, $slug)
     {
+//        $product = Product::where('slug', $slug)->firstOrFail();
+        // Lấy thông tin sản phẩm từ slug
+        $product = Product::where('slug', $slug)->first();
+
+        // Kiểm tra xem sản phẩm có tồn tại hay không
+        if (!$product) {
+            abort(404);
+        }
         $cart = session()->has("cart")?session("cart"):[];
 
-        return view("user.pages.checkout",compact("cart"));
+        // Truyền thông tin sản phẩm vào view checkout
+        return view("user.pages.checkout", ['product' => $product], compact("cart"));
     }
 
     public function placeOrder(Request $request){
@@ -161,22 +178,30 @@ class HomeController extends Controller
                     ->with('error', $response['message'] ?? 'Something went wrong.');
             }
         }
-        return redirect()->to("thank-you/$order->id");
+        // send email
+        Mail::to($request->get("email"))
+//            ->cc("mail nhan vien")
+//            ->bcc("mail quan ly")
+            ->send(new OrderMail($order));
+        return redirect()->to("thank-you")->with("order",$order);
+     //   return redirect()->to("thank-you/$order->id")->with("order",$order);
     }
     public function thankYou(Order $order){
 
         return view("user.pages.thankyou",compact("order"));
     }
     public function paypalSuccess(Order $order){
-//        $order->update([
-//            "is_paid"=>true,
-//            "status"=> Order::CONFIRMED
-//        ]);// cập nhật trạng thái đã trả tiền
+        $order->update([
+            "is_paid"=>true,
+            "status"=> Order::CONFIRMED
+        ]);// cập nhật trạng thái đã trả tiền
 
         return redirect()->to("thank-you/$order->id");
     }
     public function paypalCancel(Order $order){
         return redirect()->to("thank-you/$order->id");
     }
+
+
 
 }

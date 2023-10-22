@@ -468,7 +468,7 @@
         invalidDateMessage.style.display = 'none';
 
         var timeDiff = endDate.getTime() - startDate.getTime();
-        var numDays = Math.ceil(timeDiff / (1000 * 3600 * 24) +1); // Tính số ngày làm tròn lên
+        var numDays = Math.ceil(timeDiff / (1000 * 3600 * 24) +1) ; // Tính số ngày làm tròn lên
 
         if (numDays >= 0) {
             numDaysInput.value = numDays;

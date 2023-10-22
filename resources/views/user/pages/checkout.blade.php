@@ -95,24 +95,25 @@
 
                         <div class="col-lg-4 col-md-6">
                             <div class="checkout__order">
-                                @foreach($cart as $item)
-                                <h4 style="text-align: center">Your Order</h4>
-                                <div class="checkout__order__products" style="display: grid; ">
-                                    <div style="display: flex;justify-content: space-between;">
-                                        <span>Car Name</span>
-                                        <span style="font-weight: 300">{{ $item->name }}</span>
+{{--                                @foreach($cart as $item)--}}
+                                    <h4 style="text-align: center">Your Order</h4>
+                                    <div class="checkout__order__products" style="display: grid; ">
+                                        <div style="display: flex;justify-content: space-between;">
+                                            <span>Car Name</span>
+                                            <span style="font-weight: 300">{{ $product->name }}</span>
+                                        </div>
+                                        <div  style="display: flex;justify-content: space-between;margin: 20px 0">
+                                            @foreach($cart as $item) @endforeach
+                                            <span>Subtotal</span>
+                                            <span style="font-weight: 300">${{$product->price * $item->buy_qty}}</span>
+                                        </div>
+                                        <div style="display: flex;justify-content: space-between;">
+                                            <span>Deposit</span>
+                                            <span style="font-weight: 300">${{$product->deposit}}</span>
+                                        </div>
                                     </div>
-                                    <div  style="display: flex;justify-content: space-between;margin: 20px 0">
-                                        <span>Price x {{$item->buy_qty}} days</span>
-                                        <span style="font-weight: 300">${{$item->price * $item->buy_qty}}</span>
-                                    </div>
-                                    <div style="display: flex;justify-content: space-between;">
-                                        <span>Deposit</span>
-                                        <span style="font-weight: 300">${{$item->deposit}}</span>
-                                    </div>
-                                </div>
-                                    <div class="checkout__order__subtotal">Total <span style="font-weight: 300">${{$item->price * $item->buy_qty + $item->deposit}}</span></div>
-                               @endforeach
+                                    <div class="checkout__order__subtotal">Total <span style="font-weight: 300">${{($product->price * $item->buy_qty) + $product->deposit}}</span></div>
+{{--                                @endforeach--}}
 
                                 <div class="checkout__input__checkbox">
                                     <label for="payment">

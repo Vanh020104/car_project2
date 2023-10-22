@@ -53,6 +53,7 @@
                                 <th>Name</th>
                                 <th>Price/days</th>
                                 <th>Date</th>
+                                <th>Deposit</th>
                                 <th>Total</th>
                                 <th></th>
                                 <th></th>
@@ -76,12 +77,15 @@
                                         <h5>{{$item->buy_qty}} days</h5>
                                     </td>
                                     <td>
-                                        <h5>${{$item->price * $item->buy_qty}}</h5>
+                                        <h5>${{$item->deposit}}</h5>
+                                    </td>
+                                    <td>
+                                        <h5>${{$item->price * $item->buy_qty + $item->deposit}}</h5>
                                     </td>
 
 
                                     <td>
-                                        <a  href="{{url("checkout")}}" class="btn-main btn-fullwidth" style="width: 200px">Rent Now</a>
+                                        <a  href="{{url("checkout",["product"=>$item->slug])}}" class="btn-main btn-fullwidth" style="width: 200px">Rent Now</a>
                                     </td>
 
 
