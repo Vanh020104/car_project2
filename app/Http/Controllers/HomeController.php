@@ -74,12 +74,6 @@ class HomeController extends Controller
     }
 
 
-//    public function checkout()
-//    {
-//        $cart = session()->has("cart")?session("cart"):[];
-//
-//        return view("user.pages.checkout",compact("cart"));
-//    }
     public function checkout(Request $request, $slug)
     {
 //        $product = Product::where('slug', $slug)->firstOrFail();
@@ -112,8 +106,8 @@ class HomeController extends Controller
         $subtotal = 0;
         foreach ($cart as $item){
             $subtotal += $item->price * $item->buy_qty;
+            $total = $subtotal + $item->deposit;
         }
-        $total = $subtotal*1.1; // vat: 10%
         $order = Order::create([
             "grand_total"=>$total,
             "full_name"=>$request->get("full_name"),
@@ -128,13 +122,22 @@ class HomeController extends Controller
                 "order_id"=>$order->id,
                 "product_id"=>$item->id,
                 "buy_qty"=>$item->buy_qty,
+//                "start_date"=>$item->start_date,
+//                "end_date"=>$item->end_date,
                 "price"=>$item->price
             ]);
             $product = Product::find($item->id);
             $product->update(["buy_qty"=>$product->buy_qty- $item->buy_qty]);
         }
         // clear cart
+        session()->forget("cart");
+        // send email
+        Mail::to($request->get("email"))
+//            ->cc("mail nhan vien")
+//            ->bcc("mail quan ly")
+            ->send(new OrderMail($order));
 
+        event(new CreateNewOrder($order));
 
         // thanh toan paypal
         if($order->payment_method == "Paypal"){
@@ -178,13 +181,7 @@ class HomeController extends Controller
                     ->with('error', $response['message'] ?? 'Something went wrong.');
             }
         }
-        // send email
-        Mail::to($request->get("email"))
-//            ->cc("mail nhan vien")
-//            ->bcc("mail quan ly")
-            ->send(new OrderMail($order));
-        return redirect()->to("thank-you")->with("order",$order);
-     //   return redirect()->to("thank-you/$order->id")->with("order",$order);
+        return redirect()->to("thank-you/$order->id")->with("order",$order);
     }
     public function thankYou(Order $order){
 

@@ -23,7 +23,6 @@ class OrderFactory extends Factory
             "tel"=>$this->faker->phoneNumber,
             "address"=>$this->faker->address,
             "email"=>$this->faker->email,
-            "shipping_method"=>"Express",
             "payment_method"=>"COD",
             "status"=>random_int(0,7)
         ];

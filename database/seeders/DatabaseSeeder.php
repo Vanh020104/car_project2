@@ -35,11 +35,13 @@ class DatabaseSeeder extends Seeder
             $randoms = Product::all()->random($product_count);
             foreach ($randoms as $item){
                 $buy_qty = random_int(1,20);
-                $grand_total += $buy_qty * $item->price;
+                $grand_total += $buy_qty * $item->price + $item->deposit;
                 DB::table("order_products")->insert([
                     "order_id"=>$order->id,
                     "product_id"=>$item->id,
                     "buy_qty"=>$buy_qty,
+//                    "start_date"=>$item->start_date,
+//                    "end_date"=>$item->end_date,
                     "price"=>$item->price
                 ]);
             }

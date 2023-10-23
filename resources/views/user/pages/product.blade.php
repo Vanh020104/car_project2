@@ -209,16 +209,16 @@
                         <div class="checkout__input">
                             <p>Pick Up Date & Time<span>*</span></p>
                             <div class="date-time-field" style="display: flex">
-                                <input class="form-control" type="date" id="start_date" name="start_date" required style="padding: 0 20px">
-                                <input  type="time" id="start_time" name="start_time" required style="padding: 0 20px; margin-left: 25px; display: none">
+                                <input class="form-control" type="date" id="start_date" name="start_date"  style="padding: 0 20px">
+                                <input  type="time" id="start_time" name="start_time"  style="padding: 0 20px; margin-left: 25px; display: none">
 
                             </div>
                         </div>
                         <div class="checkout__input">
                             <p>Return Date & Time<span>*</span></p>
                             <div class="date-time-field" style="display: flex">
-                                <input class="form-control" type="date" id="end_date" name="end_date" required style="padding: 0 20px">
-                                <input type="time" id="end_time" name="end_time" required style="padding: 0 20px; margin-left: 25px; display: none">
+                                <input class="form-control" type="date" id="end_date" name="end_date"  style="padding: 0 20px">
+                                <input type="time" id="end_time" name="end_time"  style="padding: 0 20px; margin-left: 25px; display: none">
                             </div>
                             <p id="invalid_date_message" style="color: red; margin-top: 5px; display: none;">Please reselect the date!</p>
                         </div>
