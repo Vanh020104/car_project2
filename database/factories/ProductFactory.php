@@ -32,6 +32,7 @@ class ProductFactory extends Factory
             "fuel_style"=>value("Hybird"),
             "car_year"=>random_int(2010,2023),
             "mileage"=>random_int(200,1000),
+            "power"=>random_int(1000,4000),
             "color"=>$this->faker->colorName,
         ];
     }
