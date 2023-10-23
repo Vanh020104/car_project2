@@ -1,6 +1,6 @@
 <?php
 Route::get("/home", [\App\Http\Controllers\AdminController::class, "homeAdmin"]);
-Route::get("/detailOrder/{id:id}", [\App\Http\Controllers\AdminController::class, "detailOrder"]);
+Route::get("/detailOrder/{id}", [\App\Http\Controllers\AdminController::class, "detailOrder"]);
 Route::get("/carsList", [\App\Http\Controllers\AdminController::class, "carsList"]);
 Route::get("/ordersList", [\App\Http\Controllers\AdminController::class, "ordersList"]);
 

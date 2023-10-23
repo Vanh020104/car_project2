@@ -37,6 +37,9 @@ class Product extends Model
         }
         return $query;
     }
+    public function Orders(){
+        return $this->belongsToMany(Order::class,"order_products");
+    }
 
     public function scopeFilterCategory($query,$request){
         if($request->has("category_id")&& $request->get("category_id") != 0){

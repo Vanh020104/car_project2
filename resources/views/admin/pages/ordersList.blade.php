@@ -30,8 +30,8 @@
 
                             <th>Payment_method</th>
                             <th>Is Paid</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th style="width: 200px">Status</th>
+                            <th >Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -46,7 +46,7 @@
                                 <td style="text-align: center">{!! $item->getPaid() !!}</td>
                                 <td style="text-align: center">{!! $item->getStatus() !!}</td>
                                 <td style="text-align: center">
-                                    <a href="{{url("admin/detailOrder",["id"=>$item->id])}}" class="btn btn-outline-info">Details</a>
+                                    <a href="{{url("admin/detailOrder",["id"=>$item->id])}}" style="background-color: blue;padding-left: 10px;padding-right: 10px;padding-top: 5px;border-radius: 6px;padding-bottom:5px;color: white "    class="btn btn-outline-info">Details</a>
                                 </td>
                             </tr>
                         @endforeach

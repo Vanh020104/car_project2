@@ -25,5 +25,9 @@ class AdminController extends Controller
         $orders = Order::orderBy("created_at","desc")->paginate(12);
         return view("admin.pages.ordersList",compact("orders"));
     }
+    public function detailOrder($id){
+        $order = Order::find("$id");
 
+        return view("admin.pages.detailOrder",compact("order"));
+    }
 }
