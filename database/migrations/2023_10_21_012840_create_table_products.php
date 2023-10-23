@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string("fuel_style");
             $table->integer("car_year");
             $table->integer("mileage");
+            $table->integer("power");
             $table->string("color");
             $table->string("thumbnail");
             $table->text("description");
