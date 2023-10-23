@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('location');
             $table->string('tel');
+            $table->unsignedBigInteger("user_id")->nullable();
             $table->unsignedDecimal("grand_total",14,2);
             $table->string("payment_method");
             $table->boolean("is_paid")->default(false);
