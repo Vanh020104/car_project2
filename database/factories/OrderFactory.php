@@ -25,8 +25,7 @@ class OrderFactory extends Factory
             "email"=>$this->faker->email,
             "shipping_method"=>"Express",
             "payment_method"=>"COD",
-            "status"=>random_int(0,3),
-
+            "status"=>random_int(0,3)
         ];
     }
 }
