@@ -18,6 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger("product_id");
             $table->unsignedSmallInteger("buy_qty");
             $table->unsignedDecimal("price");
+            $table->date('start_date');
+            $table->date('end_date');
             $table->foreign("order_id")->references("id")->on("orders");
             $table->foreign("product_id")->references("id")->on("products");
             $table->primary(["order_id","product_id"]);// composite key

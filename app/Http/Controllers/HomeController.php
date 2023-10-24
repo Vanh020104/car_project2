@@ -29,7 +29,7 @@ class HomeController extends Controller
         return view("user.pages.product", compact("product"));
     }
 
-    public function category(Category $category){
+    public function category(Category $category, Order $order){
         $products = Product::where("category_id",$category->id)
             ->orderBy("created_at","desc")->paginate(14);
         return view("user.pages.category",compact("products"));
@@ -122,8 +122,6 @@ class HomeController extends Controller
                 "order_id"=>$order->id,
                 "product_id"=>$item->id,
                 "buy_qty"=>$item->buy_qty,
-//                "start_date"=>$item->start_date,
-//                "end_date"=>$item->end_date,
                 "price"=>$item->price
             ]);
             $product = Product::find($item->id);
