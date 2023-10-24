@@ -141,9 +141,7 @@
     <div class="btn-main btn-fullwidth" style="width: 200px; height: 45px; margin: 40px 0; padding: 10px 30px">
         <a href="#" class="primary-btn cart-btn" style="background-color: #1ecb15; color: white; border-radius: 5px">CONTINUE TO RENT</a>
     </div>
-    @if($order->payment_method == "Paypal" && !$order->is_paid)
-        <a href="#" class="btn btn-warning">Payment again!</a>
-    @endif
+
 </div>
 </body>
 </html>
