@@ -20,6 +20,7 @@ Route::get('/add-to-cart/{product}', [\App\Http\Controllers\HomeController::clas
 Route::get('/cart', [\App\Http\Controllers\HomeController::class,"cart"]);
 Route::get('/delete-from-cart/{product}', [\App\Http\Controllers\HomeController::class, "deleteFromCart"]);
 Route::get('/clear-cart', [\App\Http\Controllers\HomeController::class, "clearCart"]);
+Route::get('/errors', [\App\Http\Controllers\HomeController::class, "Errors"]);
 
 
 Route::middleware("auth")->group(function (){

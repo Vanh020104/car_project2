@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\CreateNewOrder;
 use App\Mail\OrderMail;
 use App\Models\Category;
+use App\Models\Error;
 use App\Models\Order;
 use App\Models\Product;
 use Carbon\Carbon;
@@ -195,6 +196,11 @@ class HomeController extends Controller
     }
     public function paypalCancel(Order $order){
         return redirect()->to("thank-you/$order->id");
+    }
+
+    public function Errors(){
+        $errors = Error::all();
+        return view("user.pages.errors" ,compact('errors'));
     }
 
 
