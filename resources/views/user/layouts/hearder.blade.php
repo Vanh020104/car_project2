@@ -66,13 +66,13 @@
                                     {{session()->has("cart")?count(session("cart")):0}}
                                     </span>
                                 </a></li>
-                            <li><a class="menu-item" href="account-dashboard.html">My Account</a>
-                                <ul>
-                                    <li><a class="menu-item" href="account-dashboard.html">Dashboard</a></li>
-                                    <li><a class="menu-item" href="account-profile.html">My Profile</a></li>
-                                    <li><a class="menu-item" href="account-booking.html">My Orders</a></li>
-                                    <li><a class="menu-item" href="account-favorite.html">My Favorite Cars</a></li>
-                                </ul>
+                            <li><a class="menu-item" href="{{route("errors")}}">Error Price List</a>
+{{--                                <ul>--}}
+{{--                                    <li><a class="menu-item" href="account-dashboard.html">Dashboard</a></li>--}}
+{{--                                    <li><a class="menu-item" href="account-profile.html">My Profile</a></li>--}}
+{{--                                    <li><a class="menu-item" href="account-booking.html">My Orders</a></li>--}}
+{{--                                    <li><a class="menu-item" href="account-favorite.html">My Favorite Cars</a></li>--}}
+{{--                                </ul>--}}
                             </li>
                             <li><a class="menu-item" href="#">Pages</a>
                                 <ul>
