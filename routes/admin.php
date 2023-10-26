@@ -3,8 +3,7 @@ Route::get("/home", [\App\Http\Controllers\AdminController::class, "homeAdmin"])
 Route::get("/detailOrder/{id}", [\App\Http\Controllers\AdminController::class, "detailOrder"]);
 Route::get("/carsList", [\App\Http\Controllers\AdminController::class, "carsList"]);
 Route::get("/ordersList", [\App\Http\Controllers\AdminController::class, "ordersList"]);
-
-
+Route::put("/updateStatus/{order}", [\App\Http\Controllers\AdminController::class, "updateStatus"]);
 Route::prefix("product")->group(function (){
     Route::get("/create", [\App\Http\Controllers\ProductController::class, "create"]);
     Route::post("/create", [\App\Http\Controllers\ProductController::class, "store"]);
