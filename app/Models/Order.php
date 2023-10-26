@@ -26,7 +26,9 @@ class Order extends Model
     const SHIPPING = 2;
     const SHIPPED = 3;
     const RETURN =4;
-    const COMPLETE = 5;
+
+    const CAR_RETURNED =5;
+    const COMPLETE = 7;
     const CANCEL = 6;
 
     public function Products(){
@@ -48,6 +50,7 @@ class Order extends Model
             case self::SHIPPED: return "<span class='text-primary'>Delivered</span>";
             case self::RETURN: return "<span class='text-primary'>Car returned</span>";
             case self::COMPLETE: return "<span class='text-success'>Complete</span>";
+            case self::CAR_RETURNED: return "<span class='text-danger'>Car Returned</span>";
             case self::CANCEL: return "<span class='text-danger'>Cancel</span>";
         }
     }
