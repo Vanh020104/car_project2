@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -30,4 +31,16 @@ class AdminController extends Controller
 
         return view("admin.pages.detailOrder",compact("order"));
     }
+    public function updateStatus($order , Request $request)
+    {
+        $stt=$request->get("status");
+        $orders = Order::find("$order");
+        $orders->status = "$stt";
+        $orders->save();
+        return redirect()->to("/admin/ordersList")->with("success", "Successfully");
+    }
+
+
+
+
 }
