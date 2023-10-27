@@ -16,7 +16,7 @@ class AdminController extends Controller
 
         $order_today = Order::whereDate('created_at', $today)->paginate(20);
         $products = Product::orderBy("created_at","desc")->paginate(12);
-        $orders = Order::orderBy("created_at","desc")->paginate(12);
+        $orders = Order::where("status","!=","7")->where("status","!=","6")->orderBy("created_at","desc")->paginate(12);
 
         $startDate = Carbon::now()->startOfMonth();
         $endDate = Carbon::now()->endOfMonth();
@@ -34,7 +34,7 @@ class AdminController extends Controller
             'categories'=>$categories]);
     }
     public function ordersList(Request $request){
-        $orders = Order::Search($request)->orderBy("created_at","desc")->paginate(100);
+        $orders = Order::where("status","!=","7")->where("status","!=","6")->Search($request)->orderBy("created_at","desc")->paginate(100);
         return view("admin.pages.ordersList",compact("orders"));
     }
     public function detailOrder($id){
@@ -67,5 +67,9 @@ class AdminController extends Controller
             ->Search($request)->paginate(100);
 
         return view("admin.pages.monthlyRevenue",compact("orders"));
+    }
+    public function historyOrder(Request $request){
+        $history_order = Order::whereIn('status', ['7', '6'])->Search($request)->orderBy("created_at","desc")->paginate(100);
+        return view("admin.pages.historyOrder",compact("history_order"));
     }
 }
