@@ -16,6 +16,7 @@ class Order extends Model
         "status",
         "full_name",
         "tel",
+        "time_completed",
         'location',
         "address",
         "payment_method",
@@ -53,5 +54,12 @@ class Order extends Model
             case self::CAR_RETURNED: return "<span class='text-danger'>Car Returned</span>";
             case self::CANCEL: return "<span class='text-danger'>Cancel</span>";
         }
+    }
+    public function scopeSearch($query,$request){
+        if($request->has("search")&& $request->get("search") != ""){
+            $search = $request->get("search");
+            $query->where("id","like","%$search%");
+        }
+        return $query;
     }
 }

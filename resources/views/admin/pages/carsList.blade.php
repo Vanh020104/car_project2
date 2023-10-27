@@ -18,7 +18,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="input-group input-group-sm" style="width: 150px;float:left">
+                            <div class="input-group input-group-sm" style="margin-left: 15px;width: 150px;float:left">
                                 <input style="width: 500px;height: 30px;border-radius: 8px;padding-left: 10px"  value="{{app("request")->input("search")}}" type="text" name="search" class="form-control float-right" placeholder="Search">
                             </div>
                             <div style="margin-left: 635px;margin-top: 10px" class="input-group-append">

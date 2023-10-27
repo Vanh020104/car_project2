@@ -5,7 +5,7 @@
             <div class="card">
                 <div class="card-header">
                     <div style="margin-left: 50px;margin-bottom: 25px" class="card-tools">
-                        <form action="{{url("/admin/ordersList")}}" method="get">
+                        <form action="{{url("/admin/monthlyRevenue")}}" method="get">
                             <div class="input-group input-group-sm" style="width: 150px;float:left">
                                 <input style="width: 500px;height: 30px;border-radius: 8px;padding-left: 10px"  value="{{app("request")->input("search")}}" type="text" name="search" class="form-control float-right" placeholder="Search Order By Id">
                             </div>

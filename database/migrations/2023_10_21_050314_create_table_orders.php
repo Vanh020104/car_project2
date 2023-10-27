@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string("payment_method");
             $table->boolean("is_paid")->default(false);
             $table->smallInteger("status")->default(0);
+            $table->dateTime("time_completed")->nullable();
             $table->timestamps();
         });
     }
