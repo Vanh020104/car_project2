@@ -4,6 +4,10 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
+                    <h2 style="text-align: center;color: #1a1af8;font-size: 28px;margin-top: 20px;margin-bottom: 20px" class="text-xl font-bold text-black dark:text-white">
+
+                        Monthly Revenue
+                    </h2>
                     <div style="margin-left: 50px;margin-bottom: 25px" class="card-tools">
                         <form action="{{url("/admin/monthlyRevenue")}}" method="get">
                             <div class="input-group input-group-sm" style="width: 150px;float:left">

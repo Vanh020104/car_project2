@@ -26,7 +26,7 @@ class OrderFactory extends Factory
             "location"=>$this->faker->address,
             "payment_method"=>"COD",
             "status"=>random_int(0,3),
-            "time_completed"=>$this->faker->dateTime
+
         ];
     }
 }

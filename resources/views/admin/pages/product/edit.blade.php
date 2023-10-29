@@ -115,9 +115,7 @@
                         <p class="text-danger"><i>{{$message}}</i></p>
                         @enderror
                     </div>
-
                 </div>
-
             </div>
             <!-- /.card-body -->
             <div class="card-footer">

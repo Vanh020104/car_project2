@@ -8,6 +8,7 @@ Route::get("/order_today", [\App\Http\Controllers\AdminController::class, "order
 Route::get("/monthlyRevenue", [\App\Http\Controllers\AdminController::class, "monthlyRevenue"]);
 Route::get("/historyOrder", [\App\Http\Controllers\AdminController::class, "historyOrder"]);
 Route::get("/revenue-chart", [\App\Http\Controllers\AdminController::class, "revenueChart"]);
+Route::get("/category-counts", [\App\Http\Controllers\AdminController::class, "categoryCounts"]);
 Route::prefix("product")->group(function (){
     Route::get("/create", [\App\Http\Controllers\ProductController::class, "create"]);
     Route::post("/create", [\App\Http\Controllers\ProductController::class, "store"]);

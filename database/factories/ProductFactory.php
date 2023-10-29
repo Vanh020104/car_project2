@@ -26,7 +26,7 @@ class ProductFactory extends Factory
             "thumbnail"=>"/images/cars/product-".random_int(1,12).".jpg",
             "description"=>$this->faker->text(500),
             "qty"=>random_int(2,50),
-            "category_id"=>random_int(1,10),
+            "category_id"=>random_int(1,5),
             "seat"=>random_int(4,6),
             "door"=>value(4),
             "fuel_style"=>value("Hybird"),

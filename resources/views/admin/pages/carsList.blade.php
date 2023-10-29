@@ -3,7 +3,10 @@
 
 
             <div style="overflow: auto" class="card">
-                <div style="text-align: center;font-size: 35px;color: blue;margin-top: 20px" class="td">Cars List</div>
+                <h2 style="text-align: center;color: #1a1af8;font-size: 28px;margin-top: 20px;margin-bottom: 20px" class="text-xl font-bold text-black dark:text-white">
+
+                    Cars List
+                </h2>
                 <div class="card-header">
                     <h3  style="margin-top: 30px;margin-bottom: 25px" class="card-title"><a style="background-color:blue;border: blue solid 2px;border-radius: 6px;padding-left: 20px;padding-right: 20px;padding-top: 8px;padding-bottom: 8px;color: white;width: 300px;margin-left: 50px;"  href="{{url("admin/product/create")}}">Create new product</a> </h3>
 

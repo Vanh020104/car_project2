@@ -7,13 +7,27 @@ use App\Models\Order;
 use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
     public function homeAdmin() {
-        $today = Carbon::today();
+        $month = date('m');
 
+        $categoryCounts = DB::table('categories')
+            ->select('categories.name', DB::raw('COUNT(*) as count'))
+            ->join('products', 'categories.id', '=', 'products.category_id')
+            ->join('order_products', 'products.id', '=', 'order_products.product_id')
+            ->join('orders', 'order_products.order_id', '=', 'orders.id')
+            ->whereMonth('orders.time_completed', '=', $month)
+            ->groupBy('categories.name')
+            ->where('status','7')
+
+            ->get();
+
+
+        $today = Carbon::today();
         $order_today = Order::whereDate('created_at', $today)->paginate(20);
         $products = Product::orderBy("created_at","desc")->paginate(12);
         $orders = Order::where("status","!=","7")->where("status","!=","6")->orderBy("created_at","desc")->paginate(12);
@@ -22,7 +36,7 @@ class AdminController extends Controller
         $doanhthu = Order::where('status', '7')
             ->whereBetween('time_completed', [$startDate, $endDate])
             ->paginate(100);
-        return view("admin.pages.homeAdmin",compact("products","orders","order_today","doanhthu"));
+        return view("admin.pages.homeAdmin",compact("products","orders","order_today","doanhthu","categoryCounts"));
     }
     public function carsList(Request $request) {
         $products = Product::Search($request)->FilterCategory($request)->orderBy("id","desc")->paginate(20);
@@ -73,8 +87,8 @@ class AdminController extends Controller
     public function revenueChart(Request $request)
     {
         $monthLabels = [
-            'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
-            'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
         ];
         $data = Order::selectRaw('MONTH(time_completed) AS month, SUM(grand_total) AS revenue')
             ->groupBy('month')
@@ -93,5 +107,20 @@ class AdminController extends Controller
             'labels' => $monthLabels,
             'revenues' => $revenues,
         ]);
+    }
+    public function categoryCounts()
+    {
+        $month = date('m');
+
+        $categoryCounts = DB::table('categories')
+            ->select('categories.name', DB::raw('COUNT(*) as count'))
+            ->join('products', 'categories.id', '=', 'products.category_id')
+            ->join('order_products', 'products.id', '=', 'order_product.product_id')
+            ->join('orders', 'order_product.order_id', '=', 'orders.order_id')
+            ->whereMonth('orders.created_at', '=', $month)
+            ->groupBy('categories.name')
+            ->get();
+
+        return view('admin.pages.home', ['categoryCounts' => $categoryCounts]);
     }
 }

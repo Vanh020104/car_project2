@@ -603,7 +603,7 @@
                                         {{$order_today->total()}}
                                     </h4>
                                     <span class="text-sm font-medium">
-Rent a car today</span>
+Rent A Car Today</span>
                                 </div>
 
                                 <span
@@ -730,7 +730,7 @@ Rent a car today</span>
                                         @endforeach
                                         $ <?php echo  $total ?>
                                     </h4>
-                                    <span class="text-sm font-medium">Monthly revenue</span>
+                                    <span class="text-sm font-medium">Monthly Revenue</span>
                                 </div>
 
                                 <span
@@ -755,42 +755,87 @@ Rent a car today</span>
                         </div></a>
                     <!-- Card Item End -->
                 </div>
-                <div style="height: 395px;width: 700px;margin-top: 20px" class="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-5">
+              <div style="display: flex">
+                  <div style="height: 395px;width: 700px;margin-top: 20px" class="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-5">
 
-                    <h4  style="text-align: center;" class="text-xl font-bold text-black dark:text-white">
+                      <h4  style="text-align: center;" class="text-xl font-bold text-black dark:text-white">
 
-                        Revenue Per Month
-                    </h4>
-                    <canvas id="revenueChart"></canvas>
-                    <script>
-                        let ctx = document.getElementById('revenueChart').getContext('2d');
+                          Revenue Per Month
+                      </h4>
+                      <canvas id="revenueChart"></canvas>
+                      <script>
+                          let ctx = document.getElementById('revenueChart').getContext('2d');
 
-                        fetch('/admin/revenue-chart')
-                            .then(response => response.json())
-                            .then(data => {
-                                let chart = new Chart(ctx, {
-                                    type: 'bar',
-                                    data: {
-                                        labels: data.labels,
-                                        datasets: [{
-                                            label: 'Doanh thu $',
-                                            data: data.revenues,
-                                            backgroundColor: 'rgba(75, 192, 192, 0.2)', // Set the background color
-                                            borderColor: 'rgba(75, 192, 192, 1)', // Set the border color
-                                            borderWidth: 1 // Set the border width
-                                        }]
-                                    },
-                                    options: {
-                                        // Additional options for customization, if needed
-                                    }
-                                });
-                            });
-                    </script>
-
-
-                </div>
+                          fetch('/admin/revenue-chart')
+                              .then(response => response.json())
+                              .then(data => {
+                                  let chart = new Chart(ctx, {
+                                      type: 'bar',
+                                      data: {
+                                          labels: data.labels,
+                                          datasets: [{
+                                              label: 'Revenue$',
+                                              data: data.revenues,
+                                              backgroundColor: 'rgba(75, 192, 192, 0.2)', // Set the background color
+                                              borderColor: 'rgba(75, 192, 192, 1)', // Set the border color
+                                              borderWidth: 1 // Set the border width
+                                          }]
+                                      },
+                                      options: {
+                                          // Additional options for customization, if needed
+                                      }
+                                  });
+                              });
+                      </script>
 
 
+                  </div>
+                  <div style="width: 400px;height: 395px;margin-top: 20px;margin-left: 30px;text-align: center"  class="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-5">
+                      <h1 class="text-xl font-bold text-black dark:text-white">Percentage Of Vehicles Rented During The Month (%)</h1>
+
+                      <div style="height: 300px;;" id="chartContainer">
+                          <canvas id="categoryChart"></canvas>
+                      </div>
+
+                      <script>
+                          // Lấy dữ liệu category counts từ controller
+                          const categoryCounts = @json($categoryCounts);
+
+                          // Tính tổng số đơn hàng
+                          const totalOrders = categoryCounts.reduce((total, category) => total + category.count, 0);
+
+                          // Tạo mảng chứa tên danh mục và phần trăm số đơn hàng
+                          const labels = categoryCounts.map(category => category.name);
+                          const percentages = categoryCounts.map(category => (category.count / totalOrders) * 100);
+
+                          // Tạo biểu đồ tròn
+                          const ctx1 = document.getElementById('categoryChart').getContext('2d');
+                          const categoryChart = new Chart(ctx1, {
+                              type: 'pie',
+                              data: {
+                                  labels: labels,
+                                  datasets: [{
+                                      data: percentages ,
+                                      backgroundColor: [
+                                          'rgba(255, 99, 132, 0.7)',
+                                          'rgba(54, 162, 235, 0.7)',
+                                          'rgba(255, 206, 86, 0.7)',
+                                          'rgba(75, 192, 192, 0.7)',
+                                          'rgba(153, 102, 255, 0.7)',
+                                          'rgba(255, 159, 64, 0.7)'
+                                      ],
+                                      borderWidth: 1
+                                  }]
+                              },
+                              options: {
+                                  responsive: true
+
+                              }
+                          });
+                      </script>
+                  </div>
+
+              </div>
 
                 <div
                     class="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5"
