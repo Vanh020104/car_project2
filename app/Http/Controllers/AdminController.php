@@ -17,10 +17,8 @@ class AdminController extends Controller
         $order_today = Order::whereDate('created_at', $today)->paginate(20);
         $products = Product::orderBy("created_at","desc")->paginate(12);
         $orders = Order::where("status","!=","7")->where("status","!=","6")->orderBy("created_at","desc")->paginate(12);
-
         $startDate = Carbon::now()->startOfMonth();
         $endDate = Carbon::now()->endOfMonth();
-
         $doanhthu = Order::where('status', '7')
             ->whereBetween('time_completed', [$startDate, $endDate])
             ->paginate(100);
@@ -71,5 +69,29 @@ class AdminController extends Controller
     public function historyOrder(Request $request){
         $history_order = Order::whereIn('status', ['7', '6'])->Search($request)->orderBy("created_at","desc")->paginate(100);
         return view("admin.pages.historyOrder",compact("history_order"));
+    }
+    public function revenueChart(Request $request)
+    {
+        $monthLabels = [
+            'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
+            'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+        ];
+        $data = Order::selectRaw('MONTH(time_completed) AS month, SUM(grand_total) AS revenue')
+            ->groupBy('month')
+            ->orderBy('month')
+            ->where('status','7')
+            ->get();
+
+        $revenueByMonth = $data->pluck('revenue', 'month')->toArray();
+        $revenues = [];
+
+        foreach (range(1, 12) as $month) {
+            $revenues[] = $revenueByMonth[$month] ?? 0;
+        }
+
+        return response()->json([
+            'labels' => $monthLabels,
+            'revenues' => $revenues,
+        ]);
     }
 }
