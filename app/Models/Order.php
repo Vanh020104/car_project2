@@ -21,6 +21,7 @@ class Order extends Model
         "address",
         "payment_method",
         "is_paid",
+
     ];
     const WAIT = 0;
     const CONFIRMED = 1;
@@ -33,7 +34,7 @@ class Order extends Model
     const CANCEL = 6;
 
     public function Products(){
-        return $this->belongsToMany(Product::class,"order_products")->withPivot(["buy_qty","price"]);
+        return $this->belongsToMany(Product::class,"order_products")->withPivot(["buy_qty","price","start_date","end_date"]);
     }
 
     public function getGrandTotal(){

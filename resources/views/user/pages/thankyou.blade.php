@@ -88,7 +88,7 @@
 
         .success-circle-fill {
             fill:
-            #1ecb15;
+                #1ecb15;
             stroke: none;
             opacity: 0;
             animation: success-circle-fill 300ms ease-out 1100ms forwards;

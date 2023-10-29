@@ -42,8 +42,9 @@ class DatabaseSeeder extends Seeder
                     "product_id" => $item->id,
                     "buy_qty" => $buy_qty,
                     "price" => $item->price,
+                    "start_date"=>$order->start_date,
+                    "end_date"=>$order->end_date,
                 ]);
-
 
             }
             $order->grand_total = $grand_total;

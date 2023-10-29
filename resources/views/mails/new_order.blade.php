@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -17,9 +17,9 @@
             text-decoration: none;
         }
 
-     .text-muted{
-         font-weight: 600;
-     }
+        .text-muted{
+            font-weight: 600;
+        }
 
         .contact-info {
             margin-bottom: 20px;
@@ -88,8 +88,8 @@
                 <div class="col-md-8 contact-info">
                     <ul class="list-unstyled">
                         <li class="text-muted">To: <span>Rently@gmail.com</span></li>
-                        <li class="text-muted info-item">Address <span>8A Ton That Thuyet, My Dinh2, Nam Tu Liem, Ha Noi.</span></li>
-                        <li class="text-muted info-item"><i class="fas fa-phone"></i> +1 333 9296</li>
+                        <li class="text-muted info-item">Address: <span>8A Ton That Thuyet, My Dinh2, Nam Tu Liem, Ha Noi.</span></li>
+                        <li class="text-muted info-item">Phone Number: <i class="fas fa-phone"></i> +1 333 9296</li>
                     </ul>
                 </div>
                 <div class="col-md-4 customer-info">
@@ -105,6 +105,7 @@
                                 class="fw-bold">Email: </span>{{$order->email}}</li>
                         <li class="text-muted info-item"><i class="fas fa-circle" style="color:#84B0CA ;"></i> <span
                                 class="fw-bold">Vehicle pickup location: </span>{{$order->location}}</li>
+
                     </ul>
                 </div>
             </div>
@@ -116,6 +117,8 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Price</th>
+                        <th>Start date</th>
+                        <th>End date</th>
                         <th>Days</th>
                         <th>Total</th>
                         <th>Deposit</th>
@@ -127,6 +130,8 @@
                             <td>{{$item->id}}</td>
                             <td>{{$item->name}}</td>
                             <td>${{$item->pivot->price}}</td>
+                            <td>{{$item->pivot->start_date}}</td>
+                            <td>{{$item->pivot->end_date}}</td>
                             <td>{{$item->pivot->buy_qty}} days</td>
                             <td>${{$item->pivot->buy_qty*$item->pivot->price}}</td>
                             <td>${{$item->deposit}}</td>

@@ -26,20 +26,19 @@ Route::get('/errors', [\App\Http\Controllers\HomeController::class, "Errors"])->
 Route::middleware("auth")->group(function (){
     Route::post('/checkout', [\App\Http\Controllers\HomeController::class,"placeOrder"]);
     Route::get('/thank-you/{order}', [\App\Http\Controllers\HomeController::class,"thankYou"]);
-    Route::get('/checkout/{slug}', [\App\Http\Controllers\HomeController::class,"checkout"])->name('checkout');
+    Route::get('/checkout', [\App\Http\Controllers\HomeController::class,"checkout"])->name('checkout');
     Route::get('/paypal-success/{order}', [\App\Http\Controllers\HomeController::class,"paypalSuccess"]);
     Route::get('/paypal-cancel/{order}', [\App\Http\Controllers\HomeController::class,"paypalCancel"]);
+    Route::get('account_profile', [\App\Http\Controllers\HomeController::class,"accountProfile"]);
+
 });
 
 
 
 
 Auth::routes();
-
+Route::get('/home_admin', [App\Http\Controllers\HomeController::class, 'homeAdmin']);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::middleware(["auth","is_admin"])->prefix("admin")->group(function () {
     include_once "admin.php";
 });
-
-
-

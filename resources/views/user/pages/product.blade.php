@@ -211,7 +211,7 @@
                             <div class="checkout__input">
                                 <p>Pick Up Date & Time<span>*</span></p>
                                 <div class="date-time-field" style="display: flex">
-                                    <input class="form-control" type="date" id="start_date" name="start_date"  style="padding: 0 20px">
+                                    <input class="form-control" type="date" id="start_date" name="start_date"  style="padding: 0 20px" required>
                                     <input  type="time" id="start_time" name="start_time"  style="padding: 0 20px; margin-left: 25px; display: none">
 
                                 </div>
@@ -219,7 +219,7 @@
                             <div class="checkout__input">
                                 <p>Return Date & Time<span>*</span></p>
                                 <div class="date-time-field" style="display: flex">
-                                    <input class="form-control" type="date" id="end_date" name="end_date"  style="padding: 0 20px">
+                                    <input class="form-control" type="date" id="end_date" name="end_date"  style="padding: 0 20px" required>
                                     <input type="time" id="end_time" name="end_time"  style="padding: 0 20px; margin-left: 25px; display: none">
                                 </div>
                                 <p id="invalid_date_message" style="color: red; margin-top: 5px; display: none;">Please reselect the date!</p>
@@ -228,8 +228,9 @@
                                 <p>Number of Days:</p>
                                 <input style="width: 50px; height: 30px; border: none" type="text" id="buy_qty" name="buy_qty" value="1" >
                             </div>
-                            <button type="submit" class="btn-main btn-fullwidth">ADD TO CART</button>
+                            <button type="submit" class="btn-main btn-fullwidth">RENT NOW</button>
                         </form>
+
                         <div class="clearfix"></div>
                     </div>
                     <div class="de-box">

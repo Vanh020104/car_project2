@@ -44,9 +44,8 @@
         <div class="container">
             <div class="checkout__form">
                 <h4 style="text-align: center; margin-bottom: 30px">Billing Details</h4>
-                {{--            <form method="POST" action="{{ route('checkoutTwo') }}">--}}
-                {{--                @csrf--}}
-                <form action="{{url("checkout") }}" method="POST">
+
+                <form action="{{url("checkout")}}" method="post">
                     @csrf
                     <div class="row">
                         <div class="col-lg-8 col-md-6">
@@ -95,25 +94,26 @@
 
                         <div class="col-lg-4 col-md-6">
                             <div class="checkout__order">
-{{--                                @foreach($cart as $item)--}}
-                                    <h4 style="text-align: center">Your Order</h4>
-                                    <div class="checkout__order__products" style="display: grid; ">
+                                {{--                                @foreach($cart as $item)--}}
+                                <h4 style="text-align: center">Your Order</h4>
+                                <div class="checkout__order__products" style="display: grid; ">
+                                    @foreach($cart as $item)
                                         <div style="display: flex;justify-content: space-between;">
                                             <span>Car Name</span>
-                                            <span style="font-weight: 300">{{ $product->name }}</span>
+                                            <span style="font-weight: 300">{{ $item->name }}</span>
                                         </div>
                                         <div  style="display: flex;justify-content: space-between;margin: 20px 0">
-                                            @foreach($cart as $item) @endforeach
+
                                             <span>Subtotal</span>
-                                            <span style="font-weight: 300">${{$product->price * $item->buy_qty}}</span>
+                                            <span style="font-weight: 300">${{$item->price * $item->buy_qty}}</span>
                                         </div>
                                         <div style="display: flex;justify-content: space-between;">
                                             <span>Deposit</span>
-                                            <span style="font-weight: 300">${{$product->deposit}}</span>
+                                            <span style="font-weight: 300">${{$item->deposit}}</span>
                                         </div>
-                                    </div>
-                                    <div class="checkout__order__subtotal">Total <span style="font-weight: 300">${{($product->price * $item->buy_qty) + $product->deposit}}</span></div>
-{{--                                @endforeach--}}
+                                    @endforeach
+                                </div>
+                                <div class="checkout__order__subtotal">Total <span style="font-weight: 300">${{$total}}</span></div>
 
                                 <div class="checkout__input__checkbox">
                                     <label for="payment">

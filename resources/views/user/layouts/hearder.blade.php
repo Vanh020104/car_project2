@@ -39,68 +39,65 @@
                     </div>
                     <div class="de-flex-col header-col-mid">
                         <ul id="mainmenu">
-                            <li><a class="menu-item" href="index.html">Home</a>
+                            <li><a class="menu-item" href="#">Home</a>
                                 <ul>
-                                    <li><a class="menu-item" href="02_dark-index-1.html">New: Homepage 1 Dark</a></li>
-                                    <li><a class="menu-item" href="02_dark-index-2.html">New: Homepage 2 Dark</a></li>
-                                    <li><a class="menu-item" href="index.html">Homepage Main</a></li>
-                                    <li><a class="menu-item" href="index-2.html">Homepage 2</a></li>
-                                    <li><a class="menu-item" href="index-3.html">Homepage 3</a></li>
-                                    <li><a class="menu-item" href="index-4.html">Homepage 4</a></li>
-                                    <li><a class="menu-item" href="index-5.html">Homepage 5</a></li>
-                                    <li><a class="menu-item" href="index-6.html">Homepage 6</a></li>
+                                    <li><a class="menu-item" href="#">New: Homepage 1 Dark</a></li>
+                                    <li><a class="menu-item" href="#">New: Homepage 2 Dark</a></li>
+
                                 </ul>
                             </li>
-                            <li><a class="menu-item" href="cars.html">Cars</a>
+                            <li><a class="menu-item" href="#">Cars</a>
                                 <ul>
-                                    @php
-                                        $categories = App\Models\Category::all();
-                                    @endphp
-                                    @foreach ($categories as $c)
-                                        <li><a href="#">{{$c->name}}</a></li>
-                                    @endforeach
+                                    <li><a class="menu-item" href="{{url("/car_list")}}">Cars List</a></li>
+
                                 </ul>
                             </li>
-                            <li><a class="menu-item" href="{{url("cart")}}">Cart
-                                    <span style="margin-left: 40px; position: relative; bottom: 27px">
+
+
+                            <li>
+                                <a class="menu-item" href="{{url("cart")}}">Cart</a>
+                                    <span style="position: relative;bottom: 5px; right: 6px; color: white; font-size: 10px">
                                     {{session()->has("cart")?count(session("cart")):0}}
                                     </span>
-                                </a></li>
-                            <li><a class="menu-item" href="{{route("errors")}}">Error Price List</a>
-{{--                                <ul>--}}
-{{--                                    <li><a class="menu-item" href="account-dashboard.html">Dashboard</a></li>--}}
-{{--                                    <li><a class="menu-item" href="account-profile.html">My Profile</a></li>--}}
-{{--                                    <li><a class="menu-item" href="account-booking.html">My Orders</a></li>--}}
-{{--                                    <li><a class="menu-item" href="account-favorite.html">My Favorite Cars</a></li>--}}
-{{--                                </ul>--}}
+                            </li>
+
+
+
+                            <li>
+                                <a class="menu-item" href="account-dashboard.html">My Account</a>
+                                <ul>
+
+                                    <li><a class="menu-item" href="{{url("/account_profile")}}">My Profile</a></li>
+                                    <li><a class="menu-item" href="">My Orders</a></li>
+
+                                </ul>
                             </li>
                             <li><a class="menu-item" href="#">Pages</a>
                                 <ul>
-                                    <li><a class="menu-item" href="about.html">About Us</a></li>
-                                    <li><a class="menu-item" href="contact.html">Contact</a></li>
-                                    <li><a class="menu-item" href="login.html">Login</a></li>
-                                    <li><a class="menu-item" href="register.html">Register</a></li>
-                                    <li><a class="menu-item" href="404.html">Page 404</a></li>
+
+                                    <li>@auth()
+                                            <a href="#" class="vanh_auth" ><i class="fa fa-user"></i> {{auth()->user()->name}}</a>
+                                            <form  id="form-logout" action="{{route("logout")}}" method="post">
+                                                @csrf
+                                            </form>
+
+                                        @endauth @guest()
+                                            <a class="vanh_auth" href="{{route("login")}}"><i class="fa fa-user"></i>Login</a>
+                                        @endguest
+                                    </li>
+                                    <li>@auth()
+                                        <a class="vanh_auth" href="javascript:void(0);" onclick="$('#form-logout').submit();">
+                                            <i class="fa fa-align-right"></i>Logout</a>
+                                        @endauth
+                                        @guest()
+                                            <a class="vanh_auth" href="{{route("register")}}"><i class="fa fa-user"></i>Register</a>
+                                        @endguest
+                                    </li>
+
+                                    <li><a class="menu-item" href="{{url("/admin/home")}}">Admin</a></li>
                                 </ul>
                             </li>
-                            <li><a class="menu-item" href="#">News</a>
-                                <ul>
-                                    <li><a class="menu-item" href="news-standart-right-sidebar.html">News Standard</a>
-                                        <ul>
-                                            <li><a class="menu-item" href="news-standart-right-sidebar.html">Right Sidebar</a></li>
-                                            <li><a class="menu-item" href="news-standart-left-sidebar.html">Left Sidebar</a></li>
-                                            <li><a class="menu-item" href="news-standart-no-sidebar.html">No Sidebar</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a class="menu-item" href="news-grid-right-sidebar.html">News Grid</a>
-                                        <ul>
-                                            <li><a class="menu-item" href="news-grid-right-sidebar.html">Right Sidebar</a></li>
-                                            <li><a class="menu-item" href="news-grid-left-sidebar.html">Left Sidebar</a></li>
-                                            <li><a class="menu-item" href="news-grid-no-sidebar.html">No Sidebar</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
+
                             <li><a class="menu-item" href="#">Elements</a>
                                 <ul>
                                     <li><a class="menu-item" href="preloader.html">Preloader</a></li>
@@ -143,3 +140,13 @@
         </div>
     </div>
 </header>
+
+<style>
+    .vanh_auth {
+        color: #6f6f6f;
+    }
+    .vanh_auth:hover{
+        color: #f8f9fa;
+        background-color: #179510;
+    }
+</style>

@@ -4,20 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Events\CreateNewOrder;
 use App\Mail\OrderMail;
+use App\Models\Car;
 use App\Models\Category;
 use App\Models\Error;
 use App\Models\Order;
+use App\Models\OrderProduct;
 use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
 
 class HomeController extends Controller
 {
-
     public function home(){
         $products = Product::orderBy("created_at","desc")->paginate(14);
         return view("user.pages.home",compact("products"));
@@ -38,24 +41,34 @@ class HomeController extends Controller
 
     public function addToCart(Product $product, Request $request){
         $buy_qty = $request->get("buy_qty");
-        $cart = session()->has("cart")?session("cart"):[];
-        foreach ($cart as $item){
-            if($item->id == $product->id){
+        $start_date = $request->get("start_date");
+        $end_date = $request->get("end_date");
+
+        $cart = session()->has("cart") ? session("cart") : [];
+
+        foreach ($cart as $item) {
+            if ($item->id == $product->id) {
                 $item->buy_qty = $item->buy_qty + $buy_qty;
-                session(["cart"=>$cart]);
-                return redirect()->back()->with("success","Your vehicle has just been added to the cart!");
+                $item->start_date = $start_date; // Thêm start_date vào item trong giỏ hàng
+                $item->end_date = $end_date; // Thêm end_date vào item trong giỏ hàng
+
+                session(["cart" => $cart]);
+                return redirect()->back()->with("success", "Your vehicle has just been added to the cart!");
             }
         }
+
         $product->buy_qty = $buy_qty;
+        $product->start_date = $start_date;
+        $product->end_date = $end_date;
+
         $cart[] = $product;
-        session(["cart"=>$cart]);
-        return redirect()->back()->with("success","Your vehicle has just been added to the cart!");
+        session(["cart" => $cart]);
+
+        return redirect()->to('cart')->with("success", "Your vehicle has just been added to the cart!");
     }
+
     public function cart(){
         $cart = session()->has("cart")?session("cart"):[];
-
-
-
         return view("user.pages.cart",compact("cart"));
     }
 
@@ -75,20 +88,15 @@ class HomeController extends Controller
     }
 
 
-    public function checkout(Request $request, $slug)
+    public function checkout()
     {
-//        $product = Product::where('slug', $slug)->firstOrFail();
-        // Lấy thông tin sản phẩm từ slug
-        $product = Product::where('slug', $slug)->first();
-
-        // Kiểm tra xem sản phẩm có tồn tại hay không
-        if (!$product) {
-            abort(404);
-        }
         $cart = session()->has("cart")?session("cart"):[];
+        $total = 0;
+        foreach ($cart as $item){
+            $total += $item->price * $item->buy_qty + $item->deposit;
 
-        // Truyền thông tin sản phẩm vào view checkout
-        return view("user.pages.checkout", ['product' => $product], compact("cart"));
+        }
+        return view("user.pages.checkout",compact("cart","total"));
     }
 
     public function placeOrder(Request $request){
@@ -104,10 +112,9 @@ class HomeController extends Controller
         ]);
         // calculate
         $cart = session()->has("cart")?session("cart"):[];
-        $subtotal = 0;
+        $total = 0;
         foreach ($cart as $item){
-            $subtotal += $item->price * $item->buy_qty;
-            $total = $subtotal + $item->deposit;
+            $total += $item->price * $item->buy_qty + $item->deposit;
         }
         $order = Order::create([
             "grand_total"=>$total,
@@ -123,7 +130,9 @@ class HomeController extends Controller
                 "order_id"=>$order->id,
                 "product_id"=>$item->id,
                 "buy_qty"=>$item->buy_qty,
-                "price"=>$item->price
+                "price"=>$item->price,
+                "start_date"=>$item->start_date,
+                "end_date"=>$item->end_date
             ]);
             $product = Product::find($item->id);
             $product->update(["buy_qty"=>$product->buy_qty- $item->buy_qty]);
@@ -205,4 +214,17 @@ class HomeController extends Controller
 
 
 
+    public function accountProfile(){
+        return view("user.pages.account_profile");
+    }
+
+    public function accountBook(){
+        return view("user.pages.account_booking");
+    }
+    public function homeAdmin(){
+        return view("admin.pages.homeAdmin");
+
+    }
+
 }
+

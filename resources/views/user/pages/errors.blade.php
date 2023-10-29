@@ -31,7 +31,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <h1>Error table</h1>
+                        <h1>Error</h1>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -39,7 +39,7 @@
         </div>
     </section>
     <!-- section close -->
-    <div class="card p-4 rounded-5 mb25">
+    <div class="card p-4 rounded-5 mb25" style="margin: 30px 100px">
         <h4>Detailed price list</h4>
 
         <table class="table de-table" style="margin: 0 100px 0 100px">
@@ -47,8 +47,8 @@
             <tr>
                 <th scope="col"><span class="text-uppercase fs-12 text-gray"> ID</span></th>
                 <th scope="col"><span class="text-uppercase fs-12 text-gray">Error Name</span></th>
-                <th scope="col"><span class="text-uppercase fs-12 text-gray">Price</span></th>
                 <th scope="col"><span class="text-uppercase fs-12 text-gray">Severity</span></th>
+                <th scope="col"><span class="text-uppercase fs-12 text-gray">Price</span></th>
 
             </tr>
             </thead>
@@ -57,8 +57,9 @@
             <tr>
                 <td><span class="d-lg-none d-sm-block"> ID</span><div class="badge bg-gray-100 text-dark">#{{$error->id}}</div></td>
                 <td><span class="d-lg-none d-sm-block" style="width: 50%">Error Name</span><span class="bold">{{$error->name}}</span></td>
-                <td><span class="d-lg-none d-sm-block">Price</span>${{$error->price}}</td>
                 <td><span class="d-lg-none d-sm-block">Severity</span>{{$error->severity}}</td>
+                <td><span class="d-lg-none d-sm-block">Price</span>${{$error->price}}</td>
+
 
             </tr>
             @endforeach
