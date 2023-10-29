@@ -100,6 +100,7 @@ class HomeController extends Controller
     }
 
     public function placeOrder(Request $request){
+        $userId = Auth::id();
         $request->validate([
             "full_name"=>"required|min:6",
             "address"=>"required",
@@ -117,6 +118,7 @@ class HomeController extends Controller
             $total += $item->price * $item->buy_qty + $item->deposit;
         }
         $order = Order::create([
+            "user_id"=>$userId,
             "grand_total"=>$total,
             "full_name"=>$request->get("full_name"),
             "email"=>$request->get("email"),
