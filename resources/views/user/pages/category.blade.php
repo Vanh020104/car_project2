@@ -20,7 +20,10 @@
                                 <div class="d-text">
                                     <h4><a href="{{url("detail",["product"=>$item->slug])}}">{{$item->name}}</a></h4>
                                     <div class="d-item_like">
-                                        <i class="fa fa-heart"></i><span>74</span>
+                                        <button style="border: none; background-color: white">
+                                            <i class="fa fa-heart"></i><span>74</span>
+                                        </button>
+{{--                                        <i class="fa fa-heart"></i><span>74</span>--}}
                                     </div>
                                     <div class="d-atr-group">
                                         <span style="color: green" class="d-atr"><img src="images/icons/1.svg" alt="">{{$item->seat}}</span>
