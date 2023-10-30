@@ -86,6 +86,7 @@ class AdminController extends Controller
     }
     public function revenueChart(Request $request)
     {
+        $year = $request->input('year', date('Y'));
         $monthLabels = [
             'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
             'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
@@ -93,6 +94,7 @@ class AdminController extends Controller
         $data = Order::selectRaw('MONTH(time_completed) AS month, SUM(grand_total) AS revenue')
             ->groupBy('month')
             ->orderBy('month')
+            ->whereYear('time_completed',$year)
             ->where('status','7')
             ->get();
 
@@ -117,7 +119,8 @@ class AdminController extends Controller
             ->join('products', 'categories.id', '=', 'products.category_id')
             ->join('order_products', 'products.id', '=', 'order_product.product_id')
             ->join('orders', 'order_product.order_id', '=', 'orders.order_id')
-            ->whereMonth('orders.created_at', '=', $month)
+            ->whereMonth('orders.time_completed', '=', $month)
+            ->where('status','7')
             ->groupBy('categories.name')
             ->get();
 

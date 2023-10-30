@@ -49,7 +49,7 @@
                    <tr>
 
                            <th scope="row">{{$item->name}}</th>
-                           <th scope="row"><img style="width: 210px;border-radius: 3px;margin-top: 15px" src="{{$item->thumbnail}}" alt=""></th>
+                           <th scope="row"><img style="width: 180px;border-radius: 3px;margin-top: 15px" src="{{$item->thumbnail}}" alt=""></th>
                            <th scope="row">{{$item->pivot->start_date}}</th>
                            <th scope="row">{{$item->pivot->end_date}}</th>
                            <th scope="row">{{$order->grand_total}}</th>
@@ -92,6 +92,13 @@
                   <a style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: green;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" href="">Reminder to return the car</a>
                   <button style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: blue;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" type="submit" name="status" value="5">Confirm return of vehicle</button>
               </div>
+            </form>
+        @endif
+        @if($order->status == 4)
+            <form action="" method="POST">
+                <div style="display:flex;justify-content: space-between" class="btn-xn">
+                    <button style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: #f64242;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" type="submit" name="status" value="6">Cancel</button>
+                    <button style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: blue;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" type="submit" name="status" value="2">Shipping</button></div>
             </form>
         @endif
         @if($order->status == 5)
