@@ -40,6 +40,12 @@ class Order extends Model
     public function getGrandTotal(){
         return "$".number_format($this->grand_total,2);
     }
+    // Trong mô hình Order.php
+    public function productss()
+    {
+        return $this->belongsToMany(Product::class, 'order_products', 'order_id', 'product_id');
+    }
+
     public function getPaid(){
         return $this->is_paid?"<span style='border-radius: 7px' class='bg-success p-2 small'>Paid</span>"
             :"<span style='border-radius: 7px' class='bg-secondary p-2 small'>Unpaid</span>";

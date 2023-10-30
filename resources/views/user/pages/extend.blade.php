@@ -57,10 +57,22 @@
             <tbody>
             @foreach($orders as $order)
                 <tr>
-                    <td><span class="d-lg-none d-sm-block"> ID</span><div class="badge bg-gray-100 text-dark">{{$order->order_id}}</div></td>
-                    <td><span class="d-lg-none d-sm-block" style="width: 50%">Car Name</span><span class="bold">{{$order->name }}</span></td>
-                    <td><span class="d-lg-none d-sm-block">Thumbnail</span><img alt="{{ $order->name }}" style="border-radius: 8px;margin-bottom: 15px;margin-left: 25px" width="200px" src="{{$order->thumbnail}}" /></td>
-                    <td><span class="d-lg-none d-sm-block">Price</span>{{$order->price}}</td>
+                    <td><span class="d-lg-none d-sm-block"> ID</span><div class="badge bg-gray-100 text-dark">{{$order->id}}</div></td>
+                    <td>
+                        <span class="d-lg-none d-sm-block" style="width: 50% ">Car Name</span><span class="bold">@foreach ($order->products as $product)
+                                {{ $product->name }}<br>
+                            @endforeach</span>
+                    </td>
+                    <td>
+                        <span class="d-lg-none d-sm-block">Thumbnail</span>@foreach ($order->products as $product)
+                            <img src="{{ $product->thumbnail }}" alt="{{ $product->name }}" width="200"><br>
+                        @endforeach
+                    </td>
+                    <td>
+                        <span class="d-lg-none d-sm-block">Price</span>@foreach($order->products as $product)
+                            {{$product->price}}
+                    @endforeach
+                    </td>
                     <td><span class="d-lg-none d-sm-block">Status</span>{!! $order->getStatus() !!}</td>
                     <td><span class="d-lg-none d-sm-block">Action</span>
                         @if($order->status==1)
