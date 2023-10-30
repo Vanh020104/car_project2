@@ -7,6 +7,7 @@ use App\Mail\OrderMail;
 use App\Models\Car;
 use App\Models\Category;
 use App\Models\Error;
+use App\Models\Favorite;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
@@ -247,6 +248,71 @@ class HomeController extends Controller
         return view("admin.pages.homeAdmin");
 
     }
+
+
+
+
+    public function addFavorite(Request $request)
+    {
+
+        $productId = $request->input('product_id');
+        $user = Auth::user();
+
+// Kiểm tra xem sản phẩm đã được yêu thích bởi người dùng chưa
+        $existingFavorite = Favorite::where('user_id', $user->id)
+            ->where('product_id', $productId)
+            ->first();
+        if ($existingFavorite) {
+            // Sản phẩm đã tồn tại trong yêu thích
+            return redirect()->back()->with('message', 'Failed!')->with('product_id', $productId)->with('status', 'error');
+        }
+
+// Thêm sản phẩm vào yêu thích
+        $favorite = new Favorite();
+        $favorite->user_id = $user->id;
+        $favorite->product_id = $productId;
+        $favorite->save();
+
+// Lưu thông tin sản phẩm vào session
+        $request->session()->flash('message', 'Success!');
+        $request->session()->flash('product_id', $productId);
+        $request->session()->flash('status', 'success');
+
+        return redirect()->back();
+    }
+
+    public function showFavorites()
+    {
+        $user = Auth::user();
+
+        // Lấy danh sách sản phẩm yêu thích của người dùng
+        $favorites = Favorite::where('user_id', $user->id)->get();
+
+        return view("user.pages.favorites", compact('favorites'));
+    }
+
+
+    public function removeFromFavorites($favoriteId)
+    {
+        $favorite = Favorite::find($favoriteId);
+
+
+        if ($favorite) {
+
+            $favorite->delete();
+        } else {
+
+        }
+        return redirect()->back()->with('error', '');
+    }
+
+
+    public function accountFavorites(){
+        return view("user.pages.favorites");
+    }
+
+
+
 
 }
 
