@@ -213,6 +213,16 @@ class HomeController extends Controller
         $errors = Error::all();
         return view("user.pages.errors" ,compact('errors'));
     }
+    public function getAvailableProducts()
+    {
+        // Lấy danh sách sản phẩm có trạng thái "Đang thuê" hoặc "Không cho thuê"
+        $orders = Order::join('order_products', 'orders.id', '=', 'order_products.order_id')
+            ->join('products', 'order_products.product_id', '=', 'products.id')
+            ->select('orders.id as order_id', 'order_products.product_id', 'order_products.price', 'products.name', 'products.thumbnail')
+            ->get();
+
+        return view('user.pages.extend',  ['orders' => $orders]);
+    }
 
 
 
