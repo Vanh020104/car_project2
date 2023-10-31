@@ -68,7 +68,7 @@
                                 <ul>
 
                                     <li><a class="menu-item" href="{{url("/account_profile")}}">My Profile</a></li>
-                                    <li><a class="menu-item" href="">My Orders</a></li>
+                                    <li><a class="menu-item" href="{{url("/renewed")}}">My Orders</a></li>
 
                                 </ul>
                             </li>
