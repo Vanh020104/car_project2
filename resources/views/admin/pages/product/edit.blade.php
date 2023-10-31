@@ -4,7 +4,10 @@
         <!-- /.card-header -->
         <!-- form start -->
         <form class="form_create" action="{{url("admin/product/edit",['product'=>$product->id])}}" method="post" enctype="multipart/form-data">
-            <h2 style="margin-bottom:40px;color: #1270f6;text-align: center;font-size: 30px">Edit Car</h2>
+            <h2 style="text-align: center;color: #1a1af8;font-size: 28px;margin-bottom: 20px" class="text-xl font-bold text-black dark:text-white">
+
+              Edit Car
+            </h2>
             @csrf
             @method("PUT")
             <div class="card-body">
@@ -18,7 +21,7 @@
                     </div>
                     <div class="form-group">
                         <label>Category</label>
-                        <select style="width: 200px"  name="category_id" class="form-control">
+                        <select style="width: 200px;background-color: #eceaea;"  name="category_id" class="form-control">
                             <option value="">Choose category</option>
                             @foreach($categories as $item)
                                 <option @if($item->id==$product->category_id) selected @endif value="{{$item->id}}">{{$item->name}}</option>
@@ -60,7 +63,7 @@
 
                     <div class="form-group">
                         <label style="position: absolute">Description</label>
-                        <textarea style="width:270px;border-radius: 8px;position: absolute;margin-top: 30px" name="description" class="form-control" row="5">
+                        <textarea style="width:270px;height: 80px;border-radius: 8px;position: absolute;margin-top: 30px;background-color: #eceaea;" name="description" class="form-control" row="5">
                         {{$product->description}}
                     </textarea>
                     </div>
@@ -126,15 +129,15 @@
 @endsection
 <style>
     .form_create{
-        border: #cecbcb solid 1px;
+        border: #f2f2f2 solid 1px;
         border-radius: 8px;
         margin-top: 6%;
         margin-bottom: 10%;
-        margin-left: 20%;
+        margin-left: 10%;
         padding: 80px;
-
-
-        background-color: #F5F5F5;
+        background: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        color:#333333;
     }
     .card-body{
         display: flex;
@@ -163,11 +166,14 @@
         margin-bottom: 10px;
     }
     .ttcar1 input{
+        background-color: #eceaea;
         padding-left: 20px;
     }
     .ttcar2 input{
         padding-left: 20px;
-        margin-right: 80px;
+        background-color: #eceaea;
     }
-
+    .ttcar2{
+        margin-left: 15px;
+    }
 </style>
