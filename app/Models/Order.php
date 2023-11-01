@@ -36,7 +36,10 @@ class Order extends Model
     public function Products(){
         return $this->belongsToMany(Product::class,"order_products")->withPivot(["buy_qty","price","start_date","end_date"]);
     }
-
+    public function productss()
+    {
+        return $this->belongsToMany(Product::class, 'order_products', 'order_id', 'product_id');
+    }
     public function getGrandTotal(){
         return "$".number_format($this->grand_total,2);
     }
