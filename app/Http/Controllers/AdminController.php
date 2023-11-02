@@ -123,7 +123,28 @@ class AdminController extends Controller
             ->where('status','7')
             ->groupBy('categories.name')
             ->get();
-
         return view('admin.pages.home', ['categoryCounts' => $categoryCounts]);
+    }
+    public function uploadImageCVD(Request $request,Order $order){
+        $stt = $request->get("status");
+        $order->status = $stt;
+        $order->save();
+
+        if ($request->hasFile('images')) {
+            $images = $request->file('images');
+
+            foreach ($images as $image) {
+                $imagePath = $image->store('public/images');
+
+                // Lưu thông tin ảnh vào cơ sở dữ liệu
+                $order->images()->create([
+                    'order_id' => $order->id,
+                    'image' => $imagePath
+                ]);
+            }
+        }
+
+
+        return redirect()->back()->with('success', 'Đã đặt hàng thành công');
     }
 }
