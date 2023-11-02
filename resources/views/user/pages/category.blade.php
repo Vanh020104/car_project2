@@ -20,18 +20,10 @@
                                 <div class="d-text">
                                     <h4><a href="{{url("detail",["product"=>$item->slug])}}">{{$item->name}}</a></h4>
                                     <div class="d-item_like">
-
-                                        <form action="{{ route('favorites.add') }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="product_id" value="{{ $item->id }}">
-                                            <button type="submit" style="border: none; background-color: white" class="add-to-favorites" >
-                                                <i class="fa fa-heart"></i><span>74</span>
-                                            </button>
-                                        </form>
-                                        @if (session('message') && session('product_id') == $item->id)
-                                            <p style="color: red">{{ session('message') }}</p>
-                                        @endif
-
+                                        <button style="border: none; background-color: white">
+                                            <i class="fa fa-heart"></i><span>74</span>
+                                        </button>
+{{--                                        <i class="fa fa-heart"></i><span>74</span>--}}
                                     </div>
                                     <div class="d-atr-group">
                                         <span style="color: green" class="d-atr"><img src="images/icons/1.svg" alt="">{{$item->seat}}</span>
@@ -39,7 +31,6 @@
                                         <span style="color: green" class="d-atr"><img src="images/icons/3.svg" alt="">{{$item ->door}}</span>
                                         <span style="color: green" class="d-atr"><img src="images/icons/4.svg" alt="">{{$item->fuel_style}}</span>
                                     </div>
-
                                     <div class="d-price">
                                         Daily rate from <span>{{$item->price}}</span>
                                         <a class="btn-main" href="{{url("detail",["product"=>$item->slug])}}">Rent Now</a>

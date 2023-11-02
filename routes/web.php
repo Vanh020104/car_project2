@@ -39,6 +39,7 @@ Route::middleware("auth")->group(function (){
         ->name('favorites.remove');
     Route::get('/car_list', [\App\Http\Controllers\HomeController::class,"cars"]);
     Route::get('/filter', [\App\Http\Controllers\HomeController::class,"filterProduct"]);
+
 });
 
 

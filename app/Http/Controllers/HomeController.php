@@ -249,7 +249,12 @@ class HomeController extends Controller
     }
     public function getAvailableProducts()
     {
-
+        // Lấy danh sách sản phẩm có trạng thái "Đang thuê" hoặc "Không cho thuê"
+//        $orders = Order::join('order_products', 'orders.id', '=', 'order_products.order_id')
+//            ->join('products', 'order_products.product_id', '=', 'products.id')
+//            ->select('orders.id as order_id', 'order_products.product_id', 'order_products.price', 'products.name', 'products.thumbnail')
+//            ->get();
+//
         if (Auth::check()) {
             $user = Auth::user();
 
@@ -265,6 +270,10 @@ class HomeController extends Controller
         }
 
     }
+
+
+
+
 
     public function accountProfile(){
         return view("user.pages.account_profile");

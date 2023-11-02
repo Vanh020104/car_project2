@@ -56,7 +56,7 @@
 
                             <li>
                                 <a class="menu-item" href="{{url("cart")}}">Cart</a>
-                                <span style="position: relative;bottom: 5px; right: 6px; color: white; font-size: 10px">
+                                    <span style="position: relative;bottom: 5px; right: 6px; color: white; font-size: 10px">
                                     {{session()->has("cart")?count(session("cart")):0}}
                                     </span>
                             </li>
@@ -64,11 +64,10 @@
 
 
                             <li>
-                                <a class="menu-item" href="#">My Account</a>
+                                <a class="menu-item" href="account-dashboard.html">My Account</a>
                                 <ul>
 
                                     <li><a class="menu-item" href="{{url("/account_profile")}}">My Profile</a></li>
-                                    <li><a class="menu-item" href="{{url("/favorites")}}">My Favorite Cars</a></li>
                                     <li><a class="menu-item" href="{{url("/renewed")}}">My Orders</a></li>
 
                                 </ul>
@@ -87,8 +86,8 @@
                                         @endguest
                                     </li>
                                     <li>@auth()
-                                            <a class="vanh_auth" href="javascript:void(0);" onclick="$('#form-logout').submit();">
-                                                <i class="fa fa-align-right"></i>Logout</a>
+                                        <a class="vanh_auth" href="javascript:void(0);" onclick="$('#form-logout').submit();">
+                                            <i class="fa fa-align-right"></i>Logout</a>
                                         @endauth
                                         @guest()
                                             <a class="vanh_auth" href="{{route("register")}}"><i class="fa fa-user"></i>Register</a>
@@ -99,7 +98,7 @@
                                 </ul>
                             </li>
 
-                            <li><a class="menu-item" href="">Elements</a>
+                            <li><a class="menu-item" href="#">Elements</a>
                                 <ul>
                                     <li><a class="menu-item" href="preloader.html">Preloader</a></li>
                                     <li><a class="menu-item" href="icon-boxes.html">Icon Boxes</a></li>

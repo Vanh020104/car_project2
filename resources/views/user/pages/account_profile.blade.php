@@ -59,7 +59,6 @@
                         <div class="spacer-20"></div>
                         <ul class="menu-col">
                             <li><a href="{{url("/account_profile")}}" class="active"><i class="fa fa-user"></i>My Profile</a></li>
-                            <li><a href="{{url("/favorites")}}" ><i class="fa fa-user"></i>My Favorite Cars</a></li>
                             <li><a href="{{url("/account_booking")}}"><i class="fa fa-calendar"></i>My Orders</a></li>
                             <li>
                                 @auth()
@@ -82,7 +81,7 @@
                             <div class="col-lg-12">
                                 <form id="form-create-item" class="form-border" method="post">
                                     <div class="de_tab tab_simple">
-                                        <h3 class="active" style="text-align: center"><span>Profile</span></h3>
+                                            <h3 class="active" style="text-align: center"><span>Profile</span></h3>
                                         <div class="de_tab_content">
                                             <div class="tab-1">
                                                 <div class="row">
@@ -120,7 +119,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{--                                    <input type="button" id="submit" class="btn-main" value="Update profile">--}}
+{{--                                    <input type="button" id="submit" class="btn-main" value="Update profile">--}}
                                 </form>
                             </div>
                         </div>
@@ -168,11 +167,13 @@
             </div>
         </div>
     </section>
+
+
+    @include("user.layouts.footer")
+    @yield("before_js")
+    @include("user.layouts.scripts")
+    @yield("after_js")
 </div>
-@include("user.layouts.footer")
-@yield("before_js")
-@include("user.layouts.scripts")
-@yield("after_js")
 
 </body>
 </html>
