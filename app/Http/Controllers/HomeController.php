@@ -365,9 +365,7 @@ class HomeController extends Controller
     }
 
 
-    public function renewed(){
-        return view("user.pages.extend");
-    }
+
 
 
 

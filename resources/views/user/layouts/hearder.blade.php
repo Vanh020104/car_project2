@@ -68,6 +68,7 @@
                                 <ul>
 
                                     <li><a class="menu-item" href="{{url("/account_profile")}}">My Profile</a></li>
+                                    <li><a class="menu-item" href="{{url("/favorites")}}">My Favorite Cars</a></li>
                                     <li><a class="menu-item" href="{{url("/renewed")}}">My Orders</a></li>
 
                                 </ul>
