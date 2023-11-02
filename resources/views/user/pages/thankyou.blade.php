@@ -118,7 +118,7 @@
         <th>Image</th>
         <th>Name</th>
         <th>Price</th>
-        <th>Days</th>
+        <th>Time</th>
         <th>Total</th>
         <th>Deposit</th>
         </thead>
@@ -129,7 +129,7 @@
                 <td><img src="{{$item->thumbnail}}" width="120"/></td>
                 <td>{{$item->name}}</td>
                 <td>${{$item->pivot->price}}</td>
-                <td>{{$item->pivot->buy_qty}} days</td>
+                <td  >{{$item->pivot->buy_qty}}</td>
                 <td>${{$item->pivot->buy_qty*$item->pivot->price}}</td>
                 <td>${{$item->deposit}}</td>
 

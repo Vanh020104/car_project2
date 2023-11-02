@@ -31,7 +31,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <h1>Vehicle status</h1>
+                        <h1>My Orders</h1>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -71,14 +71,14 @@
                     <td>
                         <span class="d-lg-none d-sm-block">Price</span>@foreach($order->products as $product)
                             {{$product->price}}
-                    @endforeach
+                        @endforeach
                     </td>
                     <td><span class="d-lg-none d-sm-block">Status</span>{!! $order->getStatus() !!}</td>
                     <td><span class="d-lg-none d-sm-block">Action</span>
-                        @if($order->status==1)
+                        @if($order->status==3)
                             <a href="#" class="btn btn-primary">Extension</a>
-                        @elseif($order->status==6)
-                            <a href="#" class="btn btn-danger">Car rental</a>
+                        @elseif($order->status==7 || $order->status==6)
+                            <a href="{{url("detail",["product"=>$product->slug])}}" class="btn btn-danger">Car rental</a>
                         @endif
 
                     </td>

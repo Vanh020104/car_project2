@@ -119,7 +119,7 @@
                         <th>Price</th>
                         <th>Start date</th>
                         <th>End date</th>
-                        <th>Days</th>
+                        <th>Time</th>
                         <th>Total</th>
                         <th>Deposit</th>
                     </tr>
@@ -130,9 +130,9 @@
                             <td>{{$item->id}}</td>
                             <td>{{$item->name}}</td>
                             <td>${{$item->pivot->price}}</td>
-                            <td>{{$item->pivot->start_date}}</td>
-                            <td>{{$item->pivot->end_date}}</td>
-                            <td>{{$item->pivot->buy_qty}} days</td>
+                            <td>{{$item->pivot->start_date}} <br> {{$item->pivot->start_time}}</td>
+                            <td>{{$item->pivot->end_date}} <br> {{$item->pivot->end_time}}</td>
+                            <td>{{$item->pivot->buy_qty}}</td>
                             <td>${{$item->pivot->buy_qty*$item->pivot->price}}</td>
                             <td>${{$item->deposit}}</td>
                         </tr>

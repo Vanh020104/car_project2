@@ -30,12 +30,15 @@ Route::middleware("auth")->group(function (){
     Route::get('/paypal-success/{order}', [\App\Http\Controllers\HomeController::class,"paypalSuccess"]);
     Route::get('/paypal-cancel/{order}', [\App\Http\Controllers\HomeController::class,"paypalCancel"]);
     Route::get('account_profile', [\App\Http\Controllers\HomeController::class,"accountProfile"]);
-    Route::get('/renewed', [\App\Http\Controllers\HomeController::class, "getAvailableProducts"])->name("renewed");
+    Route::get('/renewed', [\App\Http\Controllers\HomeController::class, "getAvailableProducts"])->
+    name("renewed");
     Route::get('account_favorites', [\App\Http\Controllers\HomeController::class,"accountFavorites"]);
     Route::post('/favorites/add', [\App\Http\Controllers\HomeController::class,"addFavorite"])->name('favorites.add');
     Route::get('/favorites', [\App\Http\Controllers\HomeController::class,"showFavorites"])->name('favorites.show');
     Route::get('/favorites/remove/{favoriteId}', [\App\Http\Controllers\HomeController::class, 'removeFromFavorites'])
         ->name('favorites.remove');
+    Route::get('/car_list', [\App\Http\Controllers\HomeController::class,"cars"]);
+    Route::get('/filter', [\App\Http\Controllers\HomeController::class,"filterProduct"]);
 });
 
 

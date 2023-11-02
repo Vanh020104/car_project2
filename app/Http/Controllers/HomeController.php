@@ -44,6 +44,8 @@ class HomeController extends Controller
         $buy_qty = $request->get("buy_qty");
         $start_date = $request->get("start_date");
         $end_date = $request->get("end_date");
+        $start_time = $request->get("start_time");
+        $end_time = $request->get("end_time");
 
         $cart = session()->has("cart") ? session("cart") : [];
 
@@ -52,6 +54,8 @@ class HomeController extends Controller
                 $item->buy_qty = $item->buy_qty + $buy_qty;
                 $item->start_date = $start_date; // Thêm start_date vào item trong giỏ hàng
                 $item->end_date = $end_date; // Thêm end_date vào item trong giỏ hàng
+                $item->start_time = $start_time; // Thêm end_date vào item trong giỏ hàng
+                $item->end_time = $end_time; // Thêm end_date vào item trong giỏ hàng
 
                 session(["cart" => $cart]);
                 return redirect()->back()->with("success", "Your vehicle has just been added to the cart!");
@@ -61,6 +65,8 @@ class HomeController extends Controller
         $product->buy_qty = $buy_qty;
         $product->start_date = $start_date;
         $product->end_date = $end_date;
+        $product->start_time = $start_time; // Thêm end_date vào item trong giỏ hàng
+        $product->end_time = $end_time;
 
         $cart[] = $product;
         session(["cart" => $cart]);
@@ -70,7 +76,16 @@ class HomeController extends Controller
 
     public function cart(){
         $cart = session()->has("cart")?session("cart"):[];
-        return view("user.pages.cart",compact("cart"));
+        $total =0;
+        foreach ($cart as $item) {
+            if ($item->start_date == $item->end_date) {
+                $total += $item->hourly_price * $item->buy_qty ;
+            } else {
+                $total += $item->price * $item->buy_qty ;
+
+            }
+        }
+        return view("user.pages.cart",compact("cart", "total"));
     }
 
     public function deleteFromCart(Product $product){
@@ -93,9 +108,13 @@ class HomeController extends Controller
     {
         $cart = session()->has("cart")?session("cart"):[];
         $total = 0;
-        foreach ($cart as $item){
-            $total += $item->price * $item->buy_qty + $item->deposit;
+        foreach ($cart as $item) {
+            if ($item->start_date == $item->end_date) {
+                $total += $item->hourly_price * $item->buy_qty ;
+            } else {
+                $total += $item->price * $item->buy_qty ;
 
+            }
         }
         return view("user.pages.checkout",compact("cart","total"));
     }
@@ -115,12 +134,23 @@ class HomeController extends Controller
         // calculate
         $cart = session()->has("cart")?session("cart"):[];
         $total = 0;
-        foreach ($cart as $item){
-            $total += $item->price * $item->buy_qty + $item->deposit;
+        $deposit = 0;
+        $priceTotal =0;
+        foreach ($cart as $item) {
+            $deposit += $item->deposit;
+            if ($item->start_date == $item->end_date) {
+                $priceTotal += $item->hourly_price;
+                $total += $item->hourly_price * $item->buy_qty;
+            } else {
+                $total += $item->price * $item->buy_qty ;
+                $priceTotal += $item->price;
+
+            }
         }
         $order = Order::create([
             "user_id"=>$userId,
             "grand_total"=>$total,
+            "deposit"=>$deposit,
             "full_name"=>$request->get("full_name"),
             "email"=>$request->get("email"),
             "tel"=>$request->get("tel"),
@@ -133,9 +163,11 @@ class HomeController extends Controller
                 "order_id"=>$order->id,
                 "product_id"=>$item->id,
                 "buy_qty"=>$item->buy_qty,
-                "price"=>$item->price,
+                "price"=>$priceTotal,
                 "start_date"=>$item->start_date,
-                "end_date"=>$item->end_date
+                "end_date"=>$item->end_date,
+                "start_time"=>$item->start_time,
+                "end_time"=>$item->end_time,
             ]);
             $product = Product::find($item->id);
             $product->update(["buy_qty"=>$product->buy_qty- $item->buy_qty]);
@@ -166,7 +198,8 @@ class HomeController extends Controller
                     0 => [
                         "amount" => [
                             "currency_code" => "USD",
-                            "value" => number_format($order->grand_total,2,".","")
+//                            "value" => number_format($order->grand_total,2,".","")
+                            "value" => number_format($order->deposit,2,".","")
                         ]
                     ]
                 ]
@@ -216,26 +249,22 @@ class HomeController extends Controller
     }
     public function getAvailableProducts()
     {
-        // Lấy danh sách sản phẩm có trạng thái "Đang thuê" hoặc "Không cho thuê"
-//        $orders = Order::join('order_products', 'orders.id', '=', 'order_products.order_id')
-//            ->join('products', 'order_products.product_id', '=', 'products.id')
-//            ->select('orders.id as order_id', 'order_products.product_id', 'order_products.price', 'products.name', 'products.thumbnail')
-//            ->get();
-//
+
         if (Auth::check()) {
-            // Lấy người dùng hiện tại
             $user = Auth::user();
 
             // Truy vấn các đơn hàng của người dùng với thông tin sản phẩm (xe)
-            $orders = $user->orders()->with('productss')->get();
+            $orders = $user->orders()
+                ->whereIn('status', [Order::SHIPPED, Order::COMPLETE, Order::CANCEL])
+                ->with('productss')
+                ->get();
 
             return view('user.pages.extend', ['orders' => $orders]);
         } else {
             return redirect()->route('login');
         }
+
     }
-
-
 
     public function accountProfile(){
         return view("user.pages.account_profile");
@@ -311,6 +340,25 @@ class HomeController extends Controller
         return view("user.pages.favorites");
     }
 
+
+
+    public  function cars(){
+
+        $products = Product::orderBy("created_at","desc")->paginate(14);
+        return view("user.pages.cars",compact("products"));
+    }
+    public  function filterProduct(Request $request){
+        $products = Product::Search($request)->FilterSeat($request)->FilterColor($request)->PriceMin($request)->PriceMax($request)->orderBy("id","desc")->paginate(20);
+
+        return view("user.pages.cars",[
+            "products"=>$products
+        ]);
+    }
+
+
+    public function renewed(){
+        return view("user.pages.extend");
+    }
 
 
 

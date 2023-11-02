@@ -20,6 +20,8 @@ return new class extends Migration
             $table->unsignedDecimal("price");
             $table->date('start_date');
             $table->date('end_date');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->foreign("order_id")->references("id")->on("orders");
             $table->foreign("product_id")->references("id")->on("products");
             $table->primary(["order_id","product_id"]);// composite key

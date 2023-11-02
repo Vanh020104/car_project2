@@ -11,6 +11,7 @@ class Order extends Model
     protected $table = 'orders';
     protected $fillable = [
         "grand_total",
+        "deposit",
         "user_id",
         "email",
         "status",
@@ -34,17 +35,14 @@ class Order extends Model
     const CANCEL = 6;
 
     public function Products(){
-        return $this->belongsToMany(Product::class,"order_products")->withPivot(["buy_qty","price","start_date","end_date"]);
+        return $this->belongsToMany(Product::class,"order_products")->withPivot(["buy_qty","price","start_date","end_date","start_time","end_time"]);
     }
 
     public function getGrandTotal(){
         return "$".number_format($this->grand_total,2);
     }
     // Trong mô hình Order.php
-    public function productss()
-    {
-        return $this->belongsToMany(Product::class, 'order_products', 'order_id', 'product_id');
-    }
+
 
     public function getPaid(){
         return $this->is_paid?"<span style='border-radius: 7px' class='bg-success p-2 small'>Paid</span>"
@@ -69,4 +67,16 @@ class Order extends Model
         }
         return $query;
     }
+
+
+
+    public function favoriteProducts()
+    {
+        return $this->belongsToMany(Product::class, 'favorite_products', 'user_id', 'product_id');
+    }
+    public function productss()
+    {
+        return $this->belongsToMany(Product::class, 'order_products', 'order_id', 'product_id');
+    }
+
 }

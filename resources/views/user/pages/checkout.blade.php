@@ -105,9 +105,26 @@
                                         <div  style="display: flex;justify-content: space-between;margin: 20px 0">
 
                                             <span>Subtotal</span>
-                                            <span style="font-weight: 300">${{$item->price * $item->buy_qty}}</span>
+                                            <span style="font-weight: 300">
+                                                 {{$item->buy_qty}}
+                                                @if($item->start_date == $item->end_date)
+                                                    hours
+                                                @else
+                                                    days
+                                                @endif
+                                            </span>
                                         </div>
                                         <div style="display: flex;justify-content: space-between;">
+                                            <span>Price</span>
+                                            <span style="font-weight: 300">
+                                                @if($item->start_date == $item->end_date)
+                                                    <h5> ${{$item->hourly_price}}</h5>
+                                                @else
+                                                    <h5> ${{$item->price}}</h5>
+                                                @endif
+                                            </span>
+                                        </div>
+                                        <div style="display: flex;justify-content: space-between;margin-top: 20px">
                                             <span>Deposit</span>
                                             <span style="font-weight: 300">${{$item->deposit}}</span>
                                         </div>
@@ -146,39 +163,7 @@
 @yield("after_js")
 </body>
 <style>
-    /*css cho phần continue shoping*/
 
-    /******************************************************************
-      Template Name: Ogani
-      Description:  Ogani eCommerce  HTML Template
-      Author: Colorlib
-      Author URI: https://colorlib.com
-      Version: 1.0
-      Created: Colorlib
-    ******************************************************************/
-
-    /*------------------------------------------------------------------
-    [Table of contents]
-
-    1.  Template default CSS
-        1.1	Variables
-        1.2	Mixins
-        1.3	Flexbox
-        1.4	Reset
-    2.  Helper Css
-    3.  Header Section
-    4.  Hero Section
-    5.  Service Section
-    6.  Categories Section
-    7.  Featured Section
-    8.  Latest Product Section
-    9.  Contact
-    10.  Footer Style
-    -------------------------------------------------------------------*/
-
-    /*----------------------------------------*/
-    /* Template default CSS
-    /*----------------------------------------*/
 
     html,
     body {

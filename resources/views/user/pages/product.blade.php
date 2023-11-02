@@ -16,6 +16,32 @@
     @yield("after_css")
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </head>
+<style>
+    .rent_day_vanh {
+
+    }
+
+    .credit-card {
+        display: block;
+        cursor: pointer;
+
+    }
+
+    .payment-content_vanh {
+        display: none;
+    }
+
+    .payment-content_vanh.active {
+        display: block;
+    }
+
+    .vanh_select {
+        display: none;
+    }
+
+
+
+</style>
 
 <body onload="initialize()">
 @include("user.layouts.hearder")
@@ -197,43 +223,69 @@
                         </ul>
                     </form>
                 </div>
+
+{{--                ////////////////////////////////////////--}}
+
                 <div class="col-lg-3">
-                    <div class="de-price text-center">
-                        Price/Date
-                        <h3>${{$product->price}}</h3>
-                    </div>
-                    <div class="spacer-30"></div>
-                    <div class="de-box mb25">
-                        <h4 style="text-align: center">Booking this car</h4>
-                        <div class="spacer-20"></div>
 
-                        <form action="{{url("/add-to-cart",["product"=>$product->id])}}" method="get">
-                            <div class="checkout__input">
-                                <p>Pick Up Date & Time<span>*</span></p>
-                                <div class="date-time-field" style="display: flex">
-                                    <input class="form-control" type="date" id="start_date" name="start_date"  style="padding: 0 20px" required>
-                                    <input  type="time" id="start_time" name="start_time"  style="padding: 0 20px; margin-left: 25px; display: none">
-
+                    <div style="margin-top: 20px">
+                        <div class="flip-card">
+                            <div class="flip-card-inner">
+                                <div class="flip-card-front">
+                                    Price of day
+                                    <h3 style="font-size: 60px;margin-bottom: 20px;letter-spacing: -.5px;">
+                                        ${{$product->price}}</h3>
+                                </div>
+                                <div class="flip-card-back" >
+                                    Price of hour
+                                    <h3 style="font-size: 60px;margin-bottom: 20px;letter-spacing: -.5px;">
+                                        ${{$product->hourly_price}}</h3>
                                 </div>
                             </div>
-                            <div class="checkout__input">
-                                <p>Return Date & Time<span>*</span></p>
-                                <div class="date-time-field" style="display: flex">
-                                    <input class="form-control" type="date" id="end_date" name="end_date"  style="padding: 0 20px" required>
-                                    <input type="time" id="end_time" name="end_time"  style="padding: 0 20px; margin-left: 25px; display: none">
-                                </div>
-                                <p id="invalid_date_message" style="color: red; margin-top: 5px; display: none;">Please reselect the date!</p>
-                            </div>
-                            <div class="checkout__input" style="display: flex; margin-top: 20px; gap: 15px">
-                                <p>Number of Days:</p>
-                                <input style="width: 50px; height: 30px; border: none" type="text" id="buy_qty" name="buy_qty" value="1" >
-                            </div>
-                            <button type="submit" class="btn-main btn-fullwidth">RENT NOW</button>
-                        </form>
+                        </div>
 
-                        <div class="clearfix"></div>
+                        <div class="spacer-30"></div>
+                        <div class="de-box mb25">
+                            <div style="text-align: center; margin-bottom: 20px">
+                                <h4>Deposit</h4>
+                                <span style="font-size: 40px;margin-bottom: 20px">${{$product->deposit}}</span>
+                            </div>
+                            <h4 style="text-align: center">Booking this car</h4>
+                            <div class="spacer-20"></div>
+
+                            <form action="{{url("/add-to-cart",["product"=>$product->id])}}" method="get">
+                                <div class="checkout__input">
+                                    <p>Pick Up Date & Time<span>*</span></p>
+                                    <div class="date-time-field" style="display: flex">
+                                        <input  type="date" id="start_date" name="start_date"  style="height: 35px;padding: 0 6px;border: 0.1px solid  #999999; border-radius: 4px" required>
+                                        <input  type="time" id="start_time" name="start_time"  style="padding: 0 6px; width: 110px;  border: 0.1px solid  #999999; border-left: none; border-radius: 4px" required>
+
+                                    </div>
+                                </div>
+                                <div class="checkout__input">
+                                    <p>Return Date & Time<span>*</span></p>
+                                    <div class="date-time-field" style="display: flex">
+                                        <input  type="date" id="end_date" name="end_date"  style="height: 35px;padding: 0 6px;border: 0.1px solid  #999999; border-radius: 4px" required>
+                                        <input  type="time" id="end_time" name="end_time"  style="padding: 0 6px; width: 110px;  border: 0.1px solid  #999999; border-left: none; border-radius: 4px" required>
+
+                                    </div>
+                                    <p id="invalid_date_message" style="color: red; margin-top: 5px; display: none;">Please reselect the date!</p>
+                                </div>
+                                <div class="checkout__input" style="display: flex; margin-top: 20px">
+                                    <p>Rental Period:</p>
+                                    <input style="width: 50px; height: 30px; border: none; margin-left: 30px" type="text" id="buy_qty" name="buy_qty" value="1" ><span id="unit"></span>
+                                </div>
+                                <button type="submit" class="btn-main btn-fullwidth">RENT NOW</button>
+                            </form>
+
+                            <div class="clearfix"></div>
+                        </div>
                     </div>
-                    <div class="de-box">
+
+{{--////////////////////////////--}}
+
+
+                    <div class="de-box" >
                         <h4>Share</h4>
                         <div class="de-color-icons">
                             <span><i class="fa-brands fa-twitter"></i></span>
@@ -436,45 +488,7 @@
 @yield("after_js")
 <!-- content close -->
 </body>
-<script>
-    // Lấy các phần tử DOM
-    var startDateInput = document.getElementById('start_date');
-    var startTimeInput = document.getElementById('start_time');
-    var endDateInput = document.getElementById('end_date');
-    var endTimeInput = document.getElementById('end_time');
-    var numDaysInput = document.getElementById('buy_qty');
-    var invalidDateMessage = document.getElementById('invalid_date_message');
 
-    // Gắn sự kiện onchange để tính số ngày khi ngày được thay đổi
-    startDateInput.addEventListener('change', calculateNumDays);
-    startTimeInput.addEventListener('change', calculateNumDays);
-    endDateInput.addEventListener('change', calculateNumDays);
-    endTimeInput.addEventListener('change', calculateNumDays);
-
-    // Hàm tính số ngày giữa hai ngày
-    function calculateNumDays() {
-        var startDate = new Date(startDateInput.value + ' ' + startTimeInput.value);
-        var endDate = new Date(endDateInput.value + ' ' + endTimeInput.value);
-
-        // Kiểm tra nếu ngày kết thúc nhỏ hơn ngày bắt đầu
-        if (endDate < startDate) {
-            numDaysInput.value = '';
-            invalidDateMessage.style.display = 'block';
-            return;
-        }
-
-        invalidDateMessage.style.display = 'none';
-
-        var timeDiff = endDate.getTime() - startDate.getTime();
-        var numDays = Math.ceil(timeDiff / (1000 * 3600 * 24) +1) ; // Tính số ngày làm tròn lên
-
-        if (numDays >= 0) {
-            numDaysInput.value = numDays;
-        } else {
-            numDaysInput.value = '';
-        }
-    }
-</script>
 <style>
     .giay_to_xe{
         margin: 80px 0;
@@ -498,5 +512,107 @@
         color: #333;
         font-size: 16px;
     }
+
+     .flip-card {
+         background-color: #f2f2f2;
+         height: 150px;
+
+     }
+
+    .flip-card-inner {
+
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.9s;
+        transform-style: preserve-3d;
+    }
+
+    .flip-card:hover .flip-card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .flip-card-front, .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 150px;
+        backface-visibility: hidden;
+    }
+
+    .flip-card-front {
+        padding-top: 25px;
+        background-color: #f2f2f2;
+        color: black;
+    }
+
+    .flip-card-back {
+        padding-top: 25px;
+        background-color: #f2f2f2;
+        color: black;
+        transform: rotateY(180deg);
+    }
 </style>
+{{--tinh ngày--}}
+<script>
+    // Lấy các phần tử DOM
+    var startDateInput = document.getElementById('start_date');
+    var startTimeInput = document.getElementById('start_time');
+    var endDateInput = document.getElementById('end_date');
+    var endTimeInput = document.getElementById('end_time');
+    var numDaysInput = document.getElementById('buy_qty');
+    var unitSpan = document.getElementById('unit');
+    var invalidDateMessage = document.getElementById('invalid_date_message');
+
+    // Gắn sự kiện onchange để tính số ngày khi ngày được thay đổi
+    startDateInput.addEventListener('change', calculateNumDays);
+    startTimeInput.addEventListener('change', calculateNumDays);
+    endDateInput.addEventListener('change', calculateNumDays);
+    endTimeInput.addEventListener('change', calculateNumDays);
+
+
+    function calculateNumDays() {
+        var startDate = new Date(startDateInput.value + ' ' + startTimeInput.value);
+        var endDate = new Date(endDateInput.value + ' ' + endTimeInput.value);
+
+        // Kiểm tra nếu ngày kết thúc nhỏ hơn ngày bắt đầu
+        if (endDate < startDate) {
+            numDaysInput.value = '';
+            invalidDateMessage.style.display = 'block';
+            return;
+        }
+
+        invalidDateMessage.style.display = 'none';
+
+        // Kiểm tra nếu start_date và end_date giống nhau
+        if (startDate.toDateString() === endDate.toDateString()) {
+            var timeDiff = endDate.getTime() - startDate.getTime();
+            var numHours = Math.round(timeDiff / (1000 * 3600)); // Tính số giờ và làm tròn
+
+            if (numHours >= 0) {
+                document.getElementById("buy_qty").value = numHours;
+            } else {
+                document.getElementById("buy_qty").value = '';
+            }
+        } else {
+            var timeDiff = endDate.getTime() - startDate.getTime();
+            var numDays = Math.ceil(timeDiff / (1000 * 3600 * 24) + 1); // Tính số ngày làm tròn lên
+
+            if (numDays >= 0) {
+                numDaysInput.value = numDays;
+            } else {
+                numDaysInput.value = '';
+            }
+        }
+        if (startDate.toDateString() !== endDate.toDateString()) {
+            unitSpan.textContent = 'day';
+        } else {
+            unitSpan.textContent = 'hour';
+        }
+    }
+</script>
+
+
+
+
 </html>

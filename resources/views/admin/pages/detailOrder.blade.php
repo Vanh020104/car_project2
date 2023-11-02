@@ -50,8 +50,8 @@
 
                            <th scope="row">{{$item->name}}</th>
                            <th scope="row"><img style="width: 180px;border-radius: 3px;margin-top: 15px" src="{{$item->thumbnail}}" alt=""></th>
-                           <th scope="row">{{$item->pivot->start_date}}</th>
-                           <th scope="row">{{$item->pivot->end_date}}</th>
+                           <th scope="row">{{$item->pivot->start_date}} <br> {{$item->pivot->start_time}}</th>
+                           <th scope="row">{{$item->pivot->end_date}} <br> {{$item->pivot->end_time}}</th>
                            <th scope="row">{{$order->grand_total}}</th>
 
 

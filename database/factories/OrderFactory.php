@@ -18,6 +18,7 @@ class OrderFactory extends Factory
     {
         return [
             "grand_total"=>0,
+            "deposit" => random_int(1000,2000),
             "user_id"=>random_int(1,10),
             "full_name"=> $this->faker->name,
             "tel"=>$this->faker->phoneNumber,

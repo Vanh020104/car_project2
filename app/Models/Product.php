@@ -14,6 +14,7 @@ class Product extends Model
         "slug",
         "price",
         "deposit",
+        "hourly_price",
         "thumbnail",
         "description",
         "qty",
@@ -49,4 +50,40 @@ class Product extends Model
         return $query;
     }
 
+
+    public function favoritedByUsers()
+    {
+        return $this->belongsToMany(Order::class, 'favorite_products', 'product_id', 'user_id');
+    }
+
+
+
+    public function scopeFilterSeat($query,$request){
+        if($request->has("seat")&& $request->get("seat") != 0){
+            $seat = $request->get("seat");
+            $query->where("seat","=",$seat);
+        }
+        return $query;
+    }
+    public function scopeFilterColor($query,$request){
+        if($request->has("color")&& $request->get("color") != 0){
+            $color = $request->get("color");
+            $query->where("color","=",$color);
+        }
+        return $query;
+    }
+    public function scopePriceMin($query,$request){
+        if($request->has("pricemin")&& $request->get("pricemin") != ""){
+            $pricemin = $request->get("pricemin");
+            $query->where("price",">",$pricemin);
+        }
+        return $query;
+    }
+    public function scopePriceMax($query,$request){
+        if($request->has("pricemax")&& $request->get("pricemax") != ""){
+            $pricemax = $request->get("pricemax");
+            $query->where("price","<",$pricemax);
+        }
+        return $query;
+    }
 }

@@ -52,9 +52,16 @@
                                 <th class="shoping__product">Cars List</th>
                                 <th>Name</th>
                                 <th>Price/days</th>
-                                <th>Date</th>
-                                <th>start_date</th>
-                                <th>end_date</th>
+                                <th>Time</th>
+                                @foreach($cart as $item)
+                                @if($item->start_date !== $item->end_date)
+                                        <th>Start_date</th>
+                                        <th>End_date</th>
+                                @else
+
+                                        <th>Rent date</th>
+                                @endif
+                                @endforeach
                                 <th>Deposit</th>
                                 <th>Total</th>
                                 <th></th>
@@ -72,25 +79,40 @@
                                         <h5>{{$item->name}}</h5>
                                     </td>
                                     <td>
-                                        <h5> ${{$item->price}}</h5>
-
+                                        @if($item->start_date == $item->end_date)
+                                            <h5> ${{$item->hourly_price}}</h5>
+                                        @else
+                                            <h5> ${{$item->price}}</h5>
+                                        @endif
                                     </td>
                                     <td>
-                                        <h5>{{$item->buy_qty}} days</h5>
+                                        <h5>{{$item->buy_qty}}
+                                            @if($item->start_date == $item->end_date)
+                                                hours
+                                            @else
+                                                days
+                                            @endif
+                                        </h5>
                                     </td>
-                                    <td>
+                                        @if($item->start_date !== $item->end_date)
+                                            <td>
 
-                                        <h5>{{$item->start_date}} </h5>
+                                                <h5>{{$item->start_date}} </h5>
 
-                                    </td>
-                                    <td>
-                                        <h5>{{$item->end_date}} </h5>
-                                    </td>
+                                            </td>
+                                            <td>
+                                                <h5>{{$item->end_date}} </h5>
+                                            </td>
+                                        @else
+                                        <td>
+                                            <h5>{{$item->end_date}} </h5>
+                                        </td>
+                                        @endif
                                     <td>
                                         <h5>${{$item->deposit}}</h5>
                                     </td>
                                     <td>
-                                        <h5>${{$item->price * $item->buy_qty + $item->deposit}}</h5>
+                                        <h5>${{$total}}</h5>
                                     </td>
 
 
@@ -100,7 +122,7 @@
 
 
                                     <td class="shoping__cart__item__close">
-                                        <a href="/delete-from-cart/{{ $item->id }}"><span class="icon_close"></span></a>
+                                        <a onclick="return confirm('Definitely want to delete the car: <?php echo $item->name ?>?' )" href="/delete-from-cart/{{ $item->id }}"><span class="icon_close"></span></a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -114,7 +136,7 @@
                 <div class="col-lg-12" style="margin-bottom: 50px">
                     <div class="shoping__cart__btns">
                         <a href="#" class="primary-btn cart-btn" style="background-color: #1ecb15; color: white; border-radius: 5px">CONTINUE TO RENT</a>
-                        <a href="/clear-cart" class="primary-btn cart-btn cart-btn-right "><span class="icon_loading"></span>
+                        <a onclick="return confirm('Are you sure you want to delete them all?' )" href="/clear-cart" class="primary-btn cart-btn cart-btn-right "><span class="icon_loading"></span>
                             Clear Cart</a>
                     </div>
                 </div>
