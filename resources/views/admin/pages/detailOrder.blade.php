@@ -29,7 +29,7 @@
         <div class="user">
             <p>Customer : {{$order->full_name}}</p>
             <p>Telephone : {{$order->tel}}</p>
-            <p>EMail : {{$order->email}} </p>
+            <p>Email : {{$order->email}} </p>
             <p>Address : {{$order->address}} </p>
             <p>Location : {{$order->location}}</p>
         </div>
@@ -94,7 +94,6 @@
                     <div class="modal-content">
                         <span class="close">&times;</span>
                         <h2 style="text-align: center;color: #1a1af8;font-size: 22px;margin-top: 20px;margin-bottom: 20px" class="text-xl font-bold text-black dark:text-white">
-
                             Image Confirming Vehicle Delivery
                         </h2>
                         <h2>Tải lên ảnh</h2>
@@ -160,14 +159,82 @@
 
         @endif
         @if($order->status == 3)
-            <form action="{{url("admin/updateStatus",['order'=>$order->id])}}" method="POST">
-                @csrf
-                @method('PUT')
-                <div style="display:flex;justify-content: space-between" class="btn-xn">
-                    <a style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: green;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" href="">Reminder to return the car</a>
-                    <button style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: blue;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" type="submit" name="status" value="5">Confirm return of vehicle</button>
+            <div style="display: flex;justify-content: space-between">
+                <form action="{{url("admin/updateStatus",['order'=>$order->id])}}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div style="display:flex;justify-content: space-between" class="btn-xn">
+                        <a style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: green;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" href="">Reminder to return the car</a>
+                    </div>
+                </form>
+                <button id="openModalButton" style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: blue;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px"  type="submit"  data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Confirm return of vehicle</button>
+                <div id="myModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2 style="text-align: center;color: #1a1af8;font-size: 22px;margin-top: 20px;margin-bottom: 20px" class="text-xl font-bold text-black dark:text-white">
+                            Car Return Confirmation Image
+                        </h2>
+                        <h2>Tải lên ảnh</h2>
+                        <form action="{{url("admin/uploadImageReturn",$order->id)}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div style="display: flex">
+                                <input type="file" name="images[]" multiple required>
+                                <button style="float:right;margin-left:50px;margin-bottom:10px;border: red solid 1px;border-radius: 6px;background-color: blue;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" name="status" value="5" type="submit">Submit</button>
+                            </div>
+
+                            <div id="preview"></div>
+
+                            <script>
+                                function previewImages(event) {
+                                    var preview = document.querySelector('#preview');
+                                    preview.innerHTML = '';
+
+                                    var files = event.target.files;
+
+                                    for (var i = 0; i < files.length; i++) {
+                                        var file = files[i];
+                                        var reader = new FileReader();
+
+                                        reader.onload = function(e) {
+                                            var image = document.createElement('img');
+                                            image.src = e.target.result;
+                                            image.style.marginTop = '10px';
+                                            image.style.width = '200px';
+                                            image.style.height = '140px';
+                                            preview.appendChild(image);
+                                        }
+
+                                        reader.readAsDataURL(file);
+                                    }
+                                }
+
+                                var fileInput = document.querySelector('input[type="file"]');
+                                fileInput.addEventListener('change', previewImages);
+                            </script>
+                        </form>
+                    </div>
                 </div>
-            </form>
+                <script>
+                    var openModalButton = document.getElementById('openModalButton');
+                    var modal = document.getElementById('myModal');
+                    var close = document.getElementsByClassName('close')[0];
+
+                    openModalButton.addEventListener('click', function() {
+                        modal.style.display = 'block';
+                    });
+
+                    close.addEventListener('click', function() {
+                        modal.style.display = 'none';
+                    });
+
+                    window.addEventListener('click', function(event) {
+                        if (event.target == modal) {
+                            modal.style.display = 'none';
+                        }
+                    });
+                </script>
+            </div>
         @endif
         @if($order->status == 4)
             <form action="{{url("admin/updateStatus",['order'=>$order->id])}}" method="POST">

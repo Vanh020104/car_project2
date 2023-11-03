@@ -82,5 +82,9 @@ class Order extends Model
     {
         return $this->hasMany(ImageCvd::class,'order_id', 'id');
     }
+    public function imagesReturn()
+    {
+        return $this->hasMany(ImageReturn::class,'order_id', 'id');
+    }
 
 }

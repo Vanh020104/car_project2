@@ -150,4 +150,27 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'Success');
     }
+    public function uploadImageReturn(Request $request,Order $order){
+        $stt = $request->get("status");
+        $order->status = $stt;
+        $order->save();
+
+        if ($request->hasFile('images')) {
+            $images = $request->file('images');
+
+            foreach ($images as $image) {
+                $path = public_path('uploads');
+                $fileName = Str::random(5) . time() . Str::random(5) . '.' . $image->getClientOriginalExtension();
+                $image->move($path, $fileName);
+                $imagePath = '/uploads/' . $fileName;
+
+                // Lưu thông tin ảnh vào cơ sở dữ liệu
+                $order->imagesReturn()->create([
+                    'order_id' => $order->id,
+                    'image' => $imagePath
+                ]);
+            }
+        }
+        return redirect()->back()->with('success', 'Success');
+    }
 }
