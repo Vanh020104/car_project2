@@ -134,7 +134,10 @@ class AdminController extends Controller
             $images = $request->file('images');
 
             foreach ($images as $image) {
-                $imagePath = $image->store('public/images');
+                $path = public_path('uploads');
+                $fileName = Str::random(5) . time() . Str::random(5) . '.' . $image->getClientOriginalExtension();
+                $image->move($path, $fileName);
+                $imagePath = '/uploads/' . $fileName;
 
                 // Lưu thông tin ảnh vào cơ sở dữ liệu
                 $order->images()->create([
@@ -145,6 +148,6 @@ class AdminController extends Controller
         }
 
 
-        return redirect()->back()->with('success', 'Đã đặt hàng thành công');
+        return redirect()->back()->with('success', 'Success');
     }
 }
