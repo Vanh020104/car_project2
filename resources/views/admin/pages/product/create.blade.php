@@ -3,8 +3,7 @@
     <div class="card card-primary">
         <!-- form start -->
         <form class="form_create" action="{{url("admin/product/create")}}" method="post" enctype="multipart/form-data">
-            <h2 style="text-align: center;color: #1a1af8;font-size: 28px;margin-bottom: 20px" class="text-xl font-bold text-black dark:text-white">
-
+            <h2 style="margin-top:-20px;text-align: center;color: #1a1af8;font-size: 28px;margin-bottom: 20px" class="text-xl font-bold text-black dark:text-white">
                Create New Car
             </h2>
             @csrf
@@ -37,6 +36,14 @@
                      @enderror
                  </div>
                  <div class="form-group">
+                     <label for="exampleInputPassword1">
+                         Hourly Price</label>
+                     <input style="margin-left: 25px" type="number" value="{{old("hourly_price")}}" name="hourly_price" class="form-control"  placeholder="Price">
+                     @error("hourly_price")
+                     <p class="text-danger"><i>{{$message}}</i></p>
+                     @enderror
+                 </div>
+                 <div class="form-group">
                      <label for="exampleInputPassword1">Deposit</label>
                      <input style="margin-left: 7px" type="number" value="{{old("deposit")}}" name="deposit" class="form-control"  placeholder="Deposit">
                      @error("deposit")
@@ -62,7 +69,7 @@
 
                  <div class="form-group">
                      <label style="position: absolute">Description</label>
-                     <textarea style="width:270px;border-radius: 8px;position: absolute;margin-top: 30px;background-color: #eceaea;" name="description" class="form-control" row="5">
+                     <textarea style="width:270px;border-radius: 8px;margin-top: 30px;background-color: #eceaea;" name="description" class="form-control" row="5">
                         {{old("description")}}
                     </textarea>
                  </div>
