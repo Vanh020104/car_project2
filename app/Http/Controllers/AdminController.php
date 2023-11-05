@@ -175,7 +175,7 @@ class AdminController extends Controller
         }
         return redirect()->back()->with('success', 'Success');
     }
-    public function damage(Request $request , Order $order){
+    public function damage (Request $request , Order $order){
         $stt = $request->get("status");
 
         $names = $request->input('name');
@@ -197,5 +197,12 @@ class AdminController extends Controller
             $query->whereDate('end_date', $currentDate);
         })->paginate(10);
         return view("admin.pages.remindReturnCar",compact("remind"));
+    }
+    public function updateSttRemind($order , Request $request){
+        $stt = $request->get("stt");
+        DB::table('order_products')
+            ->where('order_id', $order)
+            ->update(['stt_remind' => $stt]);
+        return redirect()->back()->with('success', 'Success');
     }
 }

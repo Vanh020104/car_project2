@@ -49,33 +49,17 @@
                                 <td style="text-align: center">{!! $item->getPaid() !!}</td>
                                 <td style="text-align: center">{!! $item->getStatus() !!}</td>
                                 <td style="text-align: center">
-                                    <button style="background-color: blue;color: white;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;border-radius: 5px" id="submitBtn{{$item->id}}" onclick="submitOrder('submitBtn{{$item->id}}')" class="btn btn-primary">Submit</button>
+                                    <form method="post" action="{{url("admin/updateSttRemind",['order'=>$item->id])}}">
+                                        @csrf
+                                        @method('PUT')
+                                        <button name="stt" value="1" type="submit" style="background-color: blue;color: white;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;border-radius: 5px" id="submitBtn{{$item->id}}" onclick="submitOrder('submitBtn{{$item->id}}')" class="btn btn-primary">Submit</button>
+                                    </form>
                                 </td>
-                                <script>
-                                    function submitOrder(btnId) {
-                                        var submitBtn = document.getElementById(btnId);
-
-                                        // Lưu trạng thái "Submitted" cho nút submit cụ thể
-                                        submitBtn.innerHTML = 'Submitted';
-                                        submitBtn.style.backgroundColor= 'green';
-                                        submitBtn.style.backgroundColor = 'gray';
-                                        submitBtn.style.color = 'white';
-                                        submitBtn.style.paddingTop = '5px';
-                                        submitBtn.style.paddingBottom = '5px';
-                                        submitBtn.style.paddingLeft = '10px';
-                                        submitBtn.style.paddingRight = '10px';
-                                        submitBtn.style.borderRadius = '5px';
-
-                                        // Vô hiệu hóa nút submit cụ thể
-                                        submitBtn.disabled = true;
-                                    }
-                                </script>
                             </tr>
                         @endforeach
 
                         </tbody>
                     </table>
-
                 </div>
                 <!-- /.card-body -->
             </div>
