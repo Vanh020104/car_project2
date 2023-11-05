@@ -12,6 +12,7 @@ Route::get("/category-counts", [\App\Http\Controllers\AdminController::class, "c
 Route::post("/uploadImageCVD/{order}", [\App\Http\Controllers\AdminController::class, "uploadImageCVD"]);
 Route::post("/uploadImageReturn/{order}", [\App\Http\Controllers\AdminController::class, "uploadImageReturn"]);
 Route::post("/damage/{order}", [\App\Http\Controllers\AdminController::class, "damage"]);
+Route::get("/remindReturnCar", [\App\Http\Controllers\AdminController::class, "remindReturnCar"]);
 Route::prefix("product")->group(function (){
     Route::get("/create", [\App\Http\Controllers\ProductController::class, "create"]);
     Route::post("/create", [\App\Http\Controllers\ProductController::class, "store"]);

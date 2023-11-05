@@ -151,7 +151,7 @@
                     <li>
                         <a
                             class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-                            href="calendar.html"
+                            href="{{url("admin/remindReturnCar")}}"
                             @click="selected = (selected === 'Calendar' ? '':'Calendar')"
                             :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Calendar') && (page === 'calendar') }"
                         >
@@ -168,8 +168,7 @@
                                     fill=""
                                 />
                             </svg>
-
-                            Calendar
+                            Cars Nearing The End Of Rental Period
                         </a>
                     </li>
                     <!-- Menu Item Calendar -->

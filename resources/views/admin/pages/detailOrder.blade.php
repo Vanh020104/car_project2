@@ -39,9 +39,13 @@
                 <tr>
                     <th style="width: 150px;"  scope="col">Name Car  </th>
                     <th scope="col">Thumbnail</th>
-                    <th style="width: 200px;"  scope="col">Vehicle pick up time</th>
-                    <th style="width: 200px;"  scope="col">Car return time</th>
-                    <th style="width: 100px" scope="col">Total</th>
+                    <th style="width: 160px;"  scope="col">Vehicle pick up time</th>
+                    <th style="width: 160px;"  scope="col">Car return time</th>
+                    <th style="width: 50px" scope="col">Amount</th>
+                    <th style="width: 100px" scope="col">Other Costs</th>
+                    <th style="width: 60px" scope="col">Total</th>
+
+
                 </tr>
                 </thead>
                 <tbody>
@@ -50,12 +54,20 @@
 
                         <th scope="row">{{$item->name}}</th>
                         <th scope="row"><img style="width: 180px;border-radius: 3px;margin-top: 15px" src="{{$item->thumbnail}}" alt=""></th>
-                        <th scope="row">{{$item->pivot->start_date}}</th>
-                        <th scope="row">{{$item->pivot->end_date}}</th>
+                        <th scope="row"> {{$item->pivot->start_time}} <br> {{$item->pivot->start_date}} </th>
+                        <th scope="row"> {{$item->pivot->end_time}} <br> {{$item->pivot->end_date}}</th>
                         <th scope="row">{{$order->grand_total}}</th>
-
-
-
+                        <th scope="row">
+                            @php
+                                $totalCost = 0;
+                                $expenses = $order->costsIncurred; // Lấy danh sách chi phí liên quan đến order hiện tại
+                                foreach ($expenses as $expense) {
+                                    $totalCost += $expense->price; // Tính tổng expense
+                                }
+                                echo $totalCost; // Hiển thị tổng expense
+                            @endphp
+                        </th>
+                        <th scope="row">{{$order->grand_total + $totalCost}}</th>
                     </tr>
                 @endforeach
                 </tbody>
@@ -265,8 +277,8 @@
                                     @csrf
                                     <div id="expense-rows">
                                         <div class="expense-row">
-                                            <input style="border-color: black" type="text" name="name[]" placeholder="Name">
-                                            <input type="text" name="price[]" placeholder="Price">
+                                            <input style="margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 10px" type="text" name="name[]" placeholder="Damage">
+                                            <input style="margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 10px" type="number" name="price[]" placeholder="Price">
                                             <button type="button" class="remove-row">Remove</button>
                                         </div>
                                     </div>
@@ -291,8 +303,8 @@
                         var newRow = document.createElement('div');
                         newRow.classList.add('expense-row');
                         newRow.innerHTML = `
-      <input style="border-color: black" type="text" name="name[]" placeholder="Name">
-      <input type="text" name="price[]" placeholder="Price">
+      <input style="margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 10px" type="text" name="name[]" placeholder="Damage">
+      <input style="margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 10px" type="number" name="price[]" placeholder="Price">
       <button type="button" class="remove-row">Remove</button>
     `;
                         expenseRows.appendChild(newRow);

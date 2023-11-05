@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Expense;
 use App\Models\Order;
 use App\Models\Product;
 use Carbon\Carbon;
@@ -51,8 +52,9 @@ class AdminController extends Controller
     }
     public function detailOrder($id){
         $order = Order::find("$id");
+        $costs = Expense::all();
 
-        return view("admin.pages.detailOrder",compact("order"));
+        return view("admin.pages.detailOrder",compact("order","costs"));
     }
     public function updateStatus($order , Request $request)
     {
@@ -187,5 +189,13 @@ class AdminController extends Controller
                 'price' => $price,
             ]);}
         return redirect()->back()->with('success', 'Success');
+    }
+    public function remindReturnCar(Request $request , Order $order)
+    {   $currentDate = Carbon::now()->format('Y-m-d');
+        $currentTime = Carbon::now();
+        $remind = Order::where('status','3')->whereHas('products', function ($query) use ($currentDate) {
+            $query->whereDate('end_date', $currentDate);
+        })->paginate(10);
+        return view("admin.pages.remindReturnCar",compact("remind"));
     }
 }
