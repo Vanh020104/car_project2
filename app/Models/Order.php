@@ -86,5 +86,9 @@ class Order extends Model
     {
         return $this->hasMany(ImageReturn::class,'order_id', 'id');
     }
+    public function costsIncurred()
+    {
+        return $this->hasMany(Expense::class,'order_id', 'id');
+    }
 
 }

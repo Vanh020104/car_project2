@@ -173,4 +173,19 @@ class AdminController extends Controller
         }
         return redirect()->back()->with('success', 'Success');
     }
+    public function damage(Request $request , Order $order){
+        $stt = $request->get("status");
+
+        $names = $request->input('name');
+        $prices = $request->input('price');
+        foreach ($names as $key => $name) {
+            $price = $prices[$key];
+
+            $order->costsIncurred()->create([
+                'order_id' => $order->id,
+                'damage' => $name,
+                'price' => $price,
+            ]);}
+        return redirect()->back()->with('success', 'Success');
+    }
 }

@@ -1,7 +1,7 @@
 
 @extends("admin.layouts.admin_app")
 @section("content")
-    <div class="form-bill">
+    <div class="form-bill" style="overflow: auto">
 
         <div class="tieude">
             <div style="margin-top: 60px;margin-right: 10px" class="logo">
@@ -246,18 +246,73 @@
             </form>
         @endif
         @if($order->status == 5)
-            <form action="{{url("admin/updateStatus",['order'=>$order->id])}}" method="POST">
-                @csrf
-                @method('PUT')
-                <div style="display:flex;justify-content: space-between"  class="btn-xn">
-                    <a style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: #f64242;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" href="">
-                        Damages</a>
-                    <button style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: blue;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" type="submit" name="status" value="7">Complete</button>
+            <div style="display:flex;justify-content: space-between"  class="btn-xn">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="open-modal" style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: darkolivegreen;color: white;padding-left: 17px;padding-right: 17px;padding-top: -10px;padding-bottom: -10px">Damages</button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div style="box-sizing: border-box"  class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 style="text-align: center;color: #1a1af8;font-size: 22px;margin-top: 20px;margin-bottom: 20px" class="text-xl font-bold text-black dark:text-white">
+                                    Costs Incurred
+                                </h2>
+                                <button style="float:right;background-color: green;color: white;border-radius: 5px;padding-left: 14px;padding-right: 14px;padding-top: 5px;padding-bottom: 5px" type="button" id="add-row">Add Row</button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="expense-form" method="POST" action="{{url("/admin/damage",$order->id)}}">
+                                    @csrf
+                                    <div id="expense-rows">
+                                        <div class="expense-row">
+                                            <input style="border-color: black" type="text" name="name[]" placeholder="Name">
+                                            <input type="text" name="price[]" placeholder="Price">
+                                            <button type="button" class="remove-row">Remove</button>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex;justify-content: space-between;">
+                                        <button style="margin-top:15px;background-color: red;color: white;border-radius: 5px;padding-left: 14px;padding-right: 14px;padding-top: 5px;padding-bottom: 5px" type="button" style="background-color: red" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button style="margin-top:15px;background-color: #0a58ca;color: white;border-radius: 5px;padding-left: 14px;padding-right: 14px;padding-top: 5px;padding-bottom: 5px" type="submit" class="btn btn-primary">Save changes</button>
+
+                                    </div>
+                                     </form>
+                            </div>
+                            <div class="modal-footer">
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </form>
+
+                <script>
+                    // Add row event handler
+                    document.getElementById('add-row').addEventListener('click', function() {
+                        var expenseRows = document.getElementById('expense-rows');
+                        var newRow = document.createElement('div');
+                        newRow.classList.add('expense-row');
+                        newRow.innerHTML = `
+      <input style="border-color: black" type="text" name="name[]" placeholder="Name">
+      <input type="text" name="price[]" placeholder="Price">
+      <button type="button" class="remove-row">Remove</button>
+    `;
+                        expenseRows.appendChild(newRow);
+                    });
+
+                    // Remove row event handler
+                    document.addEventListener('click', function(event) {
+                        if (event.target.classList.contains('remove-row')) {
+                            var row = event.target.closest('.expense-row');
+                            row.remove();
+                        }
+                    });
+                </script>
+                <form action="{{url("admin/updateStatus",['order'=>$order->id])}}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <button style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: blue;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" type="submit" name="status" value="7">Complete</button>
+                </form>
+            </div>
         @endif
-
-
     </div>
 @endsection
 <style>
