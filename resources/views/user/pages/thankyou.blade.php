@@ -130,7 +130,7 @@
                 <td>{{$item->name}}</td>
                 <td>${{$item->pivot->price}}</td>
                 <td  >{{$item->pivot->buy_qty}}</td>
-                <td>${{$item->pivot->buy_qty*$item->pivot->price}}</td>
+                <td>${{$order->grand_total}}</td>
                 <td>${{$item->deposit}}</td>
 
             </tr>

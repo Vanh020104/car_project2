@@ -18,6 +18,7 @@ class ProductController
         $request->validate([
             "name"=>"required|min:6",
             "price"=>"required|numeric|min:0",
+            "hourly_price"=>"required|numeric|min:0",
             "qty"=>"required|numeric|min:0",
             "category_id"=>"required|numeric|min:1",
             "thumbnail"=>"nullable|mimes:png,jpg,jpeg,gif|mimetypes:image/jpeg,image/png,image/jpg",
@@ -49,6 +50,7 @@ class ProductController
                 "slug"=> Str::slug($request->get("name")),
                 "thumbnail"=>$thumbnail,
                 "price"=>$request->get("price"),
+                "hourly_price"=>$request->get("hourly_price"),
                 "qty"=>$request->get("qty"),
                 "category_id"=>$request->get("category_id"),
                 "description"=>$request->get("description"),

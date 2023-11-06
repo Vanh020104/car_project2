@@ -257,7 +257,7 @@
                                 <div class="checkout__input">
                                     <p>Pick Up Date & Time<span>*</span></p>
                                     <div class="date-time-field" style="display: flex">
-                                        <input  type="date" id="start_date" name="start_date"  style="height: 35px;padding: 0 6px;border: 0.1px solid  #999999; border-radius: 4px" required>
+                                        <input  type="date" id="start_date" name="start_date" style="height: 35px;padding: 0 6px;border: 0.1px solid  #999999; border-radius: 4px" required>
                                         <input  type="time" id="start_time" name="start_time"  style="padding: 0 6px; width: 110px;  border: 0.1px solid  #999999; border-left: none; border-radius: 4px" required>
 
                                     </div>
@@ -265,16 +265,21 @@
                                 <div class="checkout__input">
                                     <p>Return Date & Time<span>*</span></p>
                                     <div class="date-time-field" style="display: flex">
-                                        <input  type="date" id="end_date" name="end_date"  style="height: 35px;padding: 0 6px;border: 0.1px solid  #999999; border-radius: 4px" required>
-                                        <input  type="time" id="end_time" name="end_time"  style="padding: 0 6px; width: 110px;  border: 0.1px solid  #999999; border-left: none; border-radius: 4px" required>
+                                        <input  type="date" id="end_date" name="end_date" style="height: 35px;padding: 0 6px;border: 0.1px solid  #999999; border-radius: 4px" required>
+                                        <input  type="time" id="end_time" name="end_time" style="padding: 0 6px; width: 110px;  border: 0.1px solid  #999999; border-left: none; border-radius: 4px" required>
 
                                     </div>
                                     <p id="invalid_date_message" style="color: red; margin-top: 5px; display: none;">Please reselect the date!</p>
                                 </div>
-                                <div class="checkout__input" style="display: flex; margin-top: 20px">
-                                    <p>Rental Period:</p>
-                                    <input style="width: 50px; height: 30px; border: none; margin-left: 30px" type="text" id="buy_qty" name="buy_qty" value="1" ><span id="unit"></span>
+                                <div class="checkout__input" style="display: flex; margin: 20px 0 10px 0;">
+                                    <p style="margin-bottom: 0">Rental Period:</p>
+                                    <input  style="width: 50px; height: 30px; border: none; margin-left: 30px" type="text" id="buy_qty" name="buy_qty" value="1" ><span id="unit"></span>
                                 </div>
+                                @if (session('error'))
+                                    <div class="alert alert-danger" style="background-color: white; color: red;padding: 0;">
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
                                 <button type="submit" class="btn-main btn-fullwidth">RENT NOW</button>
                             </form>
 

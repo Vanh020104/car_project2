@@ -59,7 +59,8 @@
                         <div class="spacer-20"></div>
                         <ul class="menu-col">
                             <li><a href="{{url("/account_profile")}}" class="active"><i class="fa fa-user"></i>My Profile</a></li>
-                            <li><a href="{{url("/account_booking")}}"><i class="fa fa-calendar"></i>My Orders</a></li>
+                            <li><a href="{{url("/favorites")}}" ><i class="fa fa-user"></i>My Favorite Cars</a></li>
+                            <li><a href="{{url("/renewed")}}"><i class="fa fa-calendar"></i>My Orders</a></li>
                             <li>
                                 @auth()
 

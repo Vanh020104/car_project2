@@ -17,6 +17,11 @@
 
 
 </head>
+<style>
+    .option_select:hover{
+        background-color: red;
+    }
+</style>
 
 
 <body onload="initialize()">
@@ -58,23 +63,69 @@
                             </div>
                             <div class="checkout__input">
                                 <p>Address<span>*</span></p>
-                                <input name="address" id="address" value="{{old("address")}}" type="text" placeholder="Street Address" class="checkout__input__add">
+                                <input name="address" id="address" value="{{old("address")}}" type="text" placeholder="Street Address..." class="checkout__input__add">
                                 @error("address")
                                 <p class="text-danger"><i>{{$message}}</i></p>
                                 @enderror
                             </div>
+{{--                            <div class="checkout__input">--}}
+{{--                                <p>Vehicle pickup location<span>*</span></p>--}}
+{{--                                <input name="location" id="location" value="{{old("location")}}" type="text" placeholder="Street Address" class="checkout__input__add">--}}
+{{--                                @error("location")--}}
+{{--                                <p class="text-danger"><i>{{$message}}</i></p>--}}
+{{--                                @enderror--}}
+{{--                            </div>--}}
                             <div class="checkout__input">
                                 <p>Vehicle pickup location<span>*</span></p>
-                                <input name="location" id="location" value="{{old("location")}}" type="text" placeholder="Street Address" class="checkout__input__add">
-                                @error("location")
-                                <p class="text-danger"><i>{{$message}}</i></p>
-                                @enderror
+                                <select name="pickup_location" id="pickup_location" onchange="toggleAddressField()" style="width: 100%; height: 45px; border-radius: 5px; border: 0.1px solid #f2f2f2; color: #666666; padding: 10px 20px">
+                                    <option value="store">Pick up your car at the store!</option>
+                                    <option value="home">Receive the car at home!</option>
+                                </select>
+
+                                <div id="address_field" style="display: none;">
+                                    <input name="location" id="location" value="{{old("location")}}" type="text" placeholder="Street Address" class="checkout__input__add" style="width: 100%; height: 45px; border-radius: 5px; border: 0.1px solid #f2f2f2;padding: 10px 20px; color: #6f6f6f">
+                                    @error("location")
+                                    <p class="text-danger"><i>{{$message}}</i></p>
+                                    @enderror
+                                </div>
+
+                                <div id="store_address_field" style="display: none;">
+                                    <input name="location" id="location" value="8A, Ton That Thuyet, Nam Tu Liem, Ha Noi" type="text" placeholder="Store Address" class="checkout__input__add" style="width: 100%; height: 45px; border-radius: 5px; border: 0.1px solid #f2f2f2;padding: 10px 20px; color: #6f6f6f" readonly>
+
+                                </div>
+
+
                             </div>
+
+                            <script>
+                                function toggleAddressField() {
+                                    var pickupLocation = document.getElementById("pickup_location");
+                                    var addressField = document.getElementById("address_field");
+                                    var storeAddressField = document.getElementById("store_address_field");
+                                    var deliveryFee = document.getElementById("delivery_fee");
+
+                                    if (pickupLocation.value === "home") {
+                                        addressField.style.display = "block";
+                                        storeAddressField.style.display = "none";
+                                        deliveryFee.style.display = "block";
+                                    } else if (pickupLocation.value === "store") {
+                                        addressField.style.display = "none";
+                                        storeAddressField.style.display = "block";
+                                        deliveryFee.style.display = "none";
+                                    } else {
+                                        addressField.style.display = "none";
+                                        storeAddressField.style.display = "none";
+                                        deliveryFee.style.display = "none";
+                                    }
+                                }
+                            </script>
+
+
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>Telephone<span>*</span></p>
-                                        <input value="{{old("tel")}}" name="tel" id="tel" type="tel">
+                                        <input value="{{old("tel")}}" name="tel" id="tel" type="tel" placeholder="0123...">
                                         @error("tel")
                                         <p class="text-danger"><i>{{$message}}</i></p>
                                         @enderror
@@ -124,13 +175,28 @@
                                                 @endif
                                             </span>
                                         </div>
-                                        <div style="display: flex;justify-content: space-between;margin-top: 20px">
-                                            <span>Deposit</span>
-                                            <span style="font-weight: 300">${{$item->deposit}}</span>
+
+                                        <div id="delivery_fee" style="display: none;">
+                                            <div style="display: flex;justify-content: space-between;margin: 20px 0" >
+                                                <span >Vehicle delivery fee</span>
+                                                <span style="font-weight: 300">$20</span>
+                                            </div>
                                         </div>
+                                        <div class="checkout__order__subtotal">
+                                            <div style="display: flex;justify-content: space-between;">
+                                                <span>Total</span>
+                                                <span style="font-weight: 300">
+                                                    ${{$totalWithDelivery}}
+                                                </span>
+                                            </div>
+                                            <div style="display: flex;justify-content: space-between;margin-top: 20px">
+                                                <span>Deposit</span>
+                                                <span style="font-weight: 300">${{$item->deposit}}</span>
+                                            </div>
+                                        </div>
+
                                     @endforeach
                                 </div>
-                                <div class="checkout__order__subtotal">Total <span style="font-weight: 300">${{$total}}</span></div>
 
                                 <div class="checkout__input__checkbox">
                                     <label for="payment">
@@ -3603,5 +3669,30 @@
         }
     }
 </style>
+<script>
+    function toggleAddressField() {
+        var pickupLocation = document.getElementById("pickup_location");
+        var addressField = document.getElementById("address_field");
+        var deliveryFee = document.getElementById("delivery_fee");
+        var totalElement = document.getElementById("total");
 
+        if (pickupLocation.value === "home") {
+            addressField.style.display = "block";
+            deliveryFee.style.display = "block";
+
+            // Add $20 to the total
+            var total = parseFloat(totalElement.textContent.replace("$", ""));
+            total += 20;
+            totalElement.textContent = "$" + total.toFixed(2);
+        } else {
+            addressField.style.display = "none";
+            deliveryFee.style.display = "none";
+
+            // Subtract $20 from the total
+            var total = parseFloat(totalElement.textContent.replace("$", ""));
+            total -= 20;
+            totalElement.textContent = "$" + total.toFixed(2);
+        }
+    }
+</script>
 </html>

@@ -40,32 +40,85 @@ class HomeController extends Controller
         return view("user.pages.category",compact("products"));
     }
 
-    public function addToCart(Product $product, Request $request){
+//    public function addToCart(Product $product, Request $request){
+//        $buy_qty = $request->get("buy_qty");
+//        $start_date = $request->get("start_date");
+//        $end_date = $request->get("end_date");
+//        $start_time = $request->get("start_time");
+//        $end_time = $request->get("end_time");
+//
+//
+//        $cart = session()->has("cart") ? session("cart") : [];
+//
+//        foreach ($cart as $item) {
+//            if ($item->id == $product->id) {
+//                $item->buy_qty = $item->buy_qty + $buy_qty;
+//                $item->start_date = $start_date; // Thêm start_date vào item trong giỏ hàng
+//                $item->end_date = $end_date; // Thêm end_date vào item trong giỏ hàng
+//                $item->start_time = $start_time; // Thêm end_date vào item trong giỏ hàng
+//                $item->end_time = $end_time; // Thêm end_date vào item trong giỏ hàng
+//
+//                session(["cart" => $cart]);
+//                return redirect()->back()->with("success", "Your vehicle has just been added to the cart!");
+//            }
+//        }
+//
+//        $product->buy_qty = $buy_qty;
+//        $product->start_date = $start_date;
+//        $product->end_date = $end_date;
+//        $product->start_time = $start_time; // Thêm end_date vào item trong giỏ hàng
+//        $product->end_time = $end_time;
+//
+//        $cart[] = $product;
+//        session(["cart" => $cart]);
+//
+//        return redirect()->to('cart')->with("success", "Your vehicle has just been added to the cart!");
+//    }
+
+    public function addToCart(Product $product, Request $request)
+    {
         $buy_qty = $request->get("buy_qty");
         $start_date = $request->get("start_date");
         $end_date = $request->get("end_date");
         $start_time = $request->get("start_time");
         $end_time = $request->get("end_time");
 
+        // Kiểm tra xem sản phẩm đã được thuê trong khoảng thời gian yêu cầu
+        $isAlreadyRented = OrderProduct::where('product_id', $product->id)
+            ->where(function ($query) use ($start_date, $end_date, $start_time, $end_time) {
+                $query->where(function ($query) use ($start_date, $end_date) {
+                    $query->where('start_date', '<=', $start_date)
+                        ->where('end_date', '>=', $start_date);
+                })->orWhere(function ($query) use ($start_date, $end_date) {
+                    $query->where('start_date', '<=', $end_date)
+                        ->where('end_date', '>=', $end_date);
+                });
+            })
+            ->exists();
+
+        if ($isAlreadyRented) {
+            return redirect()->back()->with("error", "This vehicle is already rented during the requested period!");
+        }
+
         $cart = session()->has("cart") ? session("cart") : [];
 
         foreach ($cart as $item) {
-            if ($item->id == $product->id) {
+            if ($item->getId() == $product->getId()) {
                 $item->buy_qty = $item->buy_qty + $buy_qty;
-                $item->start_date = $start_date; // Thêm start_date vào item trong giỏ hàng
-                $item->end_date = $end_date; // Thêm end_date vào item trong giỏ hàng
-                $item->start_time = $start_time; // Thêm end_date vào item trong giỏ hàng
-                $item->end_time = $end_time; // Thêm end_date vào item trong giỏ hàng
+                $item->start_date = $start_date;
+                $item->end_date = $end_date;
+                $item->start_time = $start_time;
+                $item->end_time = $end_time;
 
                 session(["cart" => $cart]);
-                return redirect()->back()->with("success", "Your vehicle has just been added to the cart!");
+                return redirect()->to('cart')->with("success", "Your vehicle has just been added to the cart!");
             }
         }
 
         $product->buy_qty = $buy_qty;
         $product->start_date = $start_date;
         $product->end_date = $end_date;
-        $product->start_time = $start_time; // Thêm end_date vào item trong giỏ hàng
+        $product->start_time = $start_time;
         $product->end_time = $end_time;
 
         $cart[] = $product;
@@ -73,6 +126,7 @@ class HomeController extends Controller
 
         return redirect()->to('cart')->with("success", "Your vehicle has just been added to the cart!");
     }
+
 
     public function cart(){
         $cart = session()->has("cart")?session("cart"):[];
@@ -106,17 +160,25 @@ class HomeController extends Controller
 
     public function checkout()
     {
-        $cart = session()->has("cart")?session("cart"):[];
-        $total = 0;
-        foreach ($cart as $item) {
-            if ($item->start_date == $item->end_date) {
-                $total += $item->hourly_price * $item->buy_qty ;
-            } else {
-                $total += $item->price * $item->buy_qty ;
 
+            $cart = session()->has("cart") ? session("cart") : [];
+            $total = 0;
+            foreach ($cart as $item) {
+                if ($item->start_date == $item->end_date) {
+                    $total += $item->hourly_price * $item->buy_qty;
+                } else {
+                    $total += $item->price * $item->buy_qty;
+
+                }
             }
+            $totalWithDelivery = $total;
+        if (old('pickup_location') === 'home') {
+            $totalWithDelivery += 20; // Cộng thêm 20 vào tổng nếu chọn nhận tại nhà
         }
-        return view("user.pages.checkout",compact("cart","total"));
+
+
+            return view("user.pages.checkout", compact("cart", "total","totalWithDelivery"));
+
     }
 
     public function placeOrder(Request $request){
@@ -136,14 +198,29 @@ class HomeController extends Controller
         $total = 0;
         $deposit = 0;
         $priceTotal =0;
+
         foreach ($cart as $item) {
             $deposit += $item->deposit;
+            $pickupLocation = request()->input("pickup_location");
             if ($item->start_date == $item->end_date) {
                 $priceTotal += $item->hourly_price;
-                $total += $item->hourly_price * $item->buy_qty;
+
+                if ($pickupLocation === "home")
+                {
+                    $total += $item->hourly_price * $item->buy_qty + 20;
+                } else{
+                    $total += $item->hourly_price * $item->buy_qty;
+                }
+
             } else {
-                $total += $item->price * $item->buy_qty ;
+
                 $priceTotal += $item->price;
+                if ($pickupLocation === "home")
+                {
+                    $total += $item->price * $item->buy_qty + 20;
+                } else{
+                    $total += $item->price * $item->buy_qty ;
+                }
 
             }
         }
@@ -351,19 +428,25 @@ class HomeController extends Controller
 
 
 
-    public  function cars(){
+    public  function cars( Category $category ){
 
-        $products = Product::orderBy("created_at","desc")->paginate(14);
-        return view("user.pages.cars",compact("products"));
+
+        $products = Product::where("category_id",$category->id,)
+            ->orderBy("created_at","desc")->paginate(14);
+        $categoryName = $category->name;
+        $id = $category->id;
+
+
+
+        return view("user.pages.cars",compact("products","categoryName","category","id"));
     }
-    public  function filterProduct(Request $request){
-        $products = Product::Search($request)->FilterSeat($request)->FilterColor($request)->PriceMin($request)->PriceMax($request)->orderBy("id","desc")->paginate(20);
+    public  function filterProduct(Request $request, Category $category){
+        $products = Product::where("category_id",$category->id)->Search($request)->FilterSeat($request)->FilterColor($request)->PriceMin($request)->PriceMax($request)->orderBy("created_at","desc")->paginate(20);
+        $categoryName = $category->name;
 
-        return view("user.pages.cars",[
-            "products"=>$products
-        ]);
+
+        return view("user.pages.cars",compact("categoryName","category","products"));
     }
-
 
 
 

@@ -46,10 +46,19 @@
 
                                 </ul>
                             </li>
-                            <li><a class="menu-item" href="#">Cars</a>
-                                <ul>
-                                    <li><a class="menu-item" href="{{url("/car_list")}}">Cars List</a></li>
+                            <li><a class="menu-item" href="{{url("/car_list")}}">Cars</a>
+{{--                                <ul>--}}
+{{--                                    <li><a class="menu-item" href="{{url("/car_list")}}">Cars List</a></li>--}}
 
+{{--                                </ul>--}}
+                                @php
+                                    $categories = \App\Models\Category::all();
+                                @endphp
+                                <ul>
+                                    @foreach($categories as $c)
+                                        <li><a class="menu-item" href="{{url("/car_list",["category"=>$c->slug])}}">{{$c->name}}</a></li>
+
+                                    @endforeach
                                 </ul>
                             </li>
 

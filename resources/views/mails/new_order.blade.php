@@ -133,7 +133,8 @@
                             <td>{{$item->pivot->start_date}} <br> {{$item->pivot->start_time}}</td>
                             <td>{{$item->pivot->end_date}} <br> {{$item->pivot->end_time}}</td>
                             <td>{{$item->pivot->buy_qty}}</td>
-                            <td>${{$item->pivot->buy_qty*$item->pivot->price}}</td>
+{{--                            <td>${{$item->pivot->buy_qty*$item->pivot->price}}</td>--}}
+                            <td>{{$order->grand_total}}</td>
                             <td>${{$item->deposit}}</td>
                         </tr>
                     @endforeach
