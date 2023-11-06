@@ -1,12 +1,13 @@
 @extends("admin.layouts.admin_app")
 @section("content")
     <div class="card card-primary">
-        <!-- /.card-header -->
         <!-- form start -->
         <form class="form_create" action="{{url("admin/product/edit",['product'=>$product->id])}}" method="post" enctype="multipart/form-data">
-            <h2 style="margin-bottom:40px;color: #1270f6;text-align: center;font-size: 30px">Edit Car</h2>
+            <h2 style="margin-top:-20px;text-align: center;color: #1a1af8;font-size: 28px;margin-bottom: 20px" class="text-xl font-bold text-black dark:text-white">
+                Edit Car
+            </h2>
             @csrf
-            @method("PUT")
+            @method('put')
             <div class="card-body">
                 <div class="ttcar1">
                     <div class="form-group">
@@ -21,7 +22,7 @@
                         <select style="width: 200px"  name="category_id" class="form-control">
                             <option value="">Choose category</option>
                             @foreach($categories as $item)
-                                <option @if($item->id==$product->category_id) selected @endif value="{{$item->id}}">{{$item->name}}</option>
+                                <option @if($item->id==old("category_id")) selected @endif value="{{$item->id}}">{{$item->name}}</option>
                             @endforeach
                         </select>
                         @error("category_id")
@@ -36,6 +37,14 @@
                         @enderror
                     </div>
                     <div class="form-group">
+                        <label for="exampleInputPassword1">
+                            Hourly Price</label>
+                        <input style="margin-left: 25px" type="number" value="{{$product->hourly_price}}" name="hourly_price" class="form-control"  placeholder="Price">
+                        @error("hourly_price")
+                        <p class="text-danger"><i>{{$message}}</i></p>
+                        @enderror
+                    </div>
+                    <div class="form-group">
                         <label for="exampleInputPassword1">Deposit</label>
                         <input style="margin-left: 7px" type="number" value="{{$product->deposit}}" name="deposit" class="form-control"  placeholder="Deposit">
                         @error("deposit")
@@ -46,7 +55,8 @@
                         <label for="exampleInputFile">Thumbnail</label>
                         <div class="input-group">
                             <div class="custom-file">
-                                <input name="thumbnail" type="file" class="custom-file-input" id="exampleInputFile">
+                                <input style="height: 33px;width: 300px"  name="thumbnail" type="file" class="custom-file-input" id="exampleInputFile">
+                                <label style="margin-left: 20px" class="custom-file-label" for="exampleInputFile">Choose file</label>
                             </div>
                         </div>
                     </div>
@@ -60,12 +70,12 @@
 
                     <div class="form-group">
                         <label style="position: absolute">Description</label>
-                        <textarea style="width:270px;border-radius: 8px;position: absolute;margin-top: 30px" name="description" class="form-control" row="5">
+                        <textarea style="width:270px;border-radius: 8px;margin-top: 30px;background-color: #eceaea;" name="description" class="form-control" row="5">
                         {{$product->description}}
                     </textarea>
                     </div>
                 </div>
-                <div class="ttcar2">
+                <div style="margin-left: 40px" class="ttcar2">
                     <div class="form-group">
                         <label>Seat</label>
                         <input type="number" value="{{$product->seat}}" name="seat" class="form-control"  placeholder="Seat">
@@ -115,7 +125,9 @@
                         <p class="text-danger"><i>{{$message}}</i></p>
                         @enderror
                     </div>
+
                 </div>
+
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
@@ -123,18 +135,19 @@
             </div>
         </form>
     </div>
+
 @endsection
 <style>
     .form_create{
-        border: #cecbcb solid 1px;
+        border: #f2f2f2 solid 1px;
         border-radius: 8px;
         margin-top: 6%;
         margin-bottom: 10%;
-        margin-left: 20%;
+        margin-left: 25%;
         padding: 80px;
-
-
-        background-color: #F5F5F5;
+        background: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        color:#333333;
     }
     .card-body{
         display: flex;
@@ -163,11 +176,12 @@
         margin-bottom: 10px;
     }
     .ttcar1 input{
+        background-color: #eceaea;
         padding-left: 20px;
     }
     .ttcar2 input{
         padding-left: 20px;
-        margin-right: 80px;
+        background-color: #eceaea;
     }
 
 </style>
