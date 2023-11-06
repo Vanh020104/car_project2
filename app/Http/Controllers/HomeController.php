@@ -245,6 +245,7 @@ class HomeController extends Controller
                 "end_date"=>$item->end_date,
                 "start_time"=>$item->start_time,
                 "end_time"=>$item->end_time,
+                "stt_remind"=>"0"
             ]);
             $product = Product::find($item->id);
             $product->update(["buy_qty"=>$product->buy_qty- $item->buy_qty]);

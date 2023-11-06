@@ -35,7 +35,7 @@ class Order extends Model
     const CANCEL = 6;
 
     public function Products(){
-        return $this->belongsToMany(Product::class,"order_products")->withPivot(["buy_qty","price","start_date","end_date","start_time","end_time"]);
+        return $this->belongsToMany(Product::class,"order_products")->withPivot(["buy_qty","price","start_date","end_date","start_time","end_time","stt_remind"]);
     }
 
     public function getGrandTotal(){
@@ -77,6 +77,18 @@ class Order extends Model
     public function productss()
     {
         return $this->belongsToMany(Product::class, 'order_products', 'order_id', 'product_id');
+    }
+    public function images()
+    {
+        return $this->hasMany(ImageCvd::class,'order_id', 'id');
+    }
+    public function imagesReturn()
+    {
+        return $this->hasMany(ImageReturn::class,'order_id', 'id');
+    }
+    public function costsIncurred()
+    {
+        return $this->hasMany(Expense::class,'order_id', 'id');
     }
 
 }

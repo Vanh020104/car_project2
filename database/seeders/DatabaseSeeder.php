@@ -44,6 +44,7 @@ class DatabaseSeeder extends Seeder
                     "price" => $item->price,
                     "start_date"=>$order->start_date,
                     "end_date"=>$order->end_date,
+                    "stt_remind"=>"0"
                 ]);
 
             }

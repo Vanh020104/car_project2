@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Expense;
 use App\Models\Order;
 use App\Models\Product;
 use Carbon\Carbon;
@@ -13,6 +14,7 @@ use Illuminate\Support\Str;
 class AdminController extends Controller
 {
     public function homeAdmin() {
+        $currentDate = Carbon::now()->format('Y-m-d');
         $month = date('m');
 
         $categoryCounts = DB::table('categories')
@@ -51,8 +53,9 @@ class AdminController extends Controller
     }
     public function detailOrder($id){
         $order = Order::find("$id");
+        $costs = Expense::all();
 
-        return view("admin.pages.detailOrder",compact("order"));
+        return view("admin.pages.detailOrder",compact("order","costs"));
     }
     public function updateStatus($order , Request $request)
     {
@@ -123,7 +126,85 @@ class AdminController extends Controller
             ->where('status','7')
             ->groupBy('categories.name')
             ->get();
-
         return view('admin.pages.home', ['categoryCounts' => $categoryCounts]);
+    }
+    public function uploadImageCVD(Request $request,Order $order){
+        $stt = $request->get("status");
+        $order->status = $stt;
+        $order->save();
+
+        if ($request->hasFile('images')) {
+            $images = $request->file('images');
+
+            foreach ($images as $image) {
+                $path = public_path('uploads');
+                $fileName = Str::random(5) . time() . Str::random(5) . '.' . $image->getClientOriginalExtension();
+                $image->move($path, $fileName);
+                $imagePath = '/uploads/' . $fileName;
+
+                // Lưu thông tin ảnh vào cơ sở dữ liệu
+                $order->images()->create([
+                    'order_id' => $order->id,
+                    'image' => $imagePath
+                ]);
+            }
+        }
+
+
+        return redirect()->back()->with('success', 'Success');
+    }
+    public function uploadImageReturn(Request $request,Order $order){
+        $stt = $request->get("status");
+        $order->status = $stt;
+        $order->save();
+
+        if ($request->hasFile('images')) {
+            $images = $request->file('images');
+
+            foreach ($images as $image) {
+                $path = public_path('uploads');
+                $fileName = Str::random(5) . time() . Str::random(5) . '.' . $image->getClientOriginalExtension();
+                $image->move($path, $fileName);
+                $imagePath = '/uploads/' . $fileName;
+
+                // Lưu thông tin ảnh vào cơ sở dữ liệu
+                $order->imagesReturn()->create([
+                    'order_id' => $order->id,
+                    'image' => $imagePath
+                ]);
+            }
+        }
+        return redirect()->back()->with('success', 'Success');
+    }
+    public function damage (Request $request , Order $order){
+        $stt = $request->get("status");
+
+        $names = $request->input('name');
+        $prices = $request->input('price');
+        foreach ($names as $key => $name) {
+            $price = $prices[$key];
+
+            $order->costsIncurred()->create([
+                'order_id' => $order->id,
+                'damage' => $name,
+                'price' => $price,
+            ]);}
+        return redirect()->back()->with('success', 'Success');
+    }
+    public function remindReturnCar(Request $request , Order $order)
+    {   $currentDate = Carbon::now()->format('Y-m-d');
+        $currentTime = Carbon::now();
+
+        $remind = Order::where('status','3')->whereHas('products', function ($query) use ($currentDate) {
+            $query->whereDate('end_date', $currentDate);
+        })->paginate(10);
+        return view("admin.pages.remindReturnCar",compact("remind"));
+    }
+    public function updateSttRemind($order , Request $request){
+        $stt = $request->get("stt");
+        DB::table('order_products')
+            ->where('order_id', $order)
+            ->update(['stt_remind' => $stt]);
+        return redirect()->back()->with('success', 'Success');
     }
 }

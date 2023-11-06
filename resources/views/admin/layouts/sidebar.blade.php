@@ -151,7 +151,7 @@
                     <li>
                         <a
                             class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-                            href="calendar.html"
+                            href="{{url("admin/remindReturnCar")}}"
                             @click="selected = (selected === 'Calendar' ? '':'Calendar')"
                             :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Calendar') && (page === 'calendar') }"
                         >
@@ -168,8 +168,15 @@
                                     fill=""
                                 />
                             </svg>
+                            @php
+                                $currentDate = date('Y-m-d');
+                                    $remind_return = \App\Models\Order::where('status','3')->whereHas('products', function ($query) use ($currentDate) {
+                                               $query->whereDate('end_date', $currentDate)->where('stt_remind','0');
+                                           })->get();
+                                    $totalRemind = $remind_return->count();
 
-                            Calendar
+echo "Cars Nearing The End Of Rental Period ($totalRemind)";@endphp
+
                         </a>
                     </li>
                     <!-- Menu Item Calendar -->
