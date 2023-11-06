@@ -168,7 +168,15 @@
                                     fill=""
                                 />
                             </svg>
-                            Cars Nearing The End Of Rental Period
+                            @php
+                                $currentDate = date('Y-m-d');
+                                    $remind_return = \App\Models\Order::where('status','3')->whereHas('products', function ($query) use ($currentDate) {
+                                               $query->whereDate('end_date', $currentDate)->where('stt_remind','0');
+                                           })->get();
+                                    $totalRemind = $remind_return->count();
+
+echo "Cars Nearing The End Of Rental Period ($totalRemind)";@endphp
+
                         </a>
                     </li>
                     <!-- Menu Item Calendar -->

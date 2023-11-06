@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 class AdminController extends Controller
 {
     public function homeAdmin() {
+        $currentDate = Carbon::now()->format('Y-m-d');
         $month = date('m');
 
         $categoryCounts = DB::table('categories')
@@ -193,6 +194,7 @@ class AdminController extends Controller
     public function remindReturnCar(Request $request , Order $order)
     {   $currentDate = Carbon::now()->format('Y-m-d');
         $currentTime = Carbon::now();
+
         $remind = Order::where('status','3')->whereHas('products', function ($query) use ($currentDate) {
             $query->whereDate('end_date', $currentDate);
         })->paginate(10);

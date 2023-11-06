@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-header">
                     <h2 style="text-align: center;color: #1a1af8;font-size: 28px;margin-top: 20px;margin-bottom: 20px" class="text-xl font-bold text-black dark:text-white">
-                        Car Rental History
+                        Upcoming Rental Returns
                     </h2>
                     <div style="margin-left: 50px;margin-bottom: 25px" class="card-tools">
                         <form action="{{url("/admin/remindReturnCar")}}" method="get">
@@ -52,7 +52,15 @@
                                     <form method="post" action="{{url("admin/updateSttRemind",['order'=>$item->id])}}">
                                         @csrf
                                         @method('PUT')
-                                        <button name="stt" value="1" type="submit" style="background-color: blue;color: white;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;border-radius: 5px" id="submitBtn{{$item->id}}" onclick="submitOrder('submitBtn{{$item->id}}')" class="btn btn-primary">Submit</button>
+                                        <button name="stt" value="1" type="submit" style="background-color: {{ $item->products->contains(function ($product, $key) {
+    return $product->pivot->stt_remind === 1;
+}) ? 'green' : 'blue' }};color: white;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;border-radius: 5px" id="submitBtn{{$item->id}}" onclick="submitOrder('submitBtn{{$item->id}}')" class="btn btn-primary"
+                                            {{ $item->products->contains(function ($product, $key) {
+    return $product->pivot->stt_remind === 1;
+}) ? 'disabled' : '' }}>
+                                            {{ $item->products->contains(function ($product, $key) {
+                                                return $product->pivot->stt_remind === 1;
+                                            }) ? 'Reminded' : 'Remind' }}</button>
                                     </form>
                                 </td>
                             </tr>
