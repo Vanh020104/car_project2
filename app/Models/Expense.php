@@ -12,7 +12,8 @@ class Expense extends Model
     protected $fillable = [
         "order_id",
         "damage",
-        "price"
+        "price",
+        "image"
     ];
 
     public function order()
