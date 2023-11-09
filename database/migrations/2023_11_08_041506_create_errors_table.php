@@ -12,10 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('errors', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->unsignedDecimal('price', 10, 2); // Giá tiền với 2 chữ số thập phân
-            $table->string('severity'); // Mức độ của lỗi
+            $table->id(); // Cột id
+            $table->string('name'); // Cột name
+            $table->string('image')->nullable(); // Cột image
+            $table->unsignedDecimal('level1',10,2)->default(0); // Cột level1
+            $table->unsignedDecimal('level2',10,2)->default(0); // Cột level2
+            $table->unsignedDecimal('level3',10,2)->default(0); // Cột level3
             $table->timestamps(); // Thêm cột created_at và updated_at
         });
     }

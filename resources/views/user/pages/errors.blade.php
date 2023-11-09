@@ -47,8 +47,12 @@
             <tr>
                 <th scope="col"><span class="text-uppercase fs-12 text-gray"> ID</span></th>
                 <th scope="col"><span class="text-uppercase fs-12 text-gray">Error Name</span></th>
-                <th scope="col"><span class="text-uppercase fs-12 text-gray">Severity</span></th>
-                <th scope="col"><span class="text-uppercase fs-12 text-gray">Price</span></th>
+                <th scope="col"><span class="text-uppercase fs-12 text-gray">Image</span></th>
+                <th scope="col"><span class="text-uppercase fs-12 text-gray" style="color: orange">Level 1</span></th>
+                <th scope="col"><span class="text-uppercase fs-12 text-gray" style="color: orangered">Level 2</span></th>
+                <th scope="col"><span class="text-uppercase fs-12 text-gray" style="color: red">Level 3</span></th>
+
+
 
             </tr>
             </thead>
@@ -56,9 +60,11 @@
             @foreach($errors as $error)
             <tr>
                 <td><span class="d-lg-none d-sm-block"> ID</span><div class="badge bg-gray-100 text-dark">#{{$error->id}}</div></td>
-                <td><span class="d-lg-none d-sm-block" style="width: 50%">Error Name</span><span class="bold">{{$error->name}}</span></td>
-                <td><span class="d-lg-none d-sm-block">Severity</span>{{$error->severity}}</td>
-                <td><span class="d-lg-none d-sm-block">Price</span>${{$error->price}}</td>
+                <td><span class="d-lg-none d-sm-block" style="width: 50% ; font-size:500px " >Error Name</span><span class="bold">{{$error->name}}</span></td>
+                <td><span class="d-lg-none d-sm-block">Image</span><img src="{{$error->image}} " width="100"></td>
+                <td><span class="d-lg-none d-sm-block" > Level 1</span>${{$error->level1}}</td>
+                <td><span class="d-lg-none d-sm-block">Level 2</span>${{$error->level2}}</td>
+                <td><span class="d-lg-none d-sm-block">Level 3</span>${{$error->level2}}</td>
 
 
             </tr>
