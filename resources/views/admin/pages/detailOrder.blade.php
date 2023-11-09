@@ -83,23 +83,14 @@
                 </div>
             </form>
         @endif
+
         @if($order->status == 1)
-            <form action="{{url("admin/updateStatus",['order'=>$order->id])}}" method="POST">
-                @csrf
-                @method('PUT')
-                <div style="display:flex;justify-content: space-between"     class="btn-xn">
-                    <button  style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: red;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" type="submit" name="status" value="6">Cancel</button>
-                    <button style="margin-right:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: blue;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px"  type="submit" name="status" value="2">Car is Being Delivered</button>
-                </div>
-            </form>
-        @endif
-        @if($order->status == 2)
 
             <div style="display:flex;justify-content: space-between" class="btn-xn">
                 <form action="{{url("admin/updateStatus",['order'=>$order->id])}}" method="POST">
                     @csrf
                     @method('PUT')
-                    <button style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: #f64242;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" type="submit" name="status" value="4">Return</button>
+                    <button style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: #f64242;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" type="submit" name="status" value="6">Cancel</button>
                 </form>
                 <button id="openModalButton" style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: blue;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px"  type="submit"  data-bs-toggle="modal" data-bs-target="#exampleModal">Confirm vehicle handover</button>
                 <div id="myModal" class="modal">
@@ -248,22 +239,13 @@
                 </script>
             </div>
         @endif
-        @if($order->status == 4)
-            <form action="{{url("admin/updateStatus",['order'=>$order->id])}}" method="POST">
-                @csrf
-                @method('PUT')
-                <div style="display:flex;justify-content: space-between" class="btn-xn">
-                    <button style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: #f64242;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" type="submit" name="status" value="6">Cancel</button>
-                    <button style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: blue;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" type="submit" name="status" value="2">Car is Being Delivered</button></div>
-            </form>
-        @endif
         @if($order->status == 5)
             <div style="display:flex;justify-content: space-between"  class="btn-xn">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" id="open-modal" style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: darkolivegreen;color: white;padding-left: 17px;padding-right: 17px;padding-top: -10px;padding-bottom: -10px">Damages</button>
 
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div style="box-sizing: border-box"  class="modal-dialog">
+                    <div style="box-sizing: border-box;width: 2000px;margin-left: -200px"  class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h2 style="text-align: center;color: #1a1af8;font-size: 22px;margin-top: 20px;margin-bottom: 20px" class="text-xl font-bold text-black dark:text-white">
@@ -273,12 +255,20 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form id="expense-form" method="POST" action="{{url("/admin/damage",$order->id)}}">
+                                <form id="expense-form" method="POST" action="{{url("/admin/damage",$order->id)}}" enctype="multipart/form-data">
                                     @csrf
                                     <div id="expense-rows">
                                         <div class="expense-row">
                                             <input style="margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 10px" type="text" name="name[]" placeholder="Damage">
-                                            <input style="margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 10px" type="number" name="price[]" placeholder="Price">
+                                            <input onchange="handleFileSelect(this)" style="width:100px;margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;" type="file" name="image[]" accept="image/*" placeholder="Image">
+                                            <img id="preview-image" src="#" alt="Preview Image" style="max-width: 150px; max-height: 200px; display: none;">
+                                            <select style="padding-top:5px;padding-bottom:5px;margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;" name="level[]" onchange="updatePrice(this)">
+                                                <option value="1">Minor Damage</option>
+                                                <option value="2">Moderate Damage</option>
+                                                <option value="3">Significant Damage</option>
+                                                <option value="4">Severe Damage</option>
+                                            </select>
+                                            <input style="width:80px;margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 25px" type="number" name="price[]" placeholder="Price" readonly>
                                             <button type="button" class="remove-row">Remove</button>
                                         </div>
                                     </div>
@@ -297,6 +287,46 @@
                 </div>
 
                 <script>
+                    // Xử lý sự kiện khi chọn tệp tin
+                    function handleFileSelect(input) {
+                        if (input.files && input.files[0]) {
+                            var reader = new FileReader();
+
+                            reader.onload = function (e) {
+                                // Hiển thị hình ảnh trước khi gửi
+                                var previewImage = document.getElementById('preview-image');
+                                previewImage.src = e.target.result;
+                                previewImage.style.display = 'block';
+                            };
+
+                            reader.readAsDataURL(input.files[0]);
+                        }
+                    }
+                    function updatePrice(selectElement) {
+                        var priceInput = selectElement.parentNode.querySelector('input[name="price[]"]');
+                        var selectedLevel = selectElement.value;
+                        var price = getPriceForLevel(selectedLevel);
+                        priceInput.value = price;
+                    }
+
+                    // Function to get price based on selected level
+                    function getPriceForLevel(level) {
+                        // Define your own logic to retrieve price for each level
+                        // You can use a switch statement, if-else conditions, or fetch data from an API
+                        switch (level) {
+                            case '1':
+                                return 10;
+                            case '2':
+                                return 20;
+                            case '3':
+                                return 30;
+                            case '4':
+                                return 40;
+                            default:
+                                return 0;
+                        }
+                    }
+
                     // Add row event handler
                     document.getElementById('add-row').addEventListener('click', function() {
                         var expenseRows = document.getElementById('expense-rows');
@@ -304,7 +334,14 @@
                         newRow.classList.add('expense-row');
                         newRow.innerHTML = `
       <input style="margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 10px" type="text" name="name[]" placeholder="Damage">
-      <input style="margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 10px" type="number" name="price[]" placeholder="Price">
+<input style="margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 10px" type="file" name="image[]" accept="image/*" placeholder="Image">
+     <select style="margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-top:5px;padding-bottom:5px;" name="level[]" onchange="updatePrice(this)">
+                <option value="1">Minor Damage</option>
+                <option value="2">Moderate Damage</option>
+                <option value="3">Significant Damage</option>
+                <option value="4">Severe Damage</option>
+            </select>
+            <input style="width:80px;margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 25px" type="number" name="price[]" placeholder="Price" readonly>
       <button type="button" class="remove-row">Remove</button>
     `;
                         expenseRows.appendChild(newRow);
@@ -408,6 +445,7 @@
         height: 100px;
         object-fit: cover;
     }
+
 
 </style>
 

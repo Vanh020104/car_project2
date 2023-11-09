@@ -26,7 +26,6 @@ class Order extends Model
     ];
     const WAIT = 0;
     const CONFIRMED = 1;
-    const SHIPPING = 2;
     const SHIPPED = 3;
     const RETURN =4;
 
@@ -52,7 +51,7 @@ class Order extends Model
         switch ($this->status){
             case self::WAIT: return "<span class='text-secondary'>Wait for confirmation</span>";
             case self::CONFIRMED: return "<span class='text-info'>Confirmed</span>";
-            case self::SHIPPING: return "<span class='text-warning'>Car is being delivered</span>";
+
             case self::SHIPPED: return "<span class='text-primary'>Delivered</span>";
             case self::RETURN: return "<span class='text-primary'>Car returned</span>";
             case self::COMPLETE: return "<span class='text-success'>Complete</span>";

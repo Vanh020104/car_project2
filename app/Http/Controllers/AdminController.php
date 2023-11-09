@@ -181,13 +181,21 @@ class AdminController extends Controller
 
         $names = $request->input('name');
         $prices = $request->input('price');
+        $images = $request->file('image');
         foreach ($names as $key => $name) {
             $price = $prices[$key];
+            $image = $images[$key];
+            $path = public_path('uploads');
+            $fileName = Str::random(5) . time() . Str::random(5) . '.' . $image->getClientOriginalExtension();
+            $image->move($path, $fileName);
+            $imagePath = '/uploads/' . $fileName;
+
 
             $order->costsIncurred()->create([
                 'order_id' => $order->id,
                 'damage' => $name,
                 'price' => $price,
+                'image'=>$imagePath
             ]);}
         return redirect()->back()->with('success', 'Success');
     }
