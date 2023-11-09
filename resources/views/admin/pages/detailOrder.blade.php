@@ -258,18 +258,20 @@
                                 <form id="expense-form" method="POST" action="{{url("/admin/damage",$order->id)}}" enctype="multipart/form-data">
                                     @csrf
                                     <div id="expense-rows">
-                                        <div class="expense-row">
-                                            <input style="margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 10px" type="text" name="name[]" placeholder="Damage">
-                                            <input onchange="handleFileSelect(this)" style="width:100px;margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;" type="file" name="image[]" accept="image/*" placeholder="Image">
-                                            <img id="preview-image" src="#" alt="Preview Image" style="max-width: 150px; max-height: 200px; display: none;">
-                                            <select style="padding-top:5px;padding-bottom:5px;margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;" name="level[]" onchange="updatePrice(this)">
-                                                <option value="1">Minor Damage</option>
-                                                <option value="2">Moderate Damage</option>
-                                                <option value="3">Significant Damage</option>
-                                                <option value="4">Severe Damage</option>
-                                            </select>
-                                            <input style="width:80px;margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 25px" type="number" name="price[]" placeholder="Price" readonly>
-                                            <button type="button" class="remove-row">Remove</button>
+                                        <div style="display: flex" class="expense-row">
+                                            <div><input style="margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 10px" type="text" name="name[]" placeholder="Damage"></div>
+                                            <div><input onchange="handleFileSelect(this)" style="margin-left:30px;width:100px;margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;" type="file" name="image[]" accept="image/*" placeholder="Image">
+                                                <img  class="preview-image" src="#" alt="Preview Image" style="max-width: 150px; max-height: 200px; display: none;border-radius: 6px;margin-top: 8px;margin-left: 10px"></div>
+                                            <div></div>
+                                            <div><select style="margin-left:20px;padding-top:5px;padding-bottom:5px;margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;" name="level[]" onchange="updatePrice(this)">
+                                                    <option value="1">Minor Damage</option>
+                                                    <option value="2">Moderate Damage</option>
+                                                    <option value="3">Significant Damage</option>
+                                                    <option value="4">Severe Damage</option>
+                                                </select>
+                                                <input style="width:80px;margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 25px;padding-bottom: 3px;padding-top: 3px" type="number" name="price[]" placeholder="Price" readonly>
+                                                <button type="button" class="remove-row">Remove</button></div>
+
                                         </div>
                                     </div>
                                     <div style="display: flex;justify-content: space-between;">
@@ -293,8 +295,7 @@
                             var reader = new FileReader();
 
                             reader.onload = function (e) {
-                                // Hiển thị hình ảnh trước khi gửi
-                                var previewImage = document.getElementById('preview-image');
+                                var previewImage = input.parentNode.querySelector('.preview-image');
                                 previewImage.src = e.target.result;
                                 previewImage.style.display = 'block';
                             };
@@ -333,17 +334,21 @@
                         var newRow = document.createElement('div');
                         newRow.classList.add('expense-row');
                         newRow.innerHTML = `
-      <input style="margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 10px" type="text" name="name[]" placeholder="Damage">
-<input style="margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 10px" type="file" name="image[]" accept="image/*" placeholder="Image">
-     <select style="margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-top:5px;padding-bottom:5px;" name="level[]" onchange="updatePrice(this)">
-                <option value="1">Minor Damage</option>
-                <option value="2">Moderate Damage</option>
-                <option value="3">Significant Damage</option>
-                <option value="4">Severe Damage</option>
-            </select>
-            <input style="width:80px;margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 25px" type="number" name="price[]" placeholder="Price" readonly>
-      <button type="button" class="remove-row">Remove</button>
-    `;
+      <div style="display: flex" class="expense-row">
+                                            <div><input style="margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 10px" type="text" name="name[]" placeholder="Damage"></div>
+                                            <div><input onchange="handleFileSelect(this)" style="margin-left:30px;width:100px;margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;" type="file" name="image[]" accept="image/*" placeholder="Image">
+                                                <img  class="preview-image" src="#" alt="Preview Image" style="max-width: 150px; max-height: 200px; display: none;border-radius: 6px;margin-top: 8px;"></div>
+                                            <div></div>
+                                            <div><select style="margin-left:20px;padding-top:5px;padding-bottom:5px;margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;" name="level[]" onchange="updatePrice(this)">
+                                                    <option value="1">Minor Damage</option>
+                                                    <option value="2">Moderate Damage</option>
+                                                    <option value="3">Significant Damage</option>
+                                                    <option value="4">Severe Damage</option>
+                                                </select>
+                                                <input style="width:80px;margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 25px;padding-bottom: 3px;padding-top: 3px" type="number" name="price[]" placeholder="Price" readonly>
+                                                <button type="button" class="remove-row">Remove</button></div>
+
+                                        </div>`;
                         expenseRows.appendChild(newRow);
                     });
 

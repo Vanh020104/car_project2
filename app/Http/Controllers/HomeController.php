@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\CreateNewOrder;
 use App\Mail\OrderMail;
 use App\Models\Car;
+use Illuminate\Support\Str;
 use App\Models\Category;
 use App\Models\Error;
 use App\Models\Favorite;
@@ -327,26 +328,10 @@ class HomeController extends Controller
     }
     public function getAvailableProducts()
     {
-        // Lấy danh sách sản phẩm có trạng thái "Đang thuê" hoặc "Không cho thuê"
-//        $orders = Order::join('order_products', 'orders.id', '=', 'order_products.order_id')
-//            ->join('products', 'order_products.product_id', '=', 'products.id')
-//            ->select('orders.id as order_id', 'order_products.product_id', 'order_products.price', 'products.name', 'products.thumbnail')
-//            ->get();
-//
-        if (Auth::check()) {
-            $user = Auth::user();
-
-            // Truy vấn các đơn hàng của người dùng với thông tin sản phẩm (xe)
-            $orders = $user->orders()
-                ->whereIn('status', [Order::SHIPPED, Order::COMPLETE, Order::CANCEL])
-                ->with('productss')
-                ->get();
-
-            return view('user.pages.extend', ['orders' => $orders]);
-        } else {
-            return redirect()->route('login');
-        }
-
+        $user = Auth::user();
+        $user_id = $user->id;
+        $order_completed = Order::where('status','7')->where('user_id',$user_id)->paginate(20);
+        return view("user.pages.extend",compact("order_completed"));
     }
 
 
