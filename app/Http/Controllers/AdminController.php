@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CreateConfirmOrder;
+use App\Events\CreateNewOrder;
+use App\Mail\ConfirmOrder;
+use App\Mail\OrderMail;
 use App\Models\Category;
 use App\Models\Expense;
 use App\Models\Order;
@@ -9,6 +13,7 @@ use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class AdminController extends Controller
@@ -60,14 +65,13 @@ class AdminController extends Controller
     public function updateStatus($order , Request $request)
     {
         $stt=$request->get("status");
-        $orders = Order::find("$order");
-        $orders->status = "$stt";
-        if($stt == 7){
-            $orders->time_completed = Carbon::now();
-        }
-        $orders->save();
+        $order = Order::find("$order");
+        $order->status = "$stt";
+
+        $order->save();
         return redirect()->to("/admin/ordersList")->with("success", "Successfully");
     }
+
     public function orderToday(Request $request){
         $today = Carbon::today();
         $orders = Order::Search($request)->whereDate('created_at', $today)->orderBy("created_at","desc")->paginate(100);
@@ -130,6 +134,14 @@ class AdminController extends Controller
     }
     public function uploadImageCVD(Request $request,Order $order){
         $stt = $request->get("status");
+        if($stt == 3){
+            Mail::to($order->email)
+//            ->cc("mail nhan vien")
+//            ->bcc("mail quan ly")
+                ->send(new ConfirmOrder($order));
+
+            event(new CreateConfirmOrder($order));
+        }
         $order->status = $stt;
         $order->save();
 
@@ -214,5 +226,12 @@ class AdminController extends Controller
             ->where('order_id', $order)
             ->update(['stt_remind' => $stt]);
         return redirect()->back()->with('success', 'Success');
+    }
+    public function confirmUser($order ,Request $request){
+        $orders = Order::find("$order");
+        $stt = $request->get("status");
+        $orders->status = $stt;
+        $orders->save();
+        return view("admin.pages.remindReturnCar");
     }
 }

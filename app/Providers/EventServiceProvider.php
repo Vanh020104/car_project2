@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\CreateConfirmOrder;
 use App\Events\CreateNewOrder;
+use App\Listeners\DispatchConfirmOrder;
 use App\Listeners\DispatchNewOrder;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -25,6 +27,9 @@ class EventServiceProvider extends ServiceProvider
 //        ]
         CreateNewOrder::class => [
             DispatchNewOrder::class,
+        ],
+        CreateConfirmOrder::class =>[
+            DispatchConfirmOrder::class
         ]
     ];
 

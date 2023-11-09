@@ -4,6 +4,7 @@ Route::get("/detailOrder/{id}", [\App\Http\Controllers\AdminController::class, "
 Route::get("/carsList", [\App\Http\Controllers\AdminController::class, "carsList"]);
 Route::get("/ordersList", [\App\Http\Controllers\AdminController::class, "ordersList"]);
 Route::put("/updateStatus/{order}", [\App\Http\Controllers\AdminController::class, "updateStatus"]);
+Route::put("/updateStatus3/{order_id}", [\App\Http\Controllers\AdminController::class, "updateStatus3"]);
 Route::get("/order_today", [\App\Http\Controllers\AdminController::class, "orderToday"]);
 Route::get("/monthlyRevenue", [\App\Http\Controllers\AdminController::class, "monthlyRevenue"]);
 Route::get("/historyOrder", [\App\Http\Controllers\AdminController::class, "historyOrder"]);
@@ -13,6 +14,7 @@ Route::post("/uploadImageCVD/{order}", [\App\Http\Controllers\AdminController::c
 Route::post("/uploadImageReturn/{order}", [\App\Http\Controllers\AdminController::class, "uploadImageReturn"]);
 Route::post("/damage/{order}", [\App\Http\Controllers\AdminController::class, "damage"]);
 Route::put("/updateSttRemind/{order}", [\App\Http\Controllers\AdminController::class, "updateSttRemind"]);
+Route::put("/confirmUser/{order}", [\App\Http\Controllers\AdminController::class, "confirmUser"]);
 Route::get("/remindReturnCar", [\App\Http\Controllers\AdminController::class, "remindReturnCar"]);
 Route::prefix("product")->group(function (){
     Route::get("/create", [\App\Http\Controllers\ProductController::class, "create"]);
