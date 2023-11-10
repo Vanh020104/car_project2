@@ -146,8 +146,9 @@
 
             <div class="row">
                 <div class="col-md-10 thank-you">
-                    <form action="{{url("confirmUser",['order'=>$order->id ]  )}}">
-                        <center><button  name="user_id" value="{{$order->user_id}}"  style="background-color: blue;color: white;padding-top: 6px;padding-bottom: 6px;border-radius: 6px;border: blue solid 1px" class="codepro-custom-btn codepro-btn-6" target="blank" title="Code Pro" onclick="window.open('https://www.code.pro.vn/')"><span>Confirm Vehicle Receipt</span></button></center>
+                    <p>If you have completed your order and received your deposit and personal documents in full, please press confirm</p>
+                    <form action="{{url("confirmUserCompleted",['order'=>$order->id ]  )}}">
+                        <center><button  name="user_id" value="{{$order->user_id}}"  style="background-color: blue;color: white;padding-top: 6px;padding-bottom: 6px;border-radius: 6px;border: blue solid 1px" class="codepro-custom-btn codepro-btn-6" target="blank" title="Code Pro" onclick="window.open('https://www.code.pro.vn/')"><span>Confirmation Completed</span></button></center>
                     </form>
                 </div>
             </div>

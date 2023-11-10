@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CreateConfirmCompleted;
 use App\Events\CreateConfirmOrder;
 use App\Events\CreateNewOrder;
+use App\Mail\ConfirmCompleted;
 use App\Mail\ConfirmOrder;
 use App\Mail\OrderMail;
 use App\Models\Category;
@@ -66,6 +68,15 @@ class AdminController extends Controller
     {
         $stt=$request->get("status");
         $order = Order::find("$order");
+        if($stt == 8){
+            Mail::to($order->email)
+//            ->cc("mail nhan vien")
+//            ->bcc("mail quan ly")
+                ->send(new ConfirmCompleted($order));
+
+            event(new CreateConfirmCompleted($order));
+        }
+
         $order->status = "$stt";
 
         $order->save();
@@ -134,7 +145,7 @@ class AdminController extends Controller
     }
     public function uploadImageCVD(Request $request,Order $order){
         $stt = $request->get("status");
-        if($stt == 3){
+        if($stt == 2){
             Mail::to($order->email)
 //            ->cc("mail nhan vien")
 //            ->bcc("mail quan ly")
@@ -226,12 +237,5 @@ class AdminController extends Controller
             ->where('order_id', $order)
             ->update(['stt_remind' => $stt]);
         return redirect()->back()->with('success', 'Success');
-    }
-    public function confirmUser($order ,Request $request){
-        $orders = Order::find("$order");
-        $stt = $request->get("status");
-        $orders->status = $stt;
-        $orders->save();
-        return view("admin.pages.remindReturnCar");
     }
 }

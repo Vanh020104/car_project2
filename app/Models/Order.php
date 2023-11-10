@@ -28,10 +28,11 @@ class Order extends Model
     const CONFIRMED = 1;
     const SHIPPED = 3;
     const RETURN =4;
-
+    const CONFIRM_ORDER=2;
     const CAR_RETURNED =5;
     const COMPLETE = 7;
     const CANCEL = 6;
+    const COMPLETED_ORDER=8;
 
     public function Products(){
         return $this->belongsToMany(Product::class,"order_products")->withPivot(["buy_qty","price","start_date","end_date","start_time","end_time","stt_remind"]);
@@ -51,12 +52,14 @@ class Order extends Model
         switch ($this->status){
             case self::WAIT: return "<span class='text-secondary'>Wait for confirmation</span>";
             case self::CONFIRMED: return "<span class='text-info'>Confirmed</span>";
-
+            case self::COMPLETED_ORDER: return "<span class='text-success'>Waiting for customer confirmation of completion</span>";
             case self::SHIPPED: return "<span class='text-primary'>Delivered</span>";
             case self::RETURN: return "<span class='text-primary'>Car returned</span>";
+            case self::CONFIRM_ORDER: return "<span class='text-primary'>Waiting for the customer to confirm receipt of the vehicle</span>";
             case self::COMPLETE: return "<span class='text-success'>Complete</span>";
             case self::CAR_RETURNED: return "<span class='text-danger'>Car Returned</span>";
             case self::CANCEL: return "<span class='text-danger'>Cancel</span>";
+
         }
     }
     public function scopeSearch($query,$request){

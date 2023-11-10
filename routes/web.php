@@ -43,6 +43,8 @@ Route::middleware("auth")->group(function (){
     Route::get('/favorites/remove/{favoriteId}', [\App\Http\Controllers\HomeController::class, 'removeFromFavorites'])->name('favorites.remove');
     Route::get('/car_list', [\App\Http\Controllers\HomeController::class,"cars"]);
     Route::get('/filter', [\App\Http\Controllers\HomeController::class,"filterProduct"]);
+    Route::get("/confirmUser/{order}", [\App\Http\Controllers\HomeController::class, "confirmUser"]);
+    Route::get("/confirmUserCompleted/{order}", [\App\Http\Controllers\HomeController::class, "confirmUserCompleted"]);
 });
 
 

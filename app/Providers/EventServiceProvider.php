@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\CreateConfirmCompleted;
 use App\Events\CreateConfirmOrder;
 use App\Events\CreateNewOrder;
+use App\Listeners\DispatchConfirmCompleted;
 use App\Listeners\DispatchConfirmOrder;
 use App\Listeners\DispatchNewOrder;
 use Illuminate\Auth\Events\Registered;
@@ -30,6 +32,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         CreateConfirmOrder::class =>[
             DispatchConfirmOrder::class
+        ],
+        CreateConfirmCompleted::class =>[
+            DispatchConfirmCompleted::class
         ]
     ];
 

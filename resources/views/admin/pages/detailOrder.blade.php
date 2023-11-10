@@ -104,7 +104,7 @@
                             @csrf
                             <div style="display: flex">
                                 <input type="file" name="images[]" multiple required>
-                                <button style="float:right;margin-left:50px;margin-bottom:10px;border: red solid 1px;border-radius: 6px;background-color: blue;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" name="status" value="3" type="submit">Submit</button>
+                                <button style="float:right;margin-left:50px;margin-bottom:10px;border: red solid 1px;border-radius: 6px;background-color: blue;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" name="status" value="2" type="submit">Submit</button>
                             </div>
 
                             <div id="preview"></div>
@@ -160,6 +160,9 @@
                 </script>
             </div>
 
+        @endif
+        @if($order->status == 2)
+            <p style="text-align: center;margin-top: 20px;color: #8ce10a;font-size: 18px">Please wait for the customer to confirm receipt of the vehicle</p>
         @endif
         @if($order->status == 3)
             <div style="display: flex;justify-content: space-between">
@@ -363,7 +366,7 @@
                 <form action="{{url("admin/updateStatus",['order'=>$order->id])}}" method="POST">
                     @csrf
                     @method('PUT')
-                    <button style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: blue;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" type="submit" name="status" value="7">Complete</button>
+                    <button style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: blue;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" type="submit" name="status" value="8">Complete</button>
                 </form>
             </div>
         @endif

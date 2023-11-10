@@ -14,7 +14,7 @@ Route::post("/uploadImageCVD/{order}", [\App\Http\Controllers\AdminController::c
 Route::post("/uploadImageReturn/{order}", [\App\Http\Controllers\AdminController::class, "uploadImageReturn"]);
 Route::post("/damage/{order}", [\App\Http\Controllers\AdminController::class, "damage"]);
 Route::put("/updateSttRemind/{order}", [\App\Http\Controllers\AdminController::class, "updateSttRemind"]);
-Route::put("/confirmUser/{order}", [\App\Http\Controllers\AdminController::class, "confirmUser"]);
+Route::get("/confirmUser/{order}", [\App\Http\Controllers\AdminController::class, "confirmUser"]);
 Route::get("/remindReturnCar", [\App\Http\Controllers\AdminController::class, "remindReturnCar"]);
 Route::prefix("product")->group(function (){
     Route::get("/create", [\App\Http\Controllers\ProductController::class, "create"]);

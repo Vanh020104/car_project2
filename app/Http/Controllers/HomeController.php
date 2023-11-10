@@ -328,10 +328,23 @@ class HomeController extends Controller
     }
     public function getAvailableProducts()
     {
-        $user = Auth::user();
-        $user_id = $user->id;
-        $order_completed = Order::where('status','7')->where('user_id',$user_id)->paginate(20);
-        return view("user.pages.extend",compact("order_completed"));
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            // Truy vấn các đơn hàng của người dùng với thông tin sản phẩm (xe)
+            $orders = $user->orders()
+                ->whereIn('status', [ Order::COMPLETE])
+                ->with('productss')
+                ->get();
+            $order_dt = $user->orders()
+                ->whereNotIn('status', [ Order::COMPLETE,Order::CANCEL])
+                ->with('productss')
+                ->get();
+
+            return view('user.pages.extend', ['orders' => $orders ,'orders_dt'=> $order_dt]);
+        } else {
+            return redirect()->route('login');
+        }
     }
 
 
@@ -433,10 +446,47 @@ class HomeController extends Controller
 
         return view("user.pages.cars",compact("categoryName","category","products"));
     }
+    public function confirmUser($order , Request $request){
+        $orders = Order::find("$order");
 
+        $orders->status = '3';
+        $orders->save();
+        $id = $request->get("user_id");
+        if (Auth::check()) {
+            $user = Auth::user();
 
+            // Truy vấn các đơn hàng của người dùng với thông tin sản phẩm (xe)
+            $orders = $user->orders()
+                ->whereIn('status', [ Order::COMPLETE])
+                ->with('productss')
+                ->get();
+            $order_dt = $user->orders()
+                ->whereNotIn('status', [ Order::COMPLETE,Order::CANCEL])
+                ->with('productss')
+                ->get();
 
+            return view('user.pages.extend', ['orders' => $orders ,'orders_dt'=> $order_dt]);
+     }}
+    public function confirmUserCompleted($order , Request $request){
+        $orders = Order::find("$order");
 
+        $orders->status = '7';
+        $orders->save();
+        $id = $request->get("user_id");
+        if (Auth::check()) {
+            $user = Auth::user();
 
+            // Truy vấn các đơn hàng của người dùng với thông tin sản phẩm (xe)
+            $orders = $user->orders()
+                ->whereIn('status', [ Order::COMPLETE])
+                ->with('productss')
+                ->get();
+            $order_dt = $user->orders()
+                ->whereNotIn('status', [ Order::COMPLETE,Order::CANCEL])
+                ->with('productss')
+                ->get();
+
+            return view('user.pages.extend', ['orders' => $orders ,'orders_dt'=> $order_dt]);
+        }}
 }
 
