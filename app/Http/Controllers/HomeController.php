@@ -491,5 +491,10 @@ class HomeController extends Controller
                 ->get();
 
             return view('user.pages.extend', ['orders' => $orders ,'orders_dt'=> $order_dt]);
-        }}
+        }
+    }
+    public function detailsBill($order){
+        $orders = Order::find($order);
+        return view("user.pages.detailsBill",compact("orders"));
+    }
 }

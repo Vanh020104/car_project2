@@ -45,6 +45,7 @@ Route::middleware("auth")->group(function (){
     Route::get('/filter', [\App\Http\Controllers\HomeController::class,"filterProduct"]);
     Route::get("/confirmUser/{order}", [\App\Http\Controllers\HomeController::class, "confirmUser"]);
     Route::get("/confirmUserCompleted/{order}", [\App\Http\Controllers\HomeController::class, "confirmUserCompleted"]);
+    Route::get("/detailsBill/{order}", [\App\Http\Controllers\HomeController::class, "detailsBill"]);
 });
 
 
