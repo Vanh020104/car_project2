@@ -23,7 +23,40 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
     <!-- CSS Files
+
     ================================================== -->
+    <style>
+        .form-bill{
+            margin: auto;
+            padding: 50px;
+            border-radius: 8px;
+            border: #c4c4c4 solid 1px;
+            width: 950px;
+            max-width: 950px;
+        }
+        .tieude{
+            margin-left: 20%;
+            display: flex;
+        }
+        .ttstore1{
+            font-size: 13px;
+            margin-left: 50px;
+        }
+        .ttorder1{
+            margin-top: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            width: 800px;
+            max-width: 800px;
+            justify-content: space-between;
+        }
+        .order_car{
+            margin-left: 30px;
+            margin-top: 10px;
+
+        }
+
+    </style>
     @yield("before_css")
     @include("user.layouts.head")
     @yield("after_css")
@@ -100,122 +133,204 @@
                 </div>
                 {{--                user--}}
                 <div class="col-lg-9">
-                    <div class="card p-4 rounded-5 mb25">
-                        <h4>Scheduled Orders</h4>
+                    @if($orders->count() ==0 && $orders_dt->count()==0)
+                        <p>You don't have any orders yet</p>
+                    @else
+                        @if($orders_dt->count() >0)
+                            <div class="card p-4 rounded-5 mb25">
+                                <h4>Scheduled Orders</h4>
 
-                        <table class="table de-table">
-                            <thead>
-                            <tr>
-                                <th scope="col"><span class="text-uppercase fs-12 text-gray">Order ID</span></th>
-                                <th scope="col"><span class="text-uppercase fs-12 text-gray">Car Name</span></th>
-                                <th scope="col"><span class="text-uppercase fs-12 text-gray">Pick Up Location</span></th>
+                                <table class="table de-table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col"><span class="text-uppercase fs-12 text-gray">Order ID</span></th>
+                                        <th scope="col"><span class="text-uppercase fs-12 text-gray">Car Name</span></th>
+                                        <th scope="col"><span class="text-uppercase fs-12 text-gray">Pick Up Location</span></th>
 
-                                <th scope="col"><span class="text-uppercase fs-12 text-gray">Pick Up Date</span></th>
-                                <th scope="col"><span class="text-uppercase fs-12 text-gray">Return Date</span></th>
-                                <th scope="col"><span style="width: 100px" class="text-uppercase fs-12 text-gray">Status</span></th>
-                                <th style="margin-left: 15px" scope="col"><span class="text-uppercase fs-12 text-gray">Action</span></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($orders_dt as $order)
-                                <tr>
-                                    <td><span class="d-lg-none d-sm-block">Order ID</span><div class="badge bg-gray-100 text-dark">#{{$order->id}}</div></td>
-                                    <td><span class="d-lg-none d-sm-block">Car Name</span><span class="bold">@foreach ($order->products as $product)
-                                                {{ $product->name }}<br>
-                                            @endforeach
+                                        <th scope="col"><span class="text-uppercase fs-12 text-gray">Pick Up Date</span></th>
+                                        <th scope="col"><span class="text-uppercase fs-12 text-gray">Return Date</span></th>
+                                        <th scope="col"><span style="width: 100px" class="text-uppercase fs-12 text-gray">Status</span></th>
+                                        <th style="margin-left: 15px" scope="col"><span class="text-uppercase fs-12 text-gray">Action</span></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($orders_dt as $order)
+                                        <tr>
+                                            <td><span class="d-lg-none d-sm-block">Order ID</span><div class="badge bg-gray-100 text-dark">#{{$order->id}}</div></td>
+                                            <td><span class="d-lg-none d-sm-block">Car Name</span><span class="bold">@foreach ($order->products as $product)
+                                                        {{ $product->name }}<br>
+                                                    @endforeach
                                         </span></td>
-                                    <td style="width: 280px"><span class="d-lg-none d-sm-block">Pick Up Location</span>{{$order->location}}</td>
+                                            <td style="width: 280px"><span class="d-lg-none d-sm-block">Pick Up Location</span>{{$order->location}}</td>
 
-                                    <td><span class="d-lg-none d-sm-block">Pick Up Date</span>
-                                        @foreach ($order->products as $product)
-                                            {{ sprintf('%s %s',  $product->pivot->start_date,$product->pivot->start_time) }}
-                                        @endforeach
-                                    </td>
-                                    <td><span class="d-lg-none d-sm-block">Return Date</span>
-                                        @foreach ($order->products as $product)
-                                            {{ sprintf('%s %s',  $product->pivot->end_date,$product->pivot->end_time) }}
-                                        @endforeach
-                                    </td>
-                                    <td style="margin-right: 10px">
-                                     @if($order->status == 0)
-                                         <p style="text-align:center;font-size: 11px;background-color:#a9a919;color: white ;border-radius: 15px;padding-left: 4px;padding-right: 4px">Processing</p>
-                                     @endif
-                                         @if($order->status == 1)
-                                             <p style="text-align:center;font-size: 11px;background-color:#a9a919;color: white ;border-radius: 15px;padding-left: 4px;padding-right: 4px">Confirmed</p>
-                                         @endif
-                                         @if($order->status == 2)
-                                             <a href="{{url("confirmUser",['order'=>$order->id ] )}}" style="background-color: blue;color: white;padding-left: 5px;padding-right: 5px;border-radius: 8px;padding-top: 4px;padding-bottom: 4px;">Car Received</a>
-                                         @endif
-                                         @if($order->status == 3)
-                                             <p style="font-size: 11px;background-color:#a9a919;color: white ;border-radius: 15px;padding-left: 4px;padding-right: 4px">Currently Renting</p>
-                                         @endif
-                                         @if($order->status == 5)
-                                             <p style="text-align:center;font-size: 11px;background-color:#a9a919;color: white ;border-radius: 15px;padding-left: 4px;padding-right: 4px">Car Returned</p>
-                                         @endif
-                                         @if($order->status == 8)
-                                             <a href="{{url("confirmUserCompleted",['order'=>$order->id ] )}}" style="background-color: blue;color: white;padding-left: 5px;padding-right: 5px;border-radius: 8px;padding-top: 4px;padding-bottom: 4px;">Complete</a>
-                                         @endif
+                                            <td><span class="d-lg-none d-sm-block">Pick Up Date</span>
+                                                @foreach ($order->products as $product)
+                                                    {{ sprintf('%s %s',  $product->pivot->start_date,$product->pivot->start_time) }}
+                                                @endforeach
+                                            </td>
+                                            <td><span class="d-lg-none d-sm-block">Return Date</span>
+                                                @foreach ($order->products as $product)
+                                                    {{ sprintf('%s %s',  $product->pivot->end_date,$product->pivot->end_time) }}
+                                                @endforeach
+                                            </td>
+                                            <td style="margin-right: 10px">
+                                                @if($order->status == 0)
+                                                    <p style="text-align:center;font-size: 11px;background-color:#a9a919;color: white ;border-radius: 15px;padding-left: 4px;padding-right: 4px">Processing</p>
+                                                @endif
+                                                @if($order->status == 1)
+                                                    <p style="text-align:center;font-size: 11px;background-color:#a9a919;color: white ;border-radius: 15px;padding-left: 4px;padding-right: 4px">Confirmed</p>
+                                                @endif
+                                                @if($order->status == 2)
+                                                    <a href="{{url("confirmUser",['order'=>$order->id ] )}}" style="background-color: blue;color: white;padding-left: 5px;padding-right: 5px;border-radius: 8px;padding-top: 4px;padding-bottom: 4px;">Car Received</a>
+                                                @endif
+                                                @if($order->status == 3)
+                                                    <p style="text-align:center;font-size: 11px;background-color:#a9a919;color: white ;border-radius: 15px;padding-left: 4px;padding-right: 4px">Currently Renting</p>
+                                                @endif
+                                                @if($order->status == 5)
+                                                    <p style="text-align:center;font-size: 11px;background-color:#a9a919;color: white ;border-radius: 15px;padding-left: 4px;padding-right: 4px">Car Returned</p>
+                                                @endif
+                                                @if($order->status == 8)
+                                                    <a href="{{url("confirmUserCompleted",['order'=>$order->id ] )}}" style="background-color: blue;color: white;padding-left: 5px;padding-right: 5px;border-radius: 8px;padding-top: 4px;padding-bottom: 4px;">Complete</a>
+                                                @endif
 
-                                    </td>
-                                    <td><div style="display:flex;margin-left: 10px">
-                                            <div><button style="background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Details</button></div>
-                                            <div><button style="margin-left:10px;background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Rent</button></div>
-                                        </div></td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                                            </td>
+                                            <td><div style="display:flex;margin-left: 10px">
+                                                    <div><button style="background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Details</button></div>
+                                                    <div><button style="margin-left:10px;background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Extend</button></div>
+                                                </div></td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
 
 
 
-                    <div class="card p-4 rounded-5 mb25">
-                        <h4>Completed Orders</h4>
+                        @if($orders->count())
+                            <div class="card p-4 rounded-5 mb25">
+                                <h4>Completed Orders</h4>
 
-                        <table class="table de-table">
-                            <thead>
-                            <tr>
-                                <th scope="col"><span class="text-uppercase fs-12 text-gray">Order ID</span></th>
-                                <th scope="col"><span class="text-uppercase fs-12 text-gray">Car Name</span></th>
-                                <th scope="col"><span class="text-uppercase fs-12 text-gray">Pick Up Location</span></th>
+                                <table class="table de-table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col"><span class="text-uppercase fs-12 text-gray">Order ID</span></th>
+                                        <th scope="col"><span class="text-uppercase fs-12 text-gray">Car Name</span></th>
+                                        <th scope="col"><span class="text-uppercase fs-12 text-gray">Pick Up Location</span></th>
 
-                                <th scope="col"><span class="text-uppercase fs-12 text-gray">Pick Up Date</span></th>
-                                <th scope="col"><span class="text-uppercase fs-12 text-gray">Return Date</span></th>
-                                <th scope="col"><span class="text-uppercase fs-12 text-gray">Status</span></th>
-                                <th scope="col"><span class="text-uppercase fs-12 text-gray">Action</span></th>
-                            </tr>
-                            </thead>
-                            <tbody>
+                                        <th scope="col"><span class="text-uppercase fs-12 text-gray">Pick Up Date</span></th>
+                                        <th scope="col"><span class="text-uppercase fs-12 text-gray">Return Date</span></th>
+                                        <th scope="col"><span class="text-uppercase fs-12 text-gray">Status</span></th>
+                                        <th scope="col"><span class="text-uppercase fs-12 text-gray">Action</span></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
 
-                            @foreach($orders as $order)
-                                <tr>
-                                    <td><span class="d-lg-none d-sm-block">Order ID</span><div class="badge bg-gray-100 text-dark">#{{$order->id}}</div></td>
-                                    <td><span class="d-lg-none d-sm-block">Car Name</span><span class="bold">@foreach ($order->products as $product)
-                                                {{ $product->name }}<br>
-                                            @endforeach
+                                    @foreach($orders as $order)
+                                        <tr>
+                                            <td><span class="d-lg-none d-sm-block">Order ID</span><div class="badge bg-gray-100 text-dark">#{{$order->id}}</div></td>
+                                            <td><span class="d-lg-none d-sm-block">Car Name</span><span class="bold">@foreach ($order->products as $product)
+                                                        {{ $product->name }}<br>
+                                                    @endforeach
                                         </span></td>
-                                    <td><span class="d-lg-none d-sm-block">Pick Up Location</span>{{$order->location}}
+                                            <td><span class="d-lg-none d-sm-block">Pick Up Location</span>{{$order->location}}
 
-                                    <td><span class="d-lg-none d-sm-block">Pick Up Date</span>
-                                        @foreach ($order->products as $product)
-                                            {{ sprintf('%s %s',  $product->pivot->start_date,$product->pivot->start_time) }}
-                                        @endforeach
-                                    </td>
-                                    <td><span class="d-lg-none d-sm-block">Return Date</span>
-                                        @foreach ($order->products as $product)
-                                            {{ sprintf('%s %s',  $product->pivot->end_date,$product->pivot->end_time) }}
-                                        @endforeach
-                                    </td>
-                                    <td><div class="badge rounded-pill bg-success">completed</div></td>
-                                    <td><div style="display:flex;">
-                                            <div><button style="background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Details</button></div>
-                                            <div><button style="margin-left:10px;background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Rent</button></div>
-                                        </div></td>
+                                            <td><span class="d-lg-none d-sm-block">Pick Up Date</span>
+                                                @foreach ($order->products as $product)
+                                                    {{ sprintf('%s %s',  $product->pivot->start_date,$product->pivot->start_time) }}
+                                                @endforeach
+                                            </td>
+                                            <td><span class="d-lg-none d-sm-block">Return Date</span>
+                                                @foreach ($order->products as $product)
+                                                    {{ sprintf('%s %s',  $product->pivot->end_date,$product->pivot->end_time) }}
+                                                @endforeach
+                                            </td>
+                                            <td><div class="badge rounded-pill bg-success">completed</div></td>
+                                            <td><div style="display:flex;">
+                                                    <div>
+                                                        <button  type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" style="background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Details</button>
 
-</tr>
-@endforeach
-</table>
-</div>
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div style="width: 950px;margin-left: -200px" class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <!-- Nội dung bill -->
+                                                                    <div class="form-bill" style="overflow: auto">
+
+                                                                        <div class="tieude">
+                                                                            <div style="margin-top: 60px;margin-right: 10px" class="logo">
+                                                                                <img src="images/logo.png" alt="">
+                                                                            </div>
+                                                                            <div style="width: 300px" class="ttstore">
+                                                                                <h1 style="font-size: 26px;color: blueviolet;text-align: center;margin-bottom: 10px" >Car Rental</h1>
+                                                                                <p class="ttstore1">Address : 8A Ton That Thuyet, My Dinh2, Nam Tu Liem, Ha Noi</p>
+                                                                                <p class="ttstore1">Gmail : carrental@gmail.com</p>
+                                                                                <p class="ttstore1">Telephone : 0911317510</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div style="margin-top: 15px; " class="tieude2">
+                                                                            <h1 style="font-size: 26px;color: #850af6;text-align: center;font-family: 'Cambria Math'" >Bill Car Rental</h1>
+                                                                        </div>
+                                                                        <div class="ttorder1">
+                                                                            <div class="timebooking">
+                                                                                <p style="text-align: left">Booking time : {{$order->created_at}} </p>
+                                                                            </div>
+                                                                            <div  class="order_id">
+                                                                                <p >Car booking code : # {{$order->id}} </p>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="user">
+                                                                            <p>Customer : {{$order->full_name}}</p>
+                                                                            <p>Telephone : {{$order->tel}}</p>
+                                                                            <p>Email : {{$order->email}} </p>
+                                                                            <p>Address : {{$order->address}} </p>
+                                                                            <p>Location : {{$order->location}}</p>
+                                                                        </div>
+                                                                        <div style="margin-left: -20px" class="order_car">
+                                                                            <table class="table">
+                                                                                <thead>
+                                                                                <tr>
+                                                                                    <th style="width: 150px;"  scope="col">Name Car  </th>
+                                                                                    <th scope="col">Thumbnail</th>
+                                                                                    <th style="width: 160px;"  scope="col">Vehicle pick up time</th>
+                                                                                    <th style="width: 160px;"  scope="col">Car return time</th>
+                                                                                    <th style="width: 50px" scope="col">Amount</th>
+                                                                                    <th style="width: 100px" scope="col">Other Costs</th>
+                                                                                    <th style="width: 60px" scope="col">Total</th>
+
+
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody>
+
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <!-- End bill -->
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div><button style="margin-left:10px;background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Rent</button></div>
+                                                </div></td>
+
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            </div>
+                        @endif
+                    @endif
 
 
 </div>
@@ -229,4 +344,5 @@
 @include("user.layouts.scripts")
 @yield("after_js")
 </body>
+
 </html>

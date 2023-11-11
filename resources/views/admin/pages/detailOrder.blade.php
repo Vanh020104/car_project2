@@ -370,6 +370,9 @@
                 </form>
             </div>
         @endif
+        @if($order->status == 8)
+            <p style="text-align: center;margin-top: 20px;color: #8ce10a;font-size: 18px">Waiting for customer confirmation of completion</p>
+        @endif
     </div>
 @endsection
 <style>
