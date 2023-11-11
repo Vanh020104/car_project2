@@ -5,9 +5,11 @@ namespace App\Providers;
 use App\Events\CreateConfirmCompleted;
 use App\Events\CreateConfirmOrder;
 use App\Events\CreateNewOrder;
+use App\Events\CreateNewRemindReturnCar;
 use App\Listeners\DispatchConfirmCompleted;
 use App\Listeners\DispatchConfirmOrder;
 use App\Listeners\DispatchNewOrder;
+use App\Listeners\DispatchNewRemindReturnCar;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -35,6 +37,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         CreateConfirmCompleted::class =>[
             DispatchConfirmCompleted::class
+        ],
+        CreateNewRemindReturnCar::class =>[
+            DispatchNewRemindReturnCar::class
         ]
     ];
 
