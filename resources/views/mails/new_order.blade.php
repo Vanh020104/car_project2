@@ -117,6 +117,7 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Price</th>
+                        <th>License plates</th>
                         <th>Start date</th>
                         <th>End date</th>
                         <th>Time</th>
@@ -130,11 +131,16 @@
                             <td>{{$item->id}}</td>
                             <td>{{$item->name}}</td>
                             <td>${{$item->pivot->price}}</td>
+                            <td>29 – B1 <br> 8 8 8 . 8 8</td>
                             <td>{{$item->pivot->start_date}} <br> {{$item->pivot->start_time}}</td>
                             <td>{{$item->pivot->end_date}} <br> {{$item->pivot->end_time}}</td>
-                            <td>{{$item->pivot->buy_qty}}</td>
-{{--                            <td>${{$item->pivot->buy_qty*$item->pivot->price}}</td>--}}
-                            <td>{{$order->grand_total}}</td>
+                            <td>{{$item->pivot->buy_qty}}
+                                @if($item->start_date == $item->end_date)
+                                    hours
+                                @else
+                                    days
+                                @endif</td>
+                            <td>${{$order->grand_total}}</td>
                             <td>${{$item->deposit}}</td>
                         </tr>
                     @endforeach
@@ -146,7 +152,8 @@
 
             <div class="row">
                 <div class="col-md-10 thank-you">
-                    <p>Your car will soon be delivered to the address: {{$order->location}} fastest!</p><br>
+                    <p>Your car will soon be delivered to the address: {{$order->location}} fastest!</p>
+                    <p>Your deposit of  ${{$item->deposit}} will be refunded when the car rental is completed!</p>
                     <p>Thank you for using our service!</p><br>
 
                 </div>

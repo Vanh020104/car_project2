@@ -17,9 +17,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </head>
 <style>
-    .rent_day_vanh {
-
-    }
 
     .credit-card {
         display: block;
@@ -67,17 +64,12 @@
     <!-- section close -->
 
     <section id="section-car-details">
-        @if(session()->has("success"))
-            <div class="alert alert-success" style="text-align: center" role="alert">
-                {{session("success")}}
-            </div>
-        @endif
         <div class="container">
             <div class="row g-5" >
                 <div class="col-lg-6">
                     <div id="slider-carousel" class="owl-carousel">
                         <div class="item">
-                            <img src="{{$product->thumbnail}}" alt="">
+                            <img class=" z-index: 10;" src="{{$product->thumbnail}}" alt="">
                         </div>
                         <div class="item">
                             <img src="images/misc/car-2.png" alt="">
@@ -233,7 +225,7 @@
                             <div class="flip-card-inner">
                                 <div class="flip-card-front">
                                     Price of day
-                                    <h3 style="font-size: 60px;margin-bottom: 20px;letter-spacing: -.5px;">
+                                    <h3 style="font-size: 50px;margin-bottom: 20px;letter-spacing: -.5px;">
                                         ${{$product->price}}</h3>
                                 </div>
                                 <div class="flip-card-back" >
@@ -248,7 +240,7 @@
                         <div class="de-box mb25">
                             <div style="text-align: center; margin-bottom: 20px">
                                 <h4>Deposit</h4>
-                                <span style="font-size: 40px;margin-bottom: 20px">${{$product->deposit}}</span>
+                                <span style="font-size: 30px;margin-bottom: 20px">${{$product->deposit}}</span>
                             </div>
                             <h4 style="text-align: center">Booking this car</h4>
                             <div class="spacer-20"></div>

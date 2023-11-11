@@ -63,12 +63,12 @@
                             </li>
 
 
-                            <li>
-                                <a class="menu-item" href="{{url("cart")}}">Cart</a>
-                                    <span style="position: relative;bottom: 5px; right: 6px; color: white; font-size: 10px">
-                                    {{session()->has("cart")?count(session("cart")):0}}
-                                    </span>
-                            </li>
+{{--                            <li>--}}
+{{--                                <a class="menu-item" href="{{url("cart")}}">Cart</a>--}}
+{{--                                    <span style="position: relative;bottom: 5px; right: 6px; color: white; font-size: 10px">--}}
+{{--                                    {{session()->has("cart")?count(session("cart")):0}}--}}
+{{--                                    </span>--}}
+{{--                            </li>--}}
 
 
 
@@ -110,7 +110,7 @@
 
                             <li><a class="menu-item" href="#">Elements</a>
                                 <ul>
-                                    <li><a class="menu-item" href="preloader.html">Preloader</a></li>
+                                    <li><a class="menu-item" href="{{url("/giahan")}}">Gia han</a></li>
                                     <li><a class="menu-item" href="icon-boxes.html">Icon Boxes</a></li>
                                     <li><a class="menu-item" href="badge.html">Badge</a></li>
                                     <li><a class="menu-item" href="counters.html">Counters</a></li>

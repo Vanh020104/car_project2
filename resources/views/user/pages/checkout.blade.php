@@ -61,6 +61,26 @@
                                 <p class="text-danger"><i>{{$message}}</i></p>
                                 @enderror
                             </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Telephone<span>*</span></p>
+                                        <input value="{{old("tel")}}" name="tel" id="tel" type="tel" placeholder="0123...">
+                                        @error("tel")
+                                        <p class="text-danger"><i>{{$message}}</i></p>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Email<span>*</span></p>
+                                        <input name="email" value="{{auth()?auth()->user()->email:old("email")}}" type="email">
+                                        @error("email")
+                                        <p class="text-danger"><i>{{$message}}</i></p>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
                             <div class="checkout__input">
                                 <p>Address<span>*</span></p>
                                 <input name="address" id="address" value="{{old("address")}}" type="text" placeholder="Street Address..." class="checkout__input__add">
@@ -68,13 +88,7 @@
                                 <p class="text-danger"><i>{{$message}}</i></p>
                                 @enderror
                             </div>
-{{--                            <div class="checkout__input">--}}
-{{--                                <p>Vehicle pickup location<span>*</span></p>--}}
-{{--                                <input name="location" id="location" value="{{old("location")}}" type="text" placeholder="Street Address" class="checkout__input__add">--}}
-{{--                                @error("location")--}}
-{{--                                <p class="text-danger"><i>{{$message}}</i></p>--}}
-{{--                                @enderror--}}
-{{--                            </div>--}}
+
                             <div class="checkout__input">
                                 <p>Vehicle pickup location<span>*</span></p>
                                 <select name="pickup_location" id="pickup_location" onchange="toggleAddressField()" style="width: 100%; height: 45px; border-radius: 5px; border: 0.1px solid #f2f2f2; color: #666666; padding: 10px 20px">
@@ -119,28 +133,23 @@
                                     }
                                 }
                             </script>
+                            <div class="checkout__input">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p>ID card photo<span>*</span></p>
+                                            <input type="file" name="cccd" id="cccd"  style="border: none; padding: 0">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>Driver's license photo<span>*</span></p>
+                                            <input type="file" name="drive_photo" id="drive_photo"  style="border: none; padding: 0;">
+                                        </div>
+                                    </div>
 
 
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Telephone<span>*</span></p>
-                                        <input value="{{old("tel")}}" name="tel" id="tel" type="tel" placeholder="0123...">
-                                        @error("tel")
-                                        <p class="text-danger"><i>{{$message}}</i></p>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Email<span>*</span></p>
-                                        <input name="email" value="{{auth()?auth()->user()->email:old("email")}}" type="email">
-                                        @error("email")
-                                        <p class="text-danger"><i>{{$message}}</i></p>
-                                        @enderror
-                                    </div>
-                                </div>
                             </div>
+
+
+
                         </div>
 
                         <div class="col-lg-4 col-md-6">
@@ -153,9 +162,26 @@
                                             <span>Car Name</span>
                                             <span style="font-weight: 300">{{ $item->name }}</span>
                                         </div>
-                                        <div  style="display: flex;justify-content: space-between;margin: 20px 0">
 
-                                            <span>Subtotal</span>
+                                        @if($item->start_date !== $item->end_date)
+                                            <div style="display: flex;justify-content: space-between;margin: 20px 0">
+                                                <span>Start Date</span>
+                                                <span style="font-weight: 300">{{ $item->start_date }}</span>
+                                            </div>
+                                            <div style="display: flex;justify-content: space-between;">
+                                                <span>End date</span>
+                                                <span style="font-weight: 300">{{ $item->end_date }}</span>
+                                            </div>
+                                        @else
+                                            <div style="display: flex;justify-content: space-between; margin-top: 20px">
+                                                <span>Rent Date</span>
+                                                <span style="font-weight: 300">{{ $item->start_date }}</span>
+                                            </div>
+                                        @endif
+
+
+                                        <div  style="display: flex;justify-content: space-between;margin: 20px 0">
+                                            <span>Rental Period</span>
                                             <span style="font-weight: 300">
                                                  {{$item->buy_qty}}
                                                 @if($item->start_date == $item->end_date)

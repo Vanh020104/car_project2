@@ -282,7 +282,7 @@
                                         <button style="margin-top:15px;background-color: #0a58ca;color: white;border-radius: 5px;padding-left: 14px;padding-right: 14px;padding-top: 5px;padding-bottom: 5px" type="submit" class="btn btn-primary">Save changes</button>
 
                                     </div>
-                                     </form>
+                                </form>
                             </div>
                             <div class="modal-footer">
 
@@ -459,4 +459,3 @@
 
 
 </style>
-

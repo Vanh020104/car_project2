@@ -112,7 +112,7 @@ class HomeController extends Controller
                 $item->end_time = $end_time;
 
                 session(["cart" => $cart]);
-                return redirect()->to('cart')->with("success", "Your vehicle has just been added to the cart!");
+                return redirect()->to('/checkout')->with("success", "Your vehicle has just been added to the cart!");
             }
         }
 
@@ -125,7 +125,7 @@ class HomeController extends Controller
         $cart[] = $product;
         session(["cart" => $cart]);
 
-        return redirect()->to('cart')->with("success", "Your vehicle has just been added to the cart!");
+        return redirect()->to('/checkout')->with("success", "Your vehicle has just been added to the cart!");
     }
 
 
@@ -162,23 +162,23 @@ class HomeController extends Controller
     public function checkout()
     {
 
-            $cart = session()->has("cart") ? session("cart") : [];
-            $total = 0;
-            foreach ($cart as $item) {
-                if ($item->start_date == $item->end_date) {
-                    $total += $item->hourly_price * $item->buy_qty;
-                } else {
-                    $total += $item->price * $item->buy_qty;
+        $cart = session()->has("cart") ? session("cart") : [];
+        $total = 0;
+        foreach ($cart as $item) {
+            if ($item->start_date == $item->end_date) {
+                $total += $item->hourly_price * $item->buy_qty;
+            } else {
+                $total += $item->price * $item->buy_qty;
 
-                }
             }
-            $totalWithDelivery = $total;
+        }
+        $totalWithDelivery = $total;
         if (old('pickup_location') === 'home') {
             $totalWithDelivery += 20; // Cộng thêm 20 vào tổng nếu chọn nhận tại nhà
         }
 
 
-            return view("user.pages.checkout", compact("cart", "total","totalWithDelivery"));
+        return view("user.pages.checkout", compact("cart", "total","totalWithDelivery"));
 
     }
 
@@ -190,7 +190,9 @@ class HomeController extends Controller
             "location"=>"required",
             "tel"=> "required|min:9|max:11",
             "email"=>"required",
-            "payment_method"=>"required"
+            "payment_method"=>"required",
+            "cccd"=>"required",
+            "drive_photo"=>"required"
         ],[
             "required"=>"Please enter information!"
         ]);
@@ -234,7 +236,9 @@ class HomeController extends Controller
             "tel"=>$request->get("tel"),
             "address"=>$request->get("address"),
             "location"=>$request->get("location"),
-            "payment_method"=>$request->get("payment_method")
+            "payment_method"=>$request->get("payment_method"),
+            "cccd"=>$request->get("cccd"),
+            "drive_photo"=>$request->get("drive_photo")
         ]);
         foreach ($cart as $item){
             DB::table("order_products")->insert([
@@ -466,7 +470,7 @@ class HomeController extends Controller
                 ->get();
 
             return view('user.pages.extend', ['orders' => $orders ,'orders_dt'=> $order_dt]);
-     }}
+        }}
     public function confirmUserCompleted($order , Request $request){
         $orders = Order::find("$order");
 
@@ -489,4 +493,3 @@ class HomeController extends Controller
             return view('user.pages.extend', ['orders' => $orders ,'orders_dt'=> $order_dt]);
         }}
 }
-

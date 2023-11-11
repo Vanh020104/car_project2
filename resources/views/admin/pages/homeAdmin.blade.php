@@ -726,7 +726,7 @@ Rent A Car Today</span>
                                     >
                                         <?php $total = 0 ?>
                                         @foreach($doanhthu as $item)
-                                            <?php $total+=$item->grand_total ?>
+                                                <?php $total+=$item->grand_total ?>
                                         @endforeach
                                         $ <?php echo  $total ?>
                                     </h4>
@@ -755,119 +755,119 @@ Rent A Car Today</span>
                         </div></a>
                     <!-- Card Item End -->
                 </div>
-              <div style="display: flex">
-                  <div style="height: 420px;width: 700px;margin-top: 20px" class="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-5">
+                <div style="display: flex">
+                    <div style="height: 420px;width: 700px;margin-top: 20px" class="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-5">
 
-                      <h4  style="text-align: center;" class="text-xl font-bold text-black dark:text-white">
+                        <h4  style="text-align: center;" class="text-xl font-bold text-black dark:text-white">
 
-                          Revenue Per Month
-                      </h4>
-                      <select style="border: #b7b6b6 solid 2px;color: #5050ff;border-radius: 6px;padding-top: 4px;padding-bottom:4px;padding-left: 10px;padding-right: 10px;float: right;margin-right: 30px" id="yearSelect" onchange="changeYear(this.value)">
-                          <option value="2021">2021</option>
-                          <option value="2022">2022</option>
-                          <option value="2023" selected>2023</option>
-                      </select>
-                      <canvas id="revenueChart"></canvas>
-                      <script>
-                          let ctx = document.getElementById('revenueChart').getContext('2d');
-                          let chart;
+                            Revenue Per Month
+                        </h4>
+                        <select style="border: #b7b6b6 solid 2px;color: #5050ff;border-radius: 6px;padding-top: 4px;padding-bottom:4px;padding-left: 10px;padding-right: 10px;float: right;margin-right: 30px" id="yearSelect" onchange="changeYear(this.value)">
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023" selected>2023</option>
+                        </select>
+                        <canvas id="revenueChart"></canvas>
+                        <script>
+                            let ctx = document.getElementById('revenueChart').getContext('2d');
+                            let chart;
 
-                          function fetchChartData(year) {
-                              fetch(`/admin/revenue-chart?year=${year}`)
-                                  .then(response => response.json())
-                                  .then(data => {
-                                      chart.data.labels = data.labels;
-                                      chart.data.datasets[0].data = data.revenues;
-                                      chart.update();
-                                  });
-                          }
+                            function fetchChartData(year) {
+                                fetch(`/admin/revenue-chart?year=${year}`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        chart.data.labels = data.labels;
+                                        chart.data.datasets[0].data = data.revenues;
+                                        chart.update();
+                                    });
+                            }
 
-                          fetchChartData(2023); // Fetch initial chart data for the default year
+                            fetchChartData(2023); // Fetch initial chart data for the default year
 
-                          function changeYear(year) {
-                              fetchChartData(year);
-                          }
+                            function changeYear(year) {
+                                fetchChartData(year);
+                            }
 
-                          // Move the chart creation inside the fetchChartData function
-                          function createChart(data) {
-                              chart = new Chart(ctx, {
-                                  type: 'bar',
-                                  data: {
-                                      labels: data.labels,
-                                      datasets: [{
-                                          label: 'Revenue$',
-                                          data: data.revenues,
-                                          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                          borderColor: 'rgba(75, 192, 192, 1)',
-                                          borderWidth: 1
-                                      }]
-                                  },
-                                  options: {
-                                      // Additional options for customization, if needed
-                                  }
-                              });
-                          }
+                            // Move the chart creation inside the fetchChartData function
+                            function createChart(data) {
+                                chart = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: data.labels,
+                                        datasets: [{
+                                            label: 'Revenue$',
+                                            data: data.revenues,
+                                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                            borderColor: 'rgba(75, 192, 192, 1)',
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        // Additional options for customization, if needed
+                                    }
+                                });
+                            }
 
-                          function fetchChartData(year) {
-                              fetch(`/admin/revenue-chart?year=${year}`)
-                                  .then(response => response.json())
-                                  .then(data => {
-                                      if (chart) {
-                                          chart.destroy(); // Destroy the existing chart before creating a new one
-                                      }
-                                      createChart(data);
-                                  });
-                          }
-                      </script>
+                            function fetchChartData(year) {
+                                fetch(`/admin/revenue-chart?year=${year}`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (chart) {
+                                            chart.destroy(); // Destroy the existing chart before creating a new one
+                                        }
+                                        createChart(data);
+                                    });
+                            }
+                        </script>
 
 
-                  </div>
-                  <div style="width: 400px;height: 420px;margin-top: 20px;margin-left: 30px;text-align: center"  class="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-5">
-                      <h1 class="text-xl font-bold text-black dark:text-white">Percentage Of Vehicles Rented During The Month (%)</h1>
+                    </div>
+                    <div style="width: 400px;height: 420px;margin-top: 20px;margin-left: 30px;text-align: center"  class="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-5">
+                        <h1 class="text-xl font-bold text-black dark:text-white">Percentage Of Vehicles Rented During The Month (%)</h1>
 
-                      <div style="height: 300px;;" id="chartContainer">
-                          <canvas id="categoryChart"></canvas>
-                      </div>
+                        <div style="height: 300px;;" id="chartContainer">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
 
-                      <script>
-                          // Lấy dữ liệu category counts từ controller
-                          const categoryCounts = @json($categoryCounts);
+                        <script>
+                            // Lấy dữ liệu category counts từ controller
+                            const categoryCounts = @json($categoryCounts);
 
-                          // Tính tổng số đơn hàng
-                          const totalOrders = categoryCounts.reduce((total, category) => total + category.count, 0);
+                            // Tính tổng số đơn hàng
+                            const totalOrders = categoryCounts.reduce((total, category) => total + category.count, 0);
 
-                          // Tạo mảng chứa tên danh mục và phần trăm số đơn hàng
-                          const labels = categoryCounts.map(category => category.name);
-                          const percentages = categoryCounts.map(category => (category.count / totalOrders) * 100);
+                            // Tạo mảng chứa tên danh mục và phần trăm số đơn hàng
+                            const labels = categoryCounts.map(category => category.name);
+                            const percentages = categoryCounts.map(category => (category.count / totalOrders) * 100);
 
-                          // Tạo biểu đồ tròn
-                          const ctx1 = document.getElementById('categoryChart').getContext('2d');
-                          const categoryChart = new Chart(ctx1, {
-                              type: 'pie',
-                              data: {
-                                  labels: labels,
-                                  datasets: [{
-                                      data: percentages ,
-                                      backgroundColor: [
-                                          'rgba(255, 99, 132, 0.7)',
-                                          'rgba(54, 162, 235, 0.7)',
-                                          'rgba(255, 206, 86, 0.7)',
-                                          'rgba(75, 192, 192, 0.7)',
-                                          'rgba(153, 102, 255, 0.7)',
-                                          'rgba(255, 159, 64, 0.7)'
-                                      ],
-                                      borderWidth: 1
-                                  }]
-                              },
-                              options: {
-                                  responsive: true
+                            // Tạo biểu đồ tròn
+                            const ctx1 = document.getElementById('categoryChart').getContext('2d');
+                            const categoryChart = new Chart(ctx1, {
+                                type: 'pie',
+                                data: {
+                                    labels: labels,
+                                    datasets: [{
+                                        data: percentages ,
+                                        backgroundColor: [
+                                            'rgba(255, 99, 132, 0.7)',
+                                            'rgba(54, 162, 235, 0.7)',
+                                            'rgba(255, 206, 86, 0.7)',
+                                            'rgba(75, 192, 192, 0.7)',
+                                            'rgba(153, 102, 255, 0.7)',
+                                            'rgba(255, 159, 64, 0.7)'
+                                        ],
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    responsive: true
 
-                              }
-                          });
-                      </script>
-                  </div>
+                                }
+                            });
+                        </script>
+                    </div>
 
-              </div>
+                </div>
 
                 <div
                     class="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5"
