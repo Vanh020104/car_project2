@@ -289,7 +289,7 @@
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                            @foreach($expenses as $item)
+                                                            @foreach($orders->costsIncurred as $item)
                                                                 <tr>
                                                                     <td>{{$item->damage}}</td>
                                                                     <td><img style="width: 260px;border-radius: 8px" src="{{$item->image}}" alt=""></td>
