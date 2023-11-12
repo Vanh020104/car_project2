@@ -23,38 +23,40 @@
                     </div>
                 </div>
                 <!-- /.card-header -->
-                <div class="card-body table-responsive p-0">
-                    <table class="table table-hover text-nowrap">
+
+                    <table class="table table-striped table-borderless">
                         <thead>
                         <tr>
                             <th style="width: 50px" >ID</th>
-                            <th style="width: 200px">Created_at</th>
+                            <th style="width: 200px">Pick Up Date</th>
+                            <th style="width: 200px">Return Date</th>
                             <th style="width: 240px">Name</th>
-                            <th style="width: 200px">Grand_Total</th>
-
-                            <th>Payment_method</th>
-                            <th>Is Paid</th>
-                            <th style="width: 200px">Status</th>
-                            <th >Action</th>
+                            <th style="width: 200px">Total</th>
+                            <th style="width: 200px;">Payment_method</th>
+                            <th style="margin-left: 20px">Action</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($history_order as $item)
                             <tr style="height: 50px">
                                 <td style="text-align: center">{{$item->id}}</td>
-                                <td  style="text-align: center">{{$item->created_at}}</td>
-                                <td style="text-align: center">{{$item->full_name}}</td>
-                                <td style="text-align: center">{{$item->getGrandTotal()}}</td>
+                                @foreach($item->Products as $o_p)
+                                    <td  style="text-align: center">{{$o_p->pivot->start_date}} {{$o_p->pivot->start_time}}</td>
+                                    <td  style="text-align: center">{{$o_p->pivot->end_date}} {{$o_p->pivot->end_time}}</td>
+                                @endforeach
 
+                                <td style="text-align: center">{{$item->full_name}}</td>
+                                @php $ex = $item->grand_total @endphp
+                                @foreach($item->costsIncurred as $expense)
+                                   @php $ex +=$expense->price @endphp
+                                @endforeach
+                                <td style="text-align: center">${{$ex}}.00</td>
                                 <td style="text-align: center">{{$item->payment_method}}</td>
-                                <td style="text-align: center">{!! $item->getPaid() !!}</td>
-                                <td style="text-align: center">{!! $item->getStatus() !!}</td>
-                                <td style="text-align: center">
-                                    <a href="{{url("admin/detailOrder",["id"=>$item->id])}}" style="background-color: blue;padding-left: 10px;padding-right: 10px;padding-top: 5px;border-radius: 6px;padding-bottom:5px;color: white "    class="btn btn-outline-info">Details</a>
+                                <td  style="text-align: center;margin-left: 20px">
+                                    <a href="{{url("admin/billOrderCompleted",["id"=>$item->id])}}" style="background-color: blue;padding-left: 10px;padding-right: 10px;padding-top: 5px;border-radius: 6px;padding-bottom:5px;color: white "    class="btn btn-outline-info">Details</a>
                                 </td>
                             </tr>
                         @endforeach
-
                         </tbody>
                     </table>
 
@@ -63,5 +65,5 @@
             </div>
             <!-- /.card -->
         </div>
-    </div>
+
 @endsection

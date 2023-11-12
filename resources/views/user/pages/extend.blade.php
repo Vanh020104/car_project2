@@ -193,8 +193,6 @@
                                     <td><div style="display:flex;margin-left: 10px">
                                             <div><button style="background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Details</button></div>
                                             <div><button style="margin-left:10px;background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Rent</button></div>
-
-
                                         </div></td>
                                 </tr>
                             @endforeach
@@ -245,10 +243,7 @@
                                     <td><div style="display:flex;">
                                             <div><button style="background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Details</button></div>
                                             <div><button style="margin-left:10px;background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Rent</button></div>
-                                            <div><a href="{{url("feedback",['order'=>$order->id])}}"><button  style="margin-left:10px;background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">FB</button></a>
-                                            </div>
                                         </div></td>
-
 
 </tr>
 @endforeach

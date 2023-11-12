@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Events\CreateConfirmCompleted;
 use App\Events\CreateConfirmOrder;
 use App\Events\CreateNewOrder;
+use App\Events\CreateNewRemindReturnCar;
 use App\Mail\ConfirmCompleted;
 use App\Mail\ConfirmOrder;
+use App\Mail\NewRemindReturnCar;
 use App\Mail\OrderMail;
 use App\Models\Category;
 use App\Models\Expense;
@@ -233,9 +235,21 @@ class AdminController extends Controller
     }
     public function updateSttRemind($order , Request $request){
         $stt = $request->get("stt");
+
         DB::table('order_products')
             ->where('order_id', $order)
             ->update(['stt_remind' => $stt]);
+        $order = Order::find($order);
+        Mail::to($order->email)
+//            ->cc("mail nhan vien")
+//            ->bcc("mail quan ly")
+            ->send(new NewRemindReturnCar($order));
+
+        event(new CreateNewRemindReturnCar($order));
         return redirect()->back()->with('success', 'Success');
+    }
+    public function billOrderCompleted($id){
+        $orders = Order::find($id);
+        return view("admin.pages.billOrderCompleted",compact("orders"));
     }
 }
