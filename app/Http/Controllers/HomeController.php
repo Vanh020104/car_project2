@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\CreateNewOrder;
 use App\Mail\OrderMail;
 use App\Models\Car;
+use App\Models\Feedback;
 use Illuminate\Support\Str;
 use App\Models\Category;
 use App\Models\Error;
@@ -322,6 +323,31 @@ class HomeController extends Controller
 
         return redirect()->to("thank-you/$order->id");
     }
+    public function feedback($order){
+        $od = Order::find("$order");
+        return view("user.pages.feedback",compact("od"));
+    }
+    public function placefeedback(Request $request){
+       $user_id = $request->get("user_id");
+       $product_id = $request->get("product_id");
+       $message = $request->get("message");
+       $rating = $request->get("rating");
+        Feedback::create([
+            'user_id'=>$user_id,
+            'product_id'=>$product_id,
+            'feedback'=>$message,
+            'rating'=>$rating
+        ]);
+        $product = Product::find($product_id);
+
+        if ($product) {
+            $productSlug = $product->slug;
+            return redirect()->route('product.detail', ['product' => $productSlug]);
+        } else {
+            // Xử lý khi không tìm thấy sản phẩm
+            return redirect()->route('home'); // hoặc bất kỳ trang nào khác
+        }
+    }
     public function paypalCancel(Order $order){
         return redirect()->to("thank-you/$order->id");
     }
@@ -427,6 +453,18 @@ class HomeController extends Controller
 
     public function accountFavorites(){
         return view("user.pages.favorites");
+    }
+    public function cars_list(){
+
+        $products = Product::orderBy("created_at","desc")->paginate(9);
+        return view("user.pages.cars_list",compact("products"));
+    }
+    public function filterProducts(Request $request){
+        $products = Product::Search($request)->FilterSeat($request)->FilterColor($request)->PriceMin($request)->PriceMax($request)->orderBy("id","desc")->paginate(20);
+
+        return view("user.pages.cars_list",[
+            "products"=>$products
+        ]);
     }
 
 

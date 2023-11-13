@@ -241,15 +241,12 @@
                                     </td>
                                     <td><div class="badge rounded-pill bg-success">completed</div></td>
                                     <td><div style="display:flex;">
-                                            <div>
-                                                <form action="{{url("detailsBill",['order'=>$order->id])}}">
-                                                    <button type="submit" style="background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Details</button>
-                                                </form>
-                                            </div>
+                                            <div><button style="background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Details</button></div>
                                             <div><button style="margin-left:10px;background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Rent</button></div>
                                         </div></td>
-                                </tr>
-                            @endforeach
+
+</tr>
+@endforeach
 </table>
 </div>
 
