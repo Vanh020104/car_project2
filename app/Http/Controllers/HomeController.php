@@ -161,7 +161,6 @@ class HomeController extends Controller
 
 
 
-
     public function cart(){
         $cart = session()->has("cart")?session("cart"):[];
         $total =0;
@@ -593,13 +592,7 @@ class HomeController extends Controller
         $products = Product::orderBy("created_at","desc")->paginate(9);
         return view("user.pages.cars_list",compact("products"));
     }
-    public function filterProducts(Request $request){
-        $products = Product::Search($request)->FilterSeat($request)->FilterColor($request)->PriceMin($request)->PriceMax($request)->orderBy("id","desc")->paginate(20);
 
-        return view("user.pages.cars_list",[
-            "products"=>$products
-        ]);
-    }
 
     public function addExtend(Product $product, Order $order){
 
