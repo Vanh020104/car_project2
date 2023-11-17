@@ -183,6 +183,10 @@ class AdminController extends Controller
         $order->status = $stt;
         $order->save();
 
+
+
+
+
         if ($request->hasFile('images')) {
             $images = $request->file('images');
 
@@ -199,6 +203,56 @@ class AdminController extends Controller
                 ]);
             }
         }
+        $date_now = Carbon::now()->format('Y-m-d');
+        $time_now = Carbon::now()->format('H:i:s');
+        $od = DB::table('order_products')->where("order_id",$order->id)->first();
+        $end_date = $od->end_date;
+        $start_date = $od->start_date;
+        $start_time = $od->start_time;
+        $end_time = $od->end_time;
+        $product = Product::find($od->product_id);
+        $product_price = $product->price;
+        if($date_now != $end_date && $end_date!= $start_date){
+            $ngay1 = Carbon::createFromFormat('Y-m-d H:i:s', $start_date . ' ' . $start_time); // Mốc thời gian đầu
+            $ngay2 = Carbon::createFromFormat('Y-m-d H:i:s', $date_now . ' ' . $time_now); // Mốc thời gian cuối
+            $hieuGio = $ngay2->diffInHours($ngay1);
+            $day = $hieuGio / 24;
+            $kq_day = round($day);
+            $amount_new = $kq_day * $product_price;
+            $od->end_date = $date_now;
+            $od->end_time = $time_now;
+            $result = DB::table("order_products")
+                ->where('order_id',$order->id)
+                ->update([
+                    'end_date' => $date_now,
+                    'end_time' => $time_now,
+                    'buy_qty' => $kq_day,
+
+                ]);
+            $order->grand_total = $amount_new;
+            $order->save();
+        }
+        else if($start_date == $end_date){
+            $startDateTime = Carbon::createFromFormat('H:i:s', $start_time);
+            $price_hours = $product->hourly_price;
+            $diff = $startDateTime->diffInHours($time_now);
+            $hieu_hours = round($diff);
+            $result = DB::table("order_products")
+                ->where('order_id',$order->id)
+                ->update([
+                    'buy_qty' => $hieu_hours,
+                    'end_time' => $time_now,
+
+
+                ]);
+            $amount_new = $hieu_hours * $price_hours;
+            $order->grand_total = $amount_new;
+            $order->save();
+
+        }
+
+
+
         return redirect()->back()->with('success', 'Success');
     }
     public function damage (Request $request , Order $order){

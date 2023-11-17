@@ -532,13 +532,7 @@ class HomeController extends Controller
 
         return view("user.pages.cars",compact("products","categoryName","category","id"));
     }
-    public  function filterProduct(Request $request, Category $category){
-        $products = Product::where("category_id",$category->id)->Search($request)->FilterSeat($request)->FilterColor($request)->PriceMin($request)->PriceMax($request)->orderBy("created_at","desc")->paginate(20);
-        $categoryName = $category->name;
 
-
-        return view("user.pages.cars",compact("categoryName","category","products"));
-    }
     public function confirmUser($order , Request $request){
         $orders = Order::find("$order");
 
@@ -587,11 +581,7 @@ class HomeController extends Controller
         return view("user.pages.detailsBill",compact("orders"));
     }
 
-    public function cars_list(){
 
-        $products = Product::orderBy("created_at","desc")->paginate(9);
-        return view("user.pages.cars_list",compact("products"));
-    }
 
 
     public function addExtend(Product $product, Order $order){
