@@ -254,11 +254,7 @@
                                 {{$item->pivot->end_date}} <br> {{$item->pivot->end_time}}
                             </td>
                             <td>{{$item->pivot->buy_qty}}
-                                @if($item->start_date != $item->end_date)
-                                    hours
-                                @else
-                                    days
-                                @endif
+
                             </td>
                             <td>${{$order->grand_total}}</td>
                             <td>${{$item->deposit}}</td>

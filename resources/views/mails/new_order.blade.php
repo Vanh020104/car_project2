@@ -135,7 +135,7 @@
                             <td>{{$item->pivot->start_date}} <br> {{$item->pivot->start_time}}</td>
                             <td>{{$item->pivot->end_date}} <br> {{$item->pivot->end_time}}</td>
                             <td>{{$item->pivot->buy_qty}}
-                                @if($item->start_date == $item->end_date)
+                                @if($item->start_date === $item->end_date)
                                     hours
                                 @else
                                     days
@@ -153,7 +153,7 @@
             <div class="row">
                 <div class="col-md-10 thank-you">
                     <p>Your car will soon be delivered to the address: {{$order->location}} fastest!</p>
-                    <p>Your deposit of  ${{$item->deposit}} will be refunded when the car rental is completed!</p>
+                    <p>Your deposit of  $ will be refunded when the car rental is completed!</p>
                     <p>Thank you for using our service!</p><br>
 
                 </div>

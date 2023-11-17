@@ -94,13 +94,15 @@
 </section>
 <!-- section close -->
 <section id="section-settings" class="bg-gray-100">
-    <div class="row" style="margin-left: 100px">
+    <div class="row" style="margin: 30px 50px">
+
+
 
             <div style="display: flex">
                 <div class="col-lg-3 mb30 container">
                     <div class="card p-4 rounded-5">
                         <div class="profile_avatar">
-                            <div class="profile_img">
+                            <div class="profile_img" style="margin-left: 20%">
                                 <img src="images/images_user.png" alt="">
                             </div>
                             <div class="profile_name">
@@ -131,6 +133,7 @@
                         </ul>
                     </div>
                 </div>
+
                 {{--                user--}}
                 <div class="col-lg-9">
                     <div class="card p-4 rounded-5 mb25">
@@ -145,8 +148,8 @@
 
                                 <th scope="col"><span class="text-uppercase fs-12 text-gray">Pick Up Date</span></th>
                                 <th scope="col"><span class="text-uppercase fs-12 text-gray">Return Date</span></th>
-                                <th scope="col"><span style="width: 100px" class="text-uppercase fs-12 text-gray">Status</span></th>
-                                <th style="margin-left: 15px" scope="col"><span class="text-uppercase fs-12 text-gray">Action</span></th>
+                                <th style="text-align: center" scope="col"><span  class="text-uppercase fs-12 text-gray">Status</span></th>
+                                <th style="margin-left: 15px; text-align: center" scope="col"><span class="text-uppercase fs-12 text-gray">Action</span></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -169,7 +172,8 @@
                                             {{ sprintf('%s %s',  $product->pivot->end_date,$product->pivot->end_time) }}
                                         @endforeach
                                     </td>
-                                    <td style="margin-right: 10px">
+
+                                    <td style="margin-right: 10px; text-align: center">
                                      @if($order->status == 0)
                                          <p style="text-align:center;font-size: 11px;background-color:#a9a919;color: white ;border-radius: 15px;padding-left: 4px;padding-right: 4px">Processing</p>
                                      @endif
@@ -180,7 +184,10 @@
                                              <a href="{{url("confirmUser",['order'=>$order->id ] )}}" style="background-color: blue;color: white;padding-left: 5px;padding-right: 5px;border-radius: 8px;padding-top: 4px;padding-bottom: 4px;">Car Received</a>
                                          @endif
                                          @if($order->status == 3)
-                                             <p style="font-size: 11px;background-color:#a9a919;color: white ;border-radius: 15px;padding-left: 4px;padding-right: 4px">Currently Renting</p>
+                                             <p style="font-size: 11px;background-color:#a9a919;color: white ;border-radius: 15px;padding-left: 4px;padding-right: 4px; ">Currently Renting</p>
+                                         @endif
+                                         @if($order->status == 4)
+                                             <a id="openModalButton" href="{{url("add_extend",['order'=>$order->id ])}}" style="font-size: 11px;background-color:#a9a919;color: white ;border-radius: 15px;padding:5px 20px">Extend</a>
                                          @endif
                                          @if($order->status == 5)
                                              <p style="text-align:center;font-size: 11px;background-color:#a9a919;color: white ;border-radius: 15px;padding-left: 4px;padding-right: 4px">Car Returned</p>
@@ -190,10 +197,13 @@
                                          @endif
 
                                     </td>
-                                    <td><div style="display:flex;margin-left: 10px">
-                                            <div><button style="background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Details</button></div>
-                                            <div><button style="margin-left:10px;background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Rent</button></div>
-                                        </div></td>
+
+                                    <td>
+                                        <div style="display:flex;margin-left: 10px">
+                                            <div>
+                                                <button style="background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Details</button></div>
+                                        </div>
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -250,8 +260,9 @@
                                         </div></td>
                                 </tr>
                             @endforeach
-</table>
-</div>
+                    </table>
+
+    </div>
 
 
 </div>

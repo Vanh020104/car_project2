@@ -46,7 +46,7 @@
 
                                 </ul>
                             </li>
-                            <li><a class="menu-item" href="{{url("/car_list")}}">Cars</a>
+                            <li><a class="menu-item" href="{{url("/cars_list")}}">Cars</a>
 {{--                                <ul>--}}
 {{--                                    <li><a class="menu-item" href="{{url("/car_list")}}">Cars List</a></li>--}}
 
@@ -73,7 +73,7 @@
 
 
                             <li>
-                                <a class="menu-item" href="account-dashboard.html">My Account</a>
+                                <a class="menu-item" href="#">My Account</a>
                                 <ul>
 
                                     <li><a class="menu-item" href="{{url("/account_profile")}}">My Profile</a></li>

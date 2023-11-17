@@ -22,6 +22,8 @@ class Order extends Model
         "address",
         "payment_method",
         "is_paid",
+        "cccd",
+        "drive_photo"
 
     ];
     const WAIT = 0;
@@ -92,5 +94,7 @@ class Order extends Model
     {
         return $this->hasMany(Expense::class,'order_id', 'id');
     }
+
+
 
 }
