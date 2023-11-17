@@ -134,16 +134,16 @@
                                 }
                             </script>
                             <div class="checkout__input">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <p>ID card photo<span>*</span></p>
-                                            <input type="file" name="cccd" id="cccd"  style="border: none; padding: 0">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <p>Driver's license photo<span>*</span></p>
-                                            <input type="file" name="drive_photo" id="drive_photo"  style="border: none; padding: 0;">
-                                        </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p>ID card photo<span>*</span></p>
+                                        <input type="file" name="cccd" id="cccd"  style="border: none; padding: 0">
                                     </div>
+                                    <div class="col-md-6">
+                                        <p>Driver's license photo<span>*</span></p>
+                                        <input type="file" name="drive_photo" id="drive_photo"  style="border: none; padding: 0;">
+                                    </div>
+                                </div>
 
 
                             </div>

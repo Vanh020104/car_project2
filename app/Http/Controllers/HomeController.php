@@ -41,39 +41,57 @@ class HomeController extends Controller
         return view("user.pages.category",compact("products"));
     }
 
-//    public function addToCart(Product $product, Request $request){
+//    public function addToCart(Product $product, Request $request)
+//    {
 //        $buy_qty = $request->get("buy_qty");
 //        $start_date = $request->get("start_date");
 //        $end_date = $request->get("end_date");
 //        $start_time = $request->get("start_time");
 //        $end_time = $request->get("end_time");
 //
+//        // Kiểm tra xem sản phẩm đã được thuê trong khoảng thời gian yêu cầu
+//        $isAlreadyRented = OrderProduct::where('product_id', $product->id)
+//            ->where(function ($query) use ($start_date, $end_date, $start_time, $end_time) {
+//                $query->where(function ($query) use ($start_date, $end_date) {
+//                    $query->where('start_date', '<=', $start_date)
+//                        ->where('end_date', '>=', $start_date);
+//                })->orWhere(function ($query) use ($start_date, $end_date) {
+//                    $query->where('start_date', '<=', $end_date)
+//                        ->where('end_date', '>=', $end_date);
+//                });
+//            })
+//            ->exists();
+//
+//        if ($isAlreadyRented) {
+//            return redirect()->back()->with("error", "This vehicle is already rented during the requested period!");
+//        }
 //
 //        $cart = session()->has("cart") ? session("cart") : [];
 //
 //        foreach ($cart as $item) {
-//            if ($item->id == $product->id) {
+//            if($item->id == $product->id){
 //                $item->buy_qty = $item->buy_qty + $buy_qty;
-//                $item->start_date = $start_date; // Thêm start_date vào item trong giỏ hàng
-//                $item->end_date = $end_date; // Thêm end_date vào item trong giỏ hàng
-//                $item->start_time = $start_time; // Thêm end_date vào item trong giỏ hàng
-//                $item->end_time = $end_time; // Thêm end_date vào item trong giỏ hàng
+//                $item->start_date = $start_date;
+//                $item->end_date = $end_date;
+//                $item->start_time = $start_time;
+//                $item->end_time = $end_time;
 //
 //                session(["cart" => $cart]);
-//                return redirect()->back()->with("success", "Your vehicle has just been added to the cart!");
+//                return redirect()->to("/checkout")->with("success", "Your vehicle has just been added to the cart!");
 //            }
 //        }
+//
 //
 //        $product->buy_qty = $buy_qty;
 //        $product->start_date = $start_date;
 //        $product->end_date = $end_date;
-//        $product->start_time = $start_time; // Thêm end_date vào item trong giỏ hàng
+//        $product->start_time = $start_time;
 //        $product->end_time = $end_time;
 //
 //        $cart[] = $product;
 //        session(["cart" => $cart]);
 //
-//        return redirect()->to('cart')->with("success", "Your vehicle has just been added to the cart!");
+//        return redirect()->to("/checkout")->with("success", "Your vehicle has just been added to the cart!");
 //    }
 
     public function addToCart(Product $product, Request $request)
@@ -84,7 +102,7 @@ class HomeController extends Controller
         $start_time = $request->get("start_time");
         $end_time = $request->get("end_time");
 
-        // Kiểm tra xem sản phẩm đã được thuê trong khoảng thời gian yêu cầu
+        //        // Kiểm tra xem sản phẩm đã được thuê trong khoảng thời gian yêu cầu
         $isAlreadyRented = OrderProduct::where('product_id', $product->id)
             ->where(function ($query) use ($start_date, $end_date, $start_time, $end_time) {
                 $query->where(function ($query) use ($start_date, $end_date) {
@@ -100,33 +118,47 @@ class HomeController extends Controller
         if ($isAlreadyRented) {
             return redirect()->back()->with("error", "This vehicle is already rented during the requested period!");
         }
-
         $cart = session()->has("cart") ? session("cart") : [];
 
-        foreach ($cart as $item) {
-            if ($item->getId() == $product->getId()) {
-                $item->buy_qty = $item->buy_qty + $buy_qty;
-                $item->start_date = $start_date;
-                $item->end_date = $end_date;
-                $item->start_time = $start_time;
-                $item->end_time = $end_time;
-
-                session(["cart" => $cart]);
-                return redirect()->to('/checkout')->with("success", "Your vehicle has just been added to the cart!");
+        // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng hay không
+        $existingProductKey = -1;
+        foreach ($cart as $key => $item) {
+            if ($item->id == $product->id) {
+                $existingProductKey = $key;
+                break;
             }
         }
 
-        $product->buy_qty = $buy_qty;
-        $product->start_date = $start_date;
-        $product->end_date = $end_date;
-        $product->start_time = $start_time;
-        $product->end_time = $end_time;
+        // Nếu sản phẩm đã tồn tại trong giỏ hàng, cập nhật thông tin sản phẩm
+        if ($existingProductKey !== -1) {
+            $existingProduct = $cart[$existingProductKey];
+            $existingProduct->buy_qty = $buy_qty;
+            $existingProduct->start_date = $start_date;
+            $existingProduct->end_date = $end_date;
+            $existingProduct->start_time = $start_time;
+            $existingProduct->end_time = $end_time;
+            $cart[$existingProductKey] = $existingProduct;
+        } else {
+            // Nếu sản phẩm chưa tồn tại trong giỏ hàng, thêm sản phẩm mới vào giỏ hàng
+            $product->buy_qty = $buy_qty;
+            $product->start_date = $start_date;
+            $product->end_date = $end_date;
+            $product->start_time = $start_time;
+            $product->end_time = $end_time;
+            $cart = [$product]; // Khởi tạo giỏ hàng với sản phẩm mới nếu không có sản phẩm khác
+        }
 
-        $cart[] = $product;
         session(["cart" => $cart]);
 
-        return redirect()->to('/checkout')->with("success", "Your vehicle has just been added to the cart!");
+        return redirect()->to("/checkout")->with("success", "Your vehicle has just been added to the cart!");
     }
+
+
+
+
+
+
+
 
 
     public function cart(){
@@ -181,6 +213,27 @@ class HomeController extends Controller
         return view("user.pages.checkout", compact("cart", "total","totalWithDelivery"));
 
     }
+
+//    public function checkout()
+//    {
+//        $cart = session()->has("cart") ? session("cart") : [];
+//        $latestItem = end($cart); // Lấy sản phẩm cuối cùng trong mảng giỏ hàng
+//
+//        // Tính toán tổng giá trị
+//        $total = 0;
+//        if ($latestItem->start_date == $latestItem->end_date) {
+//            $total += $latestItem->hourly_price * $latestItem->buy_qty;
+//        } else {
+//            $total += $latestItem->price * $latestItem->buy_qty;
+//        }
+//
+//        $totalWithDelivery = $total;
+//        if (old('pickup_location') === 'home') {
+//            $totalWithDelivery += 20; // Cộng thêm 20 vào tổng nếu chọn nhận tại nhà
+//        }
+//
+//        return view("user.pages.checkout", compact("latestItem", "total", "totalWithDelivery"));
+//    }
 
     public function placeOrder(Request $request){
         $userId = Auth::id();
@@ -243,6 +296,7 @@ class HomeController extends Controller
         foreach ($cart as $item){
             DB::table("order_products")->insert([
                 "order_id"=>$order->id,
+                "id"=>$order->id,
                 "product_id"=>$item->id,
                 "buy_qty"=>$item->buy_qty,
                 "price"=>$priceTotal,
@@ -359,9 +413,7 @@ class HomeController extends Controller
         return view("user.pages.account_profile");
     }
 
-    public function accountBook(){
-        return view("user.pages.account_booking");
-    }
+
     public function homeAdmin(){
         return view("admin.pages.homeAdmin");
 
@@ -496,5 +548,42 @@ class HomeController extends Controller
     public function detailsBill($order){
         $orders = Order::find($order);
         return view("user.pages.detailsBill",compact("orders"));
+    }
+
+    public function cars_list(){
+
+        $products = Product::orderBy("created_at","desc")->paginate(9);
+        return view("user.pages.cars_list",compact("products"));
+    }
+    public function filterProducts(Request $request){
+        $products = Product::Search($request)->FilterSeat($request)->FilterColor($request)->PriceMin($request)->PriceMax($request)->orderBy("id","desc")->paginate(20);
+
+        return view("user.pages.cars_list",[
+            "products"=>$products
+        ]);
+    }
+
+    public function addExtend(Product $product, Order $order){
+
+        return view("user.pages.addextend", compact("product", "order"));
+    }
+
+
+    public function update(Request $request, $id)
+    {
+        // Lấy dữ liệu từ request
+        $orderData = $request->only(['grand_total']);
+        $orderProductData = $request->only(['buy_qty','start_date', 'end_date', 'start_time', 'end_time']);
+
+        // Tìm kiếm bản ghi theo ID
+        $order = Order::findOrFail($id);
+        $orderProduct = OrderProduct::where('order_id', $id)->firstOrFail();
+
+        // Cập nhật thông tin
+        $order->update($orderData);
+        $orderProduct->update($orderProductData);
+
+        // Redirect hoặc trả về thông báo thành công
+        return redirect()->back()->with('success', 'Cập nhật thông tin thành công!');
     }
 }

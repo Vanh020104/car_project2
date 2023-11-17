@@ -11,11 +11,18 @@ class OrderProduct extends Model
     protected $table = 'order_products';
 
     protected $fillable = [
-        'product_id',
         'start_date',
         'end_date',
         'start_time',
-        'end_time'
+        'end_time',
+        'order_id',
+        "buy_qty",
+        'id'
+
     ];
+    public function Products(){
+        return $this->belongsToMany(Product::class,"order_products")->withPivot(["buy_qty","price","start_date","end_date","start_time","end_time","stt_remind"]);
+    }
+    public $timestamps = false;
 
 }

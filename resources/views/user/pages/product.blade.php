@@ -141,7 +141,8 @@
 
                 {{--                end--}}
                 <div class="col-lg-3">
-                    <form  action="{{url("/add-to-cart",["product"=>$product->id])}}" method="get">
+                    <form>
+{{--                    <form  action="{{url("/add-to-cart",["product"=>$product->id])}}" method="get">--}}
 
                         <h3>{{$product->name}}</h3>
                         <p>{{$product->description}}</p>
@@ -225,7 +226,7 @@
                             <div class="flip-card-inner">
                                 <div class="flip-card-front">
                                     Price of day
-                                    <h3 style="font-size: 50px;margin-bottom: 20px;letter-spacing: -.5px;">
+                                    <h3 style="font-size: 50px;margin-bottom: 20px;letter-spacing: -.5px;" id="product_price" name="product_price">
                                         ${{$product->price}}</h3>
                                 </div>
                                 <div class="flip-card-back" >
@@ -244,12 +245,11 @@
                             </div>
                             <h4 style="text-align: center">Booking this car</h4>
                             <div class="spacer-20"></div>
-
-                            <form action="{{url("/add-to-cart",["product"=>$product->id])}}" method="get">
+                            <form>
                                 <div class="checkout__input">
                                     <p>Pick Up Date & Time<span>*</span></p>
                                     <div class="date-time-field" style="display: flex">
-                                        <input  type="date" id="start_date" name="start_date" style="height: 35px;padding: 0 6px;border: 0.1px solid  #999999; border-radius: 4px" required>
+                                        <input  type="date" id="start_date" name="start_date" style="height: 35px;padding: 0 6px;border: 0.1px solid  #999999; border-radius: 4px" required onchange="checkDate()">
                                         <input  type="time" id="start_time" name="start_time"  style="padding: 0 6px; width: 110px;  border: 0.1px solid  #999999; border-left: none; border-radius: 4px" required>
 
                                     </div>
@@ -272,32 +272,112 @@
                                         {{ session('error') }}
                                     </div>
                                 @endif
-                                <button type="submit" class="btn-main btn-fullwidth">RENT NOW</button>
+                                <button type="button" class="btn-main btn-fullwidth" onclick="openModal()">RENT NOW</button>
                             </form>
-
                             <div class="clearfix"></div>
+                        </div>
+                        <div class="de-box" >
+                            <h4>Share</h4>
+                            <div class="de-color-icons">
+                                <span><i class="fa-brands fa-twitter"></i></span>
+                                <span><i class="fa-brands fa-facebook-f"></i></span>
+                                <span><i class="fa-brands fa-reddit"></i></span>
+                                <span><i class="fa-brands fa-linkedin-in"></i></span>
+                                <span><i class="fa-brands fa-pinterest"></i></span>
+                                <span><i class="fa-brands fa-stumbleupon"></i></span>
+                                <span><i class="fa-brands fa-delicious"></i></span>
+                                <span><i class="fa-solid fa-envelope"></i></span>
+                            </div>
                         </div>
                     </div>
 
 {{--////////////////////////////--}}
+{{--                    ?modal--}}
+                    <div id="myModal" class="modal_vanh">
+                        <div class="modal-content_vanh">
+                            <span class="close" onclick="closeModal()">&times;</span>
+                            <h3 style="text-align: center">Vehicle details</h3>
+                            <div style="display: flex;">
+                                <div style="display: grid; margin-top: 40px">
+                                    <div>
+                                        <form action="{{url("/add-to-cart",["product"=>$product->id])}}" method="get">
+                                        <img src="{{$product->thumbnail}}" style="width: 350px" class="img-fluid" alt="">
+                                        <h4 style="margin-top: 15px; display: flex">{{$product->name}}</h4>
+                                        </form>
+                                    </div>
+                                    <div class="d-atr-group">
+                                        <h5>Specifications</h5>
+                                        <ul class="d-atr" style="display: flex; gap: 100px">
+                                            <div>
+                                                <li><span>Seats:</span>{{ $product->seat }}</li>
+                                                <li><span>Luggage:</span>2</li>
+                                                <li><span>Doors:</span>{{ $product->door }}</li>
+                                                <li><span>Fuel:</span>{{$product->fuel_style}}</li>
+                                            </div>
+                                            <div>
+                                                <li><span>Horsepower:</span>{{$product->power}}</li>
+                                                <li><span>Engine:</span>3000</li>
+                                                <li><span>Year:</span>{{$product->car_year}}</li>
+                                                <li><span>Mileage:</span>{{$product->mileage}}</li>
+                                            </div>
+                                        </ul>
+                                    </div>
+                                </div>
 
 
-                    <div class="de-box" >
-                        <h4>Share</h4>
-                        <div class="de-color-icons">
-                            <span><i class="fa-brands fa-twitter"></i></span>
-                            <span><i class="fa-brands fa-facebook-f"></i></span>
-                            <span><i class="fa-brands fa-reddit"></i></span>
-                            <span><i class="fa-brands fa-linkedin-in"></i></span>
-                            <span><i class="fa-brands fa-pinterest"></i></span>
-                            <span><i class="fa-brands fa-stumbleupon"></i></span>
-                            <span><i class="fa-brands fa-delicious"></i></span>
-                            <span><i class="fa-solid fa-envelope"></i></span>
+                                <div  style="margin-top: 40px; margin-left: 100px; width: 280px">
+                                    <h3 style="text-align: center;">Booking this car</h3>
+                                    <div class="spacer-20"></div>
+
+                                    <form id="myForm" action="{{url("/add-to-cart",["product"=>$product->id])}}" method="get">
+                                        <div class="checkout__input">
+                                            <p>Pick Up Date & Time<span>*</span></p>
+                                            <div class="date-time-field" style="display: flex; gap: 2px">
+                                                <input  type="date" id="displayStartDate" name="start_date" style="height: 35px;padding: 0 6px;border: 0.1px solid  #999999; border-radius: 4px"  onchange="checkDate()" readonly>
+                                                <input  type="time" id="displayStartTime" name="start_time"  style="height: 35px;padding: 0 6px; width: 160px;  border: 0.1px solid  #999999; border-radius: 4px" readonly>
+
+                                            </div>
+                                        </div>
+                                        <div class="checkout__input">
+                                            <p>Return Date & Time<span>*</span></p>
+                                            <div class="date-time-field" style="display: flex; gap: 2px">
+                                                <input  type="date" id="displayEndDate" name="end_date" style="height: 35px;padding: 0 6px;border: 0.1px solid  #999999; border-radius: 4px" readonly>
+                                                <input  type="time" id="displayEndTime" name="end_time" style="height: 35px;padding: 0 6px; width: 160px;  border: 0.1px solid  #999999; border-radius: 4px" readonly>
+
+                                            </div>
+                                            <p id="invalid_date_message" style="color: red; margin-top: 5px; display: none;">Please reselect the date!</p>
+                                        </div>
+                                        <div  style="display: flex; margin-top: 20px;margin-bottom: 0;justify-content: space-between">
+                                            <p style="margin-bottom: 0">Rental Period:</p>
+                                            <p style="display: flex;margin: 0">
+                                                <input  style="width: 40px; height: 30px;color: #999999; border: none;margin: 0" type="text" id="displayBuyQty" name="buy_qty" value="1" readonly><span id="timeUnit"></span>
+                                            </p>
+                                        </div>
+                                        <div style="display: flex;margin: 0; justify-content: space-between">
+                                            <span>Price</span>
+                                            <span id="priceChoose"></span>
+                                        </div>
+                                        <hr style="margin: 0">
+                                        <div class="checkout__input" style="display: flex; margin-top: 10px;justify-content: space-between">
+                                            <p style="margin-bottom: 0">Total</p>
+                                            <input style="padding-left: 20px;width: 86px;color: #999999; border: none; " type="text" id="displayTotal" readonly>
+                                        </div>
+                                        <div class="checkout__input" style="display: flex;justify-content: space-between">
+                                            <span style="margin-bottom: 0">Deposit</span>
+                                            <span>${{$product->deposit}}</span>
+                                        </div>
+                                        <button type="submit" class="btn-main btn-fullwidth">RENT NOW</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                         </div>
                     </div>
+
+
+
                 </div>
             </div>
-        </div>
     </section>
 
 
@@ -485,7 +565,6 @@
 @yield("after_js")
 <!-- content close -->
 </body>
-
 <style>
     .giay_to_xe{
         margin: 80px 0;
@@ -606,10 +685,136 @@
         } else {
             unitSpan.textContent = 'hour';
         }
+
     }
+</script>
+{{--cấm ng dùng chọn date sau ngày hiện tại--}}
+<script>
+    function checkDate() {
+        var selectedDate = new Date(document.getElementById("start_date").value);
+        var currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+        if (selectedDate <= currentDate) {
+            alert("Please select the rental start date again!");
+            document.getElementById("start_date").value = "";
+        }
+    }
+</script>
+{{--css modal--}}
+<style>
+    /* CSS cho modal */
+
+
+    .modal_vanh {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content_vanh {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding:50px 80px;
+        border: 1px solid #888;
+        width: 60%;
+    }
+
+    .close {
+        color: #333333;
+        float: right;
+        font-size: 30px;
+        font-weight: bold;
+        text-align: right;
+        position: relative;
+        bottom: 40px;
+        left: 60px;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+
+</style>
+{{--js modal--}}
+<script>
+    // JavaScript
+    function openModal() {
+        var StartTime = document.getElementById("start_time").value;
+        var EndTime = document.getElementById("end_time").value;
+        var StartDate = document.getElementById("start_date").value;
+        var EndDate = document.getElementById("end_date").value;
+        var BuyQty = document.getElementById("buy_qty").value;
+        if (StartTime === '' || EndTime ==='' || StartDate === '' || EndDate === '' || BuyQty === '') {
+            alert("Please select complete information!");
+            return; // Không làm gì cả nếu ô nhập trống
+        }
+        var priceChoose = document.getElementById("priceChoose");
+        if (StartDate === EndDate) {
+            priceChoose.textContent = "{{$product->hourly_price}}$";
+            document.getElementById("displayBuyQty").value = StartTime;
+        } else {
+            priceChoose.textContent = "{{$product->price}}$";
+            document.getElementById("displayBuyQty").value = StartDate;
+        }
+
+        document.getElementById("displayStartDate").value = StartDate;
+        document.getElementById("displayEndDate").value = EndDate;
+        document.getElementById("displayStartTime").value = StartTime;
+        document.getElementById("displayEndTime").value = EndTime;
+        document.getElementById("displayBuyQty").value = BuyQty;
+        document.getElementById("myModal").style.display = "block";
+    }
+    window.onclick = function(event) {
+        var modal = document.getElementById("myModal");
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+    function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+    }
+
+    function calculateTotalPrice() {
+        var StartDate = document.getElementById("start_date").value;
+        var EndDate = document.getElementById("end_date").value;
+        var EndTime = document.getElementById("end_time").value;
+        var StartTime = document.getElementById("start_time").value;
+        var HourlyPrice = {{$product->hourly_price}};
+        var DailyPrice = {{$product->price}};
+        var BuyQty = parseInt(document.getElementById("buy_qty").value);
+        var TotalPrice = 0;
+
+        if (StartDate === EndDate &&  EndTime !== StartTime) {
+            TotalPrice = HourlyPrice * BuyQty;
+            document.getElementById("timeUnit").textContent = "hours";
+        } else {
+            TotalPrice = DailyPrice * BuyQty;
+            document.getElementById("timeUnit").textContent = "days";
+        }
+
+        document.getElementById("displayTotal").value = TotalPrice.toFixed(2);
+    }
+
+    // Gọi hàm calculateTotalPrice khi người dùng thay đổi số lượng hoặc ngày
+    document.getElementById("buy_qty").addEventListener("input", calculateTotalPrice);
+    document.getElementById("start_date").addEventListener("change", calculateTotalPrice);
+    document.getElementById("end_date").addEventListener("change", calculateTotalPrice);
+    document.getElementById("end_time").addEventListener("change", calculateTotalPrice);
+    document.getElementById("start_time").addEventListener("change", calculateTotalPrice);
+
 </script>
 
 
-
-
+<a href="#" id="back-to-top"></a>
 </html>
+

@@ -46,6 +46,11 @@ Route::middleware("auth")->group(function (){
     Route::get("/confirmUser/{order}", [\App\Http\Controllers\HomeController::class, "confirmUser"]);
     Route::get("/confirmUserCompleted/{order}", [\App\Http\Controllers\HomeController::class, "confirmUserCompleted"]);
     Route::get("/detailsBill/{order}", [\App\Http\Controllers\HomeController::class, "detailsBill"]);
+    Route::get('/cars_list', [\App\Http\Controllers\HomeController::class,"cars_list"]);
+    Route::get('/filters', [\App\Http\Controllers\HomeController::class,"filterProducts"]);
+    Route::get('/add_extend/{order}', [\App\Http\Controllers\HomeController::class,"addExtend"]);
+
+    Route::post('/update/{id}', [\App\Http\Controllers\HomeController::class,"update"])->name('update');
 });
 
 
