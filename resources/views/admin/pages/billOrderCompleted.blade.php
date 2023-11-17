@@ -162,26 +162,18 @@
 @yield("after_css")
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <body>
-@include("user.layouts.hearder")
+
 <div class="no-bottom no-top zebra" id="content">
-    <div id="top"></div>
 
-    <!-- section begin -->
-    <section id="subheader" class="jarallax text-light">
-        <img src="images/background/6.jpg" class="jarallax-img" alt="">
-        <div class="center-y relative text-center">
-            <div class="container">
-
-            </div>
-        </div>
-    </section>
     <!-- section close -->
     <div class="card">
         <div class="card-body">
+            <a style="margin-left: 40px" href="{{url("admin/historyOrder")}}" class="btn btn-primary"> <-Back </a>
             <h1 style="font-size: 30px ;color: darkolivegreen" class="text-center">Bill Details : # {{$orders->id}}</h1>
 
 
-            <div class="container" style="margin-top: 70px">
+
+            <div class="container" style="margin-top: 40px">
                 <div class="row" style="display: flex; gap: 30%">
                     <div class="col-md-4 customer-info" style="margin-left: 20px">
                         <p class="text-muted" style="text-align: center; font-size: 19px">Store</p>
@@ -193,6 +185,97 @@
                                     class="fw-bold">Address:</span>8A Ton That Thuyet, My Dinh2, Nam Tu Liem, Ha Noi.</li>
                             <li class="text-muted info-item"><i class="fas fa-circle" style="color:#84B0CA ;"></i> <span
                                     class="fw-bold">Phone Number:</span><i class="fas fa-phone"></i> +1 333 9296</li>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                Confirmation Image
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+
+                                            <button class="button" id="button1">Image CVD</button>
+                                            <button class="button" id="button2">Image Return</button>
+
+
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div style="margin-left: 50px;margin-right: 50px;margin-bottom: 20px" class="modal-body">
+                                            <div id="imgcvd" >
+                                                <div id="carouselExampleIndicators" class="carousel slide">
+                                                    <h1 style="font-size: 24px;text-align: center;color: darkolivegreen">Image Confirming Receipt Of The Car</h1>
+                                                    <div class="carousel-indicators">
+                                                        @php $dem1 = 0  @endphp
+                                                        @foreach($orders->images as $dem)
+                                                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{$dem1}}" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                                            @php $dem1++ @endphp
+                                                        @endforeach
+
+                                                    </div>
+                                                    <div class="carousel-inner">
+                                                        @foreach($orders->images as $img)
+                                                            <div class="carousel-item active">
+                                                                <img src="{{$img->image}}" class="d-block w-100" alt="...">
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                        <span class="visually-hidden">Previous</span>
+                                                    </button>
+                                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                        <span class="visually-hidden">Next</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div id="imgreturn" class="an">
+                                                <div id="carouselExample" class="carousel slide">
+                                                    <h1 style="font-size: 24px;text-align: center;color: darkolivegreen">Return Confirmation Image</h1>
+
+                                                    <div class="carousel-inner">
+                                                        @foreach($orders->imagesReturn as $imgreturn)
+                                                            <div class="carousel-item active">
+                                                                <img src="{{$imgreturn->image}}" class="d-block w-100" alt="...">
+                                                            </div>
+                                                        @endforeach
+
+
+                                                    </div>
+                                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                        <span class="visually-hidden">Previous</span>
+                                                    </button>
+                                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                        <span class="visually-hidden">Next</span>
+                                                    </button>
+                                                </div>
+                                                <script>
+                                                    // Lắng nghe sự kiện click của nút button 1
+                                                    document.getElementById("button1").addEventListener("click", function() {
+                                                        // Ẩn div 2
+                                                        document.getElementById("imgreturn").classList.add("an");
+                                                        // Hiển thị div 1
+                                                        document.getElementById("imgcvd").classList.remove("an");
+                                                    });
+
+                                                    // Lắng nghe sự kiện click của nút button 2
+                                                    document.getElementById("button2").addEventListener("click", function() {
+                                                        // Ẩn div 1
+                                                        document.getElementById("imgcvd").classList.add("an");
+                                                        // Hiển thị div 2
+                                                        document.getElementById("imgreturn").classList.remove("an");
+                                                    });
+                                                </script>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                         </ul>
                     </div>
                     <div class="col-md-4 customer-info">
@@ -261,11 +344,11 @@
 
 
                                 @php
-                                        $totalCost = 0;
-                                        $expenses = $orders->costsIncurred; // Lấy danh sách chi phí liên quan đến order hiện tại
-                                        foreach ($expenses as $expense) {
-                                            $totalCost += $expense->price; // Tính tổng expense
-                                        }
+                                    $totalCost = 0;
+                                    $expenses = $orders->costsIncurred; // Lấy danh sách chi phí liên quan đến order hiện tại
+                                    foreach ($expenses as $expense) {
+                                        $totalCost += $expense->price; // Tính tổng expense
+                                    }
                                 @endphp
                                 @if($totalCost != 0)
                                     <td>${{$totalCost}}.00 <br>
@@ -294,7 +377,7 @@
                                                                     <td>{{$item->damage}}</td>
                                                                     <td><img style="width: 260px;border-radius: 8px" src="{{$item->image}}" alt=""></td>
                                                                     @if($item->price == 10)
-                                                                           <td>Minor Damage</td>
+                                                                        <td>Minor Damage</td>
                                                                     @endif
                                                                     @if($item->price == 20)
                                                                         <td>Moderate Damage</td>
@@ -341,11 +424,50 @@
     </div>
 </div>
 
-@include("user.layouts.footer")
+
 @yield("before_js")
 @include("user.layouts.scripts")
 @yield("after_js")
 <!-- content close -->
 </body>
+<style> .an{
+        display: none;
+    }
 
+    .button{
+        margin: 10px;
+        padding: 10px 20px;
+        background-color: #ccc;
+        border: none;
+        cursor: pointer;
+        border-radius: 6px;
+    }
+    .selected {
+        color: darkolivegreen;
+        font-weight: bold;
+    }</style>
+<script>document.getElementById("button1").addEventListener("click", function() {
+        // Thêm lớp CSS "selected" cho nút button 1
+        document.getElementById("button1").classList.add("selected");
+        // Xóa lớp CSS "selected" khỏi nút button 2 (nếu có)
+        document.getElementById("button2").classList.remove("selected");
+
+        // Hiển thị div 1
+        document.getElementById("div1").classList.remove("hidden");
+        // Ẩn div 2
+        document.getElementById("div2").classList.add("hidden");
+    });
+
+    // Lắng nghe sự kiện click của nút button 2
+    document.getElementById("button2").addEventListener("click", function() {
+        // Thêm lớp CSS "selected" cho nút button 2
+        document.getElementById("button2").classList.add("selected");
+        // Xóa lớp CSS "selected" khỏi nút button 1 (nếu có)
+        document.getElementById("button1").classList.remove("selected");
+
+        // Hiển thị div 2
+        document.getElementById("div2").classList.remove("hidden");
+        // Ẩn div 1
+        document.getElementById("div1").classList.add("hidden");
+    });</script>
 </html>

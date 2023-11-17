@@ -248,4 +248,8 @@ class AdminController extends Controller
         event(new CreateNewRemindReturnCar($order));
         return redirect()->back()->with('success', 'Success');
     }
+    public function billOrderCompleted($id){
+        $orders = Order::find($id);
+        return view("admin.pages.billOrderCompleted",compact("orders"));
+    }
 }
