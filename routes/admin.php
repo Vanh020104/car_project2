@@ -17,6 +17,7 @@ Route::put("/updateSttRemind/{order}", [\App\Http\Controllers\AdminController::c
 Route::get("/confirmUser/{order}", [\App\Http\Controllers\AdminController::class, "confirmUser"]);
 Route::get("/remindReturnCar", [\App\Http\Controllers\AdminController::class, "remindReturnCar"]);
 Route::get("/billOrderCompleted/{id}", [\App\Http\Controllers\AdminController::class, "billOrderCompleted"]);
+Route::get("/feedback", [\App\Http\Controllers\AdminController::class, "feedback"]);
 Route::prefix("product")->group(function (){
     Route::get("/create", [\App\Http\Controllers\ProductController::class, "create"]);
     Route::post("/create", [\App\Http\Controllers\ProductController::class, "store"]);

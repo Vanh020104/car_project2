@@ -12,6 +12,7 @@ use App\Mail\NewRemindReturnCar;
 use App\Mail\OrderMail;
 use App\Models\Category;
 use App\Models\Expense;
+use App\Models\Feedback;
 use App\Models\Order;
 use App\Models\Product;
 use Carbon\Carbon;
@@ -305,5 +306,9 @@ class AdminController extends Controller
     public function billOrderCompleted($id){
         $orders = Order::find($id);
         return view("admin.pages.billOrderCompleted",compact("orders"));
+    }
+    public function feedback(){
+        $feedbacks = Feedback::all();
+        return view("admin.pages.feedback",compact("feedbacks"));
     }
 }
