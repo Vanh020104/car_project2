@@ -30,10 +30,11 @@ class HomeController extends Controller
     }
 
     public function product(Product $product){
+        $productReview = Feedback::where('product_id',$product->id)->get();
+        $averageRating = $productReview->avg('rating');
 
 
-
-        return view("user.pages.product", compact("product"));
+        return view("user.pages.product", compact("product","averageRating","productReview"));
     }
 
     public function category(Category $category, Order $order){

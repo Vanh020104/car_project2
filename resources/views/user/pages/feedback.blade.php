@@ -45,32 +45,21 @@
                             <div class="col-md-4 mb10">
                                 <input name="user_id" type="hidden" value="{{$od->user_id}}">
                                 @foreach($od->Products as $order) @endforeach
-                                    <label for="product" class="form-label">Product</label>
+                                <label for="product" class="form-label">Product</label>
 
                                 <div class="field-set">
                                     <input type="text" name="product" id="email" class="form-control" placeholder="Product" value="{{$order->name}}" required>
 
                                     <img style="border-radius: 5px" src="{{$order->thumbnail}}" alt="" width="300">
-                                    <input type="text" name="product_id" style="display: none" id="product_id" class="form-control" placeholder="Product" value="{{$order->id}}" required>
+                                    <input  type="text" name="product_id" style="display: none" id="product_id" class="form-control" placeholder="Product" value="{{$order->id}}" required>
 
 
                                 </div>
                             </div>
                         </div>
-
                         <div class="field-set mb20">
-                            <div class="rating">
-                                <input type="radio" id="star5" name="rating" value="5" />
-                                <label for="star5" title="5 sao"></label>
-                                <input type="radio" id="star4" name="rating" value="4" />
-                                <label for="star4" title="4 sao"></label>
-                                <input type="radio" id="star3" name="rating" value="3" />
-                                <label for="star3" title="3 sao"></label>
-                                <input type="radio" id="star2" name="rating" value="2" />
-                                <label for="star2" title="2 sao"></label>
-                                <input type="radio" id="star1" name="rating" value="1" />
-                                <label for="star1" title="1 sao"></label>
-                            </div>
+                            <div id="rateYo"></div>
+                            <input class="form-control" name="rating" id="rating" >
                         </div>
                         <div class="field-set mb20">
 
@@ -98,8 +87,6 @@
                             <span><i class="id-color fa fa-file-pdf-o fa-lg"></i><a href="#">Download Brochure</a></span>
                         </address>
                     </div>
-
-
                     <div class="de-box mb30">
                         <h4>AU Office</h4>
                         <address class="s1">
@@ -109,53 +96,29 @@
                             <span><i class="fa fa-file-pdf-o fa-lg"></i><a href="#">Download Brochure</a></span>
                         </address>
                     </div>
-
                 </div>
-
             </div>
         </div>
 
 
         <!-- content close -->
-    <a href="#" id="back-to-top"></a>
+        <a href="#" id="back-to-top"></a>
     </div>
 @endsection
-<style>
-    .rating {
-        display: inline-block;
-    }
+@section("css_rating")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+@endsection
+@section("script_rating")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+    <script >
+        $(function () {
 
-    .rating input {
-        display: none;
-    }
+            $("#rateYo").rateYo({
+                rating: 0
+            }).on("rateyo.set", function (e, data) {
+                $('#rating').val(data.rating);
+                //alert("The rating is set to " + data.rating + "!");
+            });
 
-    .rating label {
-        cursor: pointer;
-        width: 40px;
-        height: 40px;
-        margin: 0;
-        padding: 0;
-        font-size: 30px;
-        line-height: 40px;
-    }
-
-    .rating label:before {
-        content: "\2605";
-        color: #ddd;
-    }
-
-    .rating input:checked ~ label:before {
-        color: #fdd000;
-    }
-
-    .rating label:hover:before,
-    .rating label:hover ~ label:before {
-        color: #fdd000;
-    }
-</style>
-<script>
-    function setRating() {
-        const rating = document.querySelector('input[name="rating"]:checked').value;
-        document.getElementById('rating-input').value = rating;
-    }
-</script>
+        });</script>
+@endsection

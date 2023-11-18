@@ -17,6 +17,7 @@
     @yield("before_css")
     @include("user.layouts.head")
     @yield("after_css")
+    @yield("css_rating")
 </head>
 
 <body onload="initialize()">
@@ -43,5 +44,6 @@
 @yield("before_js")
 @include("user.layouts.scripts")
 @yield("after_js")
+@yield("script_rating")
 </body>
 </html>
