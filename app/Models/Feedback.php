@@ -11,6 +11,7 @@ class Feedback extends Model
     protected $table = "feedback";
     protected $fillable = [
         "id",
+        "order_id",
         "user_id",
         "product_id",
         "rating",
@@ -24,5 +25,9 @@ class Feedback extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
 }

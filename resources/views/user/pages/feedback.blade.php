@@ -44,6 +44,7 @@
                         <div class="row">
                             <div class="col-md-4 mb10">
                                 <input name="user_id" type="hidden" value="{{$od->user_id}}">
+                                <input type="hidden" name="order_id" value="{{$od->id}}">
                                 @foreach($od->Products as $order) @endforeach
                                 <label for="product" class="form-label">Product</label>
 

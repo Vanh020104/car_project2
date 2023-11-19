@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('feedback', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("user_id");
-
+            $table->unsignedBigInteger("order_id");
             $table->unsignedBigInteger("product_id");
             $table->string("feedback");
             $table->unsignedTinyInteger("rating");
+            $table->foreign("order_id")->references("id")->on("orders");
             $table->foreign("user_id")->references("id")->on("users");
             $table->foreign("product_id")->references("id")->on("products");
 

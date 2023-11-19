@@ -386,7 +386,9 @@ class HomeController extends Controller
        $product_id = $request->get("product_id");
        $message = $request->get("message");
        $rating = $request->get("rating");
+       $order_id = $request->get("order_id");
         Feedback::create([
+            'order_id' =>$order_id,
             'user_id'=>$user_id,
             'product_id'=>$product_id,
             'feedback'=>$message,

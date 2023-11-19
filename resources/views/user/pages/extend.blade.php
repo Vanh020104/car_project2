@@ -256,7 +256,7 @@
                                                         @endforeach </div>
                                                 </div></td>
                                             <td><form action="{{url("feedback",['order'=>$order->id])}}">
-                                                    <button type="submit" style="background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">FB</button>
+                                                    <button type="submit" style="background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Feedback</button>
                                                 </form></td>
                                         </tr>
                                     @endforeach
