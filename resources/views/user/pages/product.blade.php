@@ -753,13 +753,12 @@
         // Lấy giá trị số sao trung bình từ Blade view
         var averageRating = {{ $averageRating }};
 
-        // Khởi tạo plugin rateYo với giá trị ban đầu là số sao trung bình
+// Khởi tạo plugin rateYo với giá trị ban đầu là số sao trung bình và readOnly: true
         $("#rateYo").rateYo({
-            rating: averageRating
-        }).on("rateyo.set", function (e, data) {
-            // Cập nhật giá trị rating trong input hidden khi người dùng đánh giá
-            $('#rating').val(data.rating);
+            rating: averageRating,
+            readOnly: true
         });
+
     });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
