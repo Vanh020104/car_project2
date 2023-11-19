@@ -29,6 +29,7 @@ return new class extends Migration
             $table->dateTime("time_completed")->nullable();
             $table->string('cccd')->nullable();
             $table->string('drive_photo')->nullable();
+            $table->unsignedDecimal("total")->nullable();
             $table->timestamps();
         });
     }

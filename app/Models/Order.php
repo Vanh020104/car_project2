@@ -23,7 +23,7 @@ class Order extends Model
         "payment_method",
         "is_paid",
         "cccd",
-        "drive_photo"
+        "drive_photo","total"
 
     ];
     const WAIT = 0;
@@ -102,5 +102,9 @@ class Order extends Model
     public function time_remind()
     {
         return $this->hasMany(OverdueRemind::class,'order_id', 'id');
+    }
+    public function overdueCost()
+    {
+        return $this->hasOne(OverdueCosts::class);
     }
 }

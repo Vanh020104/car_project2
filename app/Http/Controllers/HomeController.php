@@ -292,6 +292,7 @@ class HomeController extends Controller
             "location"=>$request->get("location"),
             "payment_method"=>$request->get("payment_method"),
             "cccd"=>$request->get("cccd"),
+            "total" => $total,
             "drive_photo"=>$request->get("drive_photo")
         ]);
         foreach ($cart as $item){

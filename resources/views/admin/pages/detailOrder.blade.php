@@ -67,7 +67,7 @@
                                 echo $totalCost; // Hiển thị tổng expense
                             @endphp
                         </th>
-                        <th scope="row">{{$order->grand_total + $totalCost}}</th>
+                        <th scope="row">{{$order->total}}</th>
                     </tr>
                 @endforeach
                 </tbody>
