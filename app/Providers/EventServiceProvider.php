@@ -6,6 +6,7 @@ use App\Events\CreateConfirmCompleted;
 use App\Events\CreateConfirmOrder;
 use App\Events\CreateNewOrder;
 use App\Events\CreateNewRemindReturnCar;
+use App\Events\CreateOverdueRemind;
 use App\Listeners\DispatchConfirmCompleted;
 use App\Listeners\DispatchConfirmOrder;
 use App\Listeners\DispatchNewOrder;
@@ -40,6 +41,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         CreateNewRemindReturnCar::class =>[
             DispatchNewRemindReturnCar::class
+        ],
+        CreateOverdueRemind::class =>[
+
         ]
     ];
 

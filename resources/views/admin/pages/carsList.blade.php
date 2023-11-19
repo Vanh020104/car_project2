@@ -2,7 +2,7 @@
 @section("content")
 
 
-            <div style="overflow: auto" class="card">
+            <div style="overflow: auto">
                 <h2 style="text-align: center;color: #1a1af8;font-size: 28px;margin-top: 20px;margin-bottom: 20px" class="text-xl font-bold text-black dark:text-white">
 
                     Cars List

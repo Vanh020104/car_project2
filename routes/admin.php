@@ -18,6 +18,9 @@ Route::get("/confirmUser/{order}", [\App\Http\Controllers\AdminController::class
 Route::get("/remindReturnCar", [\App\Http\Controllers\AdminController::class, "remindReturnCar"]);
 Route::get("/billOrderCompleted/{id}", [\App\Http\Controllers\AdminController::class, "billOrderCompleted"]);
 Route::get("/feedback", [\App\Http\Controllers\AdminController::class, "feedback"]);
+Route::get("/overdueReminder", [\App\Http\Controllers\AdminController::class, "overdueReminder"]);
+Route::delete("/deleteFeedback/{feedback}", [\App\Http\Controllers\AdminController::class, "deleteFeedback"]);
+Route::post("/remindOverdue/{order}", [\App\Http\Controllers\AdminController::class, "remindOverdue"]);
 Route::prefix("product")->group(function (){
     Route::get("/create", [\App\Http\Controllers\ProductController::class, "create"]);
     Route::post("/create", [\App\Http\Controllers\ProductController::class, "store"]);

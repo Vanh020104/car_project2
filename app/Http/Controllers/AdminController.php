@@ -10,6 +10,7 @@ use App\Mail\ConfirmCompleted;
 use App\Mail\ConfirmOrder;
 use App\Mail\NewRemindReturnCar;
 use App\Mail\OrderMail;
+use App\Mail\OverdueRemind;
 use App\Models\Category;
 use App\Models\Expense;
 use App\Models\Feedback;
@@ -308,7 +309,36 @@ class AdminController extends Controller
         return view("admin.pages.billOrderCompleted",compact("orders"));
     }
     public function feedback(){
-        $feedbacks = Feedback::all();
-        return view("admin.pages.feedback",compact("feedbacks"));
+        $feedbacks = Feedback::orderBy('created_at','desc')->paginate(100);
+        $currentDate = Carbon::now()->format('Y-m-d');
+        $feedback_today = Feedback::whereRaw('DATE(created_at) = ?',$currentDate)->paginate(20);
+        return view("admin.pages.feedback",compact("feedbacks","feedback_today"));
+    }
+    public function deleteFeedback(Feedback $feedback){
+        $feedback->delete();
+        return redirect()->to("/admin/feedback")->with("success","Successfully");
+
+    }
+    public function overdueReminder(){
+        $currentDateTime = Carbon::now(); // Lấy thời gian hiện tại
+
+
+        $orders = Order::where('status','3')->join('order_products', 'orders.id', '=', 'order_products.order_id')
+            ->select('orders.*')
+            ->whereRaw("CONCAT(order_products.end_date, ' ', order_products.end_time) < ?", [$currentDateTime])
+            ->get();
+        return view ("admin.pages.overdueReminder",compact("orders","currentDateTime"));
+    }
+    public function remindOverdue(Order $order){
+        $time_remind = Carbon::now();
+        $order->time_remind()->create([
+           'order_id' => $order->id,
+           'time_remind'=> $time_remind
+        ]);
+        Mail::to($order->email)
+//            ->cc("mail nhan vien")
+//            ->bcc("mail quan ly")
+            ->send(new OverdueRemind($order));
+        return redirect()->to("/admin/overdueReminder")->with("success","Successfully");
     }
 }

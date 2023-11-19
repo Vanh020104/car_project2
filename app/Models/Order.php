@@ -99,5 +99,8 @@ class Order extends Model
         return $this->hasOne(Feedback::class);
     }
 
-
+    public function time_remind()
+    {
+        return $this->hasMany(OverdueRemind::class,'order_id', 'id');
+    }
 }
