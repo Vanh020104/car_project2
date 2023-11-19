@@ -307,6 +307,9 @@
                             <th style="background-color: #1ecb15">End date</th>
                             @php
                                 $totalCost = 0;
+                                $chiphi = \App\Models\OverdueCosts::where('order_id',$orders->id)->first();
+                                $cp = $chiphi->costs;
+                                $totalCost = $totalCost + $cp;
                                 $expenses = $orders->costsIncurred; // Lấy danh sách chi phí liên quan đến order hiện tại
                                 foreach ($expenses as $expense) {
                                     $totalCost += $expense->price; // Tính tổng expense
@@ -345,57 +348,102 @@
 
                                 @php
                                     $totalCost = 0;
+                                    $chiphi = \App\Models\OverdueCosts::where('order_id',$orders->id)->first();
+                            $cp = $chiphi->costs;
+                            $totalCost = $totalCost + $cp;
                                     $expenses = $orders->costsIncurred; // Lấy danh sách chi phí liên quan đến order hiện tại
                                     foreach ($expenses as $expense) {
                                         $totalCost += $expense->price; // Tính tổng expense
                                     }
                                 @endphp
                                 @if($totalCost != 0)
-                                    <td>${{$totalCost}}.00 <br>
+                                    <td style="text-align: center">${{$totalCost}}.00 <br>
                                         <button style="width: 100px" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>
                                         <!-- Modal -->
                                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div style="width: 950px;margin-left: -200px" class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h1 style="margin-left: 230px;font-size: 30px;color: #75943f" id="exampleModalLabel">Details Of Damages After Using The Vehicle</h1>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <table class="table">
-                                                            <thead>
-                                                            <tr>
-                                                                <th scope="col">Damage</th>
-                                                                <th scope="col">Image</th>
-                                                                <th scope="col">Extent Of Damage</th>
-                                                                <th scope="col">Expense</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            @foreach($orders->costsIncurred as $item)
+                                                    @if($orders->costsIncurred->count() >0)
+                                                        <div class="modal-header">
+                                                            <h1 style="margin-left: 230px;font-size: 30px;color: #75943f" id="exampleModalLabel">Details Of Damages After Using The Vehicle</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <table class="table">
+                                                                <thead>
                                                                 <tr>
-                                                                    <td>{{$item->damage}}</td>
-                                                                    <td><img style="width: 260px;border-radius: 8px" src="{{$item->image}}" alt=""></td>
-                                                                    @if($item->price == 10)
-                                                                        <td>Minor Damage</td>
-                                                                    @endif
-                                                                    @if($item->price == 20)
-                                                                        <td>Moderate Damage</td>
-                                                                    @endif
-                                                                    @if($item->price == 30)
-                                                                        <td>Significant Damage</td>
-                                                                    @endif
-                                                                    @if($item->price == 40)
-                                                                        <td>Severe Damage</td>
-                                                                    @endif
-
-
-                                                                    <td>${{$item->price}}</td>
+                                                                    <th scope="col" style="text-align: center">Damage</th>
+                                                                    <th scope="col" style="text-align: center">Image</th>
+                                                                    <th scope="col" style="text-align: center">Extent Of Damage</th>
+                                                                    <th scope="col" style="text-align: center">Expense</th>
                                                                 </tr>
-                                                            @endforeach
-                                                            </tbody>
+                                                                </thead>
+                                                                <tbody>
+                                                                @foreach($orders->costsIncurred as $item)
+                                                                    <tr>
+                                                                        <td style="text-align: center">{{$item->damage}}</td>
+                                                                        <td style="text-align: center"> <img style="width: 260px;border-radius: 8px" src="{{$item->image}}" alt=""></td>
+                                                                        @if($item->price == 10)
+                                                                            <td style="text-align: center">Minor Damage</td>
+                                                                        @endif
+                                                                        @if($item->price == 20)
+                                                                            <td style="text-align: center" >Moderate Damage</td>
+                                                                        @endif
+                                                                        @if($item->price == 30)
+                                                                            <td style="text-align: center">Significant Damage</td>
+                                                                        @endif
+                                                                        @if($item->price == 40)
+                                                                            <td style="text-align: center">Severe Damage</td>
+                                                                        @endif
+
+
+                                                                        <td style="text-align: center">${{$item->price}}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    @endif
+                                                    @if($orders->overdueCost->count() > 0)
+                                                        <h1 style="margin: auto;font-size: 30px;color: #75943f">Overdue Compensation</h1>
+                                                        <table style="margin-bottom: 20px">
+                                                            <tr>
+                                                                <th style="text-align: center">Return Date</th>
+                                                                <th style="text-align: center">Real-time Car Return</th>
+                                                                <th style="text-align: center">Time Late</th>
+                                                                <th style="text-align: center">Costs</th>
+                                                            </tr>
+                                                            <tr>
+                                                                @foreach($orders->Products as $item)
+
+                                                                    <td style="text-align: center">{{$item->pivot->end_date}} {{$item->pivot->end_time}}</td>
+                                                                @endforeach
+
+                                                                <td style="text-align: center">{{$orders->overdueCost->created_at}}</td>
+                                                                <td style="text-align: center">{{$orders->overdueCost->time_late}}  {{$orders->overdueCost->time}}</td>
+                                                                <td style="text-align: center">{{$orders->overdueCost->costs}}</td>
+                                                            </tr>
+                                                            <!-- Thêm các dòng dữ liệu khác ở đây -->
                                                         </table>
-                                                    </div>
+                                                        <style>
+                                                            table {
+                                                                border-collapse: collapse;
+                                                                width: 95%;
+                                                                margin: auto;
+                                                            }
+
+                                                            th, td {
+                                                                text-align: left;
+                                                                padding: 8px;
+                                                                border-bottom: 1px solid #ddd;
+                                                                border-right: 1px solid #ddd;
+                                                            }
+
+                                                            th {
+                                                                background-color: #f2f2f2;
+                                                            }
+                                                        </style>
+                                                    @endif
 
                                                 </div>
                                             </div>
@@ -406,7 +454,7 @@
 
                                 <td>${{$orders->grand_total}}</td>
                                 @if($totalCost != 0)
-                                    <td>${{$orders->grand_total + $totalCost}}.00</td>
+                                    <td>${{$orders->total}}</td>
                                 @endif
                                 <td>${{$orders->deposit}}</td>
                             </tr>

@@ -47,7 +47,7 @@ class Order extends Model
 
 
     public function getPaid(){
-        return $this->is_paid?"<span style='border-radius: 7px' class='bg-success p-2 small'>Paid</span>"
+        return $this->is_paid?"<span style='border-radius: 5px;background-color: blue;color: white;padding-left: 7px;padding-right: 7px' >Paid</span>"
             :"<span style='border-radius: 7px' class='bg-secondary p-2 small'>Unpaid</span>";
     }
     public function getStatus(){
