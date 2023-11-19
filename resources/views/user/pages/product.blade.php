@@ -595,6 +595,14 @@
 <!-- content close -->
 </body>
 <style>
+    .review-container {
+        border: 1px solid #D62D2D;
+        padding: 30px;
+        margin-left: 100px;
+        margin-right: 100px;
+        border-radius: 5px;
+
+    }
     .giay_to_xe{
         margin: 80px 0;
     }
@@ -728,19 +736,39 @@
             document.getElementById("start_date").value = "";
         }
     }
+
+
 </script>
+{{-- script cho product review--}}
+<script >
+    $(function () {
+        @foreach($productReview as $review)
+        $(".rateYo-{{ $review->id }}").rateYo({
+            rating: {{ $review->rating }},
+            readOnly: true // Nếu bạn muốn rating là chỉ đọc
+        });
+        @endforeach
+    });
+    $(function () {
+        // Lấy giá trị số sao trung bình từ Blade view
+        var averageRating = {{ $averageRating }};
+
+        // Khởi tạo plugin rateYo với giá trị ban đầu là số sao trung bình
+        $("#rateYo").rateYo({
+            rating: averageRating
+        }).on("rateyo.set", function (e, data) {
+            // Cập nhật giá trị rating trong input hidden khi người dùng đánh giá
+            $('#rating').val(data.rating);
+        });
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+
 {{--css modal--}}
 <style>
     /* CSS cho modal */
 
-    .review-container {
-        border: 1px solid #D62D2D;
-        padding: 30px;
-        margin-left: 100px;
-        margin-right: 100px;
-        border-radius: 5px;
 
-    }
     .modal_vanh {
         display: none;
         position: fixed;
@@ -848,28 +876,11 @@
     document.getElementById("end_time").addEventListener("change", calculateTotalPrice);
     document.getElementById("start_time").addEventListener("change", calculateTotalPrice);
 
-    $(function () {
-        @foreach($productReview as $review)
-        $(".rateYo-{{ $review->id }}").rateYo({
-            rating: {{ $review->rating }},
-            readOnly: true // Nếu bạn muốn rating là chỉ đọc
-        });
-        @endforeach
-    });
-    $(function () {
-        // Lấy giá trị số sao trung bình từ Blade view
-        var averageRating = {{ $averageRating }};
 
-        // Khởi tạo plugin rateYo với giá trị ban đầu là số sao trung bình
-        $("#rateYo").rateYo({
-            rating: averageRating
-        }).on("rateyo.set", function (e, data) {
-            // Cập nhật giá trị rating trong input hidden khi người dùng đánh giá
-            $('#rating').val(data.rating);
-        });
-    });
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+
+
+
 
 
 <a href="#" id="back-to-top"></a>
