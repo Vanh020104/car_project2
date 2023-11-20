@@ -353,11 +353,13 @@ class AdminController extends Controller
         $orders = Order::find($id);
         return view("admin.pages.billOrderCompleted",compact("orders"));
     }
-    public function feedback(){
-        $feedbacks = Feedback::orderBy('created_at','desc')->paginate(100);
+    public function feedback(Request $request){
+        $products = Product::all();
+        $categories = Category::all();
+        $feedbacks = Feedback::FilterProduct($request)->orderBy('created_at','desc')->paginate(100);
         $currentDate = Carbon::now()->format('Y-m-d');
         $feedback_today = Feedback::whereRaw('DATE(created_at) = ?',$currentDate)->paginate(20);
-        return view("admin.pages.feedback",compact("feedbacks","feedback_today"));
+        return view("admin.pages.feedback",compact("feedbacks","feedback_today","currentDate","categories","products"));
     }
     public function deleteFeedback(Feedback $feedback){
         $feedback->delete();

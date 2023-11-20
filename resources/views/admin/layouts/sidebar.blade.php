@@ -300,7 +300,7 @@ echo "Expired Car Rental Application($totalRemind)";@endphp
 
                             @php
                                 $currentDate = date('Y-m-d');
-                                    $feedback_today = \App\Models\Feedback::where('created_at', $currentDate)->get();
+                                    $feedback_today = \App\Models\Feedback::whereDate('created_at', $currentDate)->get();
                                     $totalFeedback = $feedback_today->count();
 
 echo "Feedbacks($totalFeedback)";@endphp

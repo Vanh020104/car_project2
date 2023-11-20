@@ -30,4 +30,11 @@ class Feedback extends Model
     {
         return $this->belongsTo(Order::class);
     }
+    public function scopeFilterProduct($query,$request){
+        if($request->has("product_id")&& $request->get("product_id") != 0){
+            $product_id = $request->get("product_id");
+            $query->where("product_id",$product_id);
+        }
+        return $query;
+    }
 }

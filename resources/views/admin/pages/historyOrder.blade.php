@@ -1,7 +1,29 @@
 @extends("admin.layouts.admin_app")
 @section("content")
+    <style>
+        th{
+            background-color: blue;
+            padding-top: 12px;padding-bottom: 12px;
+            color: white;
+        }
+        table {
+            margin-right: auto;
 
-    <div style="overflow:auto;" class="row">
+            margin-left: auto;                            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        th,
+        td {
+            padding-left: 6px;
+            padding-right: 6px;
+            border-right: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            border-top: 1px solid #ccc;
+
+        }
+    </style>
+    <div style="overflow:auto;margin-left: 30px" class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
