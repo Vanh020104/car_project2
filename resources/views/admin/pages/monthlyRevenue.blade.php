@@ -1,12 +1,35 @@
 @extends("admin.layouts.admin_app")
 @section("content")
-    <div style="overflow:auto;" class="row">
+    <style>
+        th{
+            background-color: blue;
+            padding-top: 12px;padding-bottom: 12px;
+            color: white;
+        }
+        table {
+            margin-right: auto;
+
+            margin-left: auto;                            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        th,
+        td {
+            padding-left: 6px;
+            padding-right: 6px;
+            border-right: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            border-top: 1px solid #ccc;
+
+        }
+    </style>
+    <div style="overflow:auto;margin-left: 30px" class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     <h2 style="text-align: center;color: #1a1af8;font-size: 28px;margin-top: 20px;margin-bottom: 20px" class="text-xl font-bold text-black dark:text-white">
 
-                        Monthly Revenue
+                        Car Rental History
                     </h2>
                     <div style="margin-left: 50px;margin-bottom: 25px" class="card-tools">
                         <form action="{{url("/admin/monthlyRevenue")}}" method="get">
@@ -22,46 +45,43 @@
                     </div>
                 </div>
                 <!-- /.card-header -->
-                <div class="card-body table-responsive p-0">
-                    <table class="table table-hover text-nowrap">
-                        <thead>
-                        <tr>
-                            <th style="width: 50px" >ID</th>
-                            <th style="width: 200px">Created_at</th>
-                            <th style="width: 240px">Name</th>
-                            <th style="width: 200px">Grand_Total</th>
 
-                            <th>Payment_method</th>
-                            <th>Is Paid</th>
-                            <th style="width: 200px">Status</th>
-                            <th >Action</th>
+                <table class="table table-striped table-borderless">
+                    <thead>
+                    <tr>
+                        <th style="width: 50px" >ID</th>
+                        <th style="width: 200px">Pick Up Date</th>
+                        <th style="width: 200px">Return Date</th>
+                        <th style="width: 240px">Name</th>
+                        <th style="width: 200px">Total</th>
+                        <th style="width: 200px;">Payment_method</th>
+                        <th style="margin-left: 20px">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($orders as $item)
+                        <tr style="height: 50px">
+                            <td style="text-align: center">{{$item->id}}</td>
+                            @foreach($item->Products as $o_p)
+                                <td  style="text-align: center">{{$o_p->pivot->start_date}} {{$o_p->pivot->start_time}}</td>
+                                <td  style="text-align: center">{{$o_p->pivot->end_date}} {{$o_p->pivot->end_time}}</td>
+                            @endforeach
+
+                            <td style="text-align: center">{{$item->full_name}}</td>
+                            <td style="text-align: center">${{$item->total}}</td>
+                            <td style="text-align: center">{{$item->payment_method}}</td>
+                            <td  style="text-align: center;margin-left: 20px">
+                                <a href="{{url("admin/billOrderCompleted",["id"=>$item->id])}}" style="background-color: blue;padding-left: 10px;padding-right: 10px;padding-top: 5px;border-radius: 6px;padding-bottom:5px;color: white "    class="btn btn-outline-info">Details</a>
+                            </td>
                         </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($orders as $item)
-                            <tr style="height: 50px">
-                                <td style="text-align: center">{{$item->id}}</td>
-                                <td  style="text-align: center">{{$item->created_at}}</td>
-                                <td style="text-align: center">{{$item->full_name}}</td>
-                                <td style="text-align: center">{{$item->getGrandTotal()}}</td>
+                    @endforeach
+                    </tbody>
+                </table>
 
-                                <td style="text-align: center">{{$item->payment_method}}</td>
-                                <td style="text-align: center">{!! $item->getPaid() !!}</td>
-                                <td style="text-align: center">{!! $item->getStatus() !!}</td>
-                                <td style="text-align: center">
-                                    <a href="{{url("admin/detailOrder",["id"=>$item->id])}}" style="background-color: blue;padding-left: 10px;padding-right: 10px;padding-top: 5px;border-radius: 6px;padding-bottom:5px;color: white "    class="btn btn-outline-info">Details</a>
-                                </td>
-                            </tr>
-                        @endforeach
-
-                        </tbody>
-                    </table>
-
-                </div>
-                <!-- /.card-body -->
             </div>
-            <!-- /.card -->
+            <!-- /.card-body -->
         </div>
+        <!-- /.card -->
     </div>
-@endsection
 
+@endsection

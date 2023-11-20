@@ -68,11 +68,7 @@
                                 @endforeach
 
                                 <td style="text-align: center">{{$item->full_name}}</td>
-                                @php $ex = $item->grand_total @endphp
-                                @foreach($item->costsIncurred as $expense)
-                                   @php $ex +=$expense->price @endphp
-                                @endforeach
-                                <td style="text-align: center">${{$ex}}.00</td>
+                                <td style="text-align: center">${{$item->total}}</td>
                                 <td style="text-align: center">{{$item->payment_method}}</td>
                                 <td  style="text-align: center;margin-left: 20px">
                                     <a href="{{url("admin/billOrderCompleted",["id"=>$item->id])}}" style="background-color: blue;padding-left: 10px;padding-right: 10px;padding-top: 5px;border-radius: 6px;padding-bottom:5px;color: white "    class="btn btn-outline-info">Details</a>

@@ -114,7 +114,7 @@ class AdminController extends Controller
             'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
             'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
         ];
-        $data = Order::selectRaw('MONTH(time_completed) AS month, SUM(grand_total) AS revenue')
+        $data = Order::selectRaw('MONTH(time_completed) AS month, SUM(total) AS revenue')
             ->groupBy('month')
             ->orderBy('month')
             ->whereYear('time_completed',$year)

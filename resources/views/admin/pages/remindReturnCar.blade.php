@@ -1,5 +1,28 @@
 @extends("admin.layouts.admin_app")
 @section("content")
+    <style>
+        th{
+            background-color: blue;
+            padding-top: 12px;padding-bottom: 12px;
+            color: white;
+        }
+        table {
+            margin-right: auto;
+
+            margin-left: auto;                            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        th,
+        td {
+            padding-left: 6px;
+            padding-right: 6px;
+            border-right: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            border-top: 1px solid #ccc;
+
+        }
+    </style>
     @if($remind->count() == 0)
         <div  style="margin: auto;border: blue solid 1px ; background-color: #3f3f5b;padding-left: 15px;padding-right: 15px;padding-top: 5px;padding-bottom: 5px;color: white;border-radius: 6px">
             <h1 style="font-size: 25px;">There are no car rental payments due soon</h1>
@@ -27,7 +50,7 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body table-responsive p-0">
-                        <table class="table table-hover text-nowrap">
+                        <table style="margin-left: 30px" class="table table-hover text-nowrap">
                             <thead>
                             <tr>
                                 <th style="width: 50px" >ID</th>

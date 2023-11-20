@@ -726,7 +726,7 @@ Rent A Car Today</span>
                                     >
                                         <?php $total = 0 ?>
                                         @foreach($doanhthu as $item)
-                                                <?php $total+=$item->grand_total ?>
+                                                <?php $total+=$item->total ?>
                                         @endforeach
                                         $ <?php echo  $total ?>
                                     </h4>
