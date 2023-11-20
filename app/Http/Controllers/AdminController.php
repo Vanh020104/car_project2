@@ -10,8 +10,10 @@ use App\Mail\ConfirmCompleted;
 use App\Mail\ConfirmOrder;
 use App\Mail\NewRemindReturnCar;
 use App\Mail\OrderMail;
+use App\Mail\OverdueRemind;
 use App\Models\Category;
 use App\Models\Expense;
+use App\Models\Feedback;
 use App\Models\Order;
 use App\Models\Product;
 use Carbon\Carbon;
@@ -183,6 +185,10 @@ class AdminController extends Controller
         $order->status = $stt;
         $order->save();
 
+
+
+
+
         if ($request->hasFile('images')) {
             $images = $request->file('images');
 
@@ -199,6 +205,89 @@ class AdminController extends Controller
                 ]);
             }
         }
+        $time = Carbon::now();
+        $date_now = Carbon::now()->format('Y-m-d');
+        $time_now = Carbon::now()->format('H:i:s');
+        $od = DB::table('order_products')->where("order_id",$order->id)->first();
+        $end_date = $od->end_date;
+        $start_date = $od->start_date;
+        $start_time = $od->start_time;
+        $end_time = $od->end_time;
+        $endDateTime = date('Y-m-d H:i:s', strtotime($end_date . ' ' . $end_time));
+        $product = Product::find($od->product_id);
+        $product_price = $product->price;
+        $price_hours = $product->hourly_price;
+        if( $end_date!= $start_date && $date_now<$end_date){
+            $ngay1 = Carbon::createFromFormat('Y-m-d H:i:s', $start_date . ' ' . $start_time); // Mốc thời gian đầu
+            $ngay2 = Carbon::createFromFormat('Y-m-d H:i:s', $date_now . ' ' . $time_now); // Mốc thời gian cuối
+            $hieuGio = $ngay2->diffInHours($ngay1);
+            $day = $hieuGio / 24;
+            $kq_day = round($day);
+            $amount_new = $kq_day * $product_price;
+            $od->end_date = $date_now;
+            $od->end_time = $time_now;
+            $result = DB::table("order_products")
+                ->where('order_id',$order->id)
+                ->update([
+                    'end_date' => $date_now,
+                    'end_time' => $time_now,
+                    'buy_qty' => $kq_day,
+                ]);
+            $order->grand_total = $amount_new;
+            $order->total =$amount_new;
+            $order->save();
+        }
+        else if($start_date == $end_date && $end_time > $time_now){
+            $startDateTime = Carbon::createFromFormat('H:i:s', $start_time);
+
+            $diff = $startDateTime->diffInHours($time_now);
+            $hieu_hours = round($diff);
+            $result = DB::table("order_products")
+                ->where('order_id',$order->id)
+                ->update([
+                    'buy_qty' => $hieu_hours,
+                    'end_time' => $time_now,
+                ]);
+            $amount_new = $hieu_hours * $price_hours;
+            $order->grand_total = $amount_new;
+            $order->save();
+
+        } else if ($endDateTime < $time){
+            $diffInHours = $time->diffInHours($endDateTime);
+            $so_hour = round($diffInHours);
+            $db_hour = 30;
+            if ($so_hour < 24){
+                $denbu = $price_hours * $so_hour + $db_hour;
+                $order->overdueCost()->create([
+                   "order_id"=>$order->id,
+                    "costs"=>$denbu,
+                    "time_late" =>$so_hour,
+                    "time"=>"hour"
+                ]);
+                    $order->total = $order->total + $denbu;
+                    $order->save();
+
+            } else if ($so_hour > 24){
+                $db_day = 300;
+                $so_ngay = $so_hour / 24 ;
+                $ngay = ceil($so_ngay);
+                $den_bu = $ngay * $product_price + $db_day;
+                $order->overdueCost()->create([
+                    "order_id"=>$order->id,
+                    "costs"=>$den_bu,
+                    "time_late" =>$ngay,
+                    "time"=>"day"
+                ]);
+                $order->total = $order->total + $den_bu;
+                $order->save();
+
+
+            }
+
+        }
+
+
+
         return redirect()->back()->with('success', 'Success');
     }
     public function damage (Request $request , Order $order){
@@ -207,9 +296,11 @@ class AdminController extends Controller
         $names = $request->input('name');
         $prices = $request->input('price');
         $images = $request->file('image');
+        $total_damage = 0;
         foreach ($names as $key => $name) {
             $price = $prices[$key];
             $image = $images[$key];
+            $total_damage += $price;
             $path = public_path('uploads');
             $fileName = Str::random(5) . time() . Str::random(5) . '.' . $image->getClientOriginalExtension();
             $image->move($path, $fileName);
@@ -222,6 +313,8 @@ class AdminController extends Controller
                 'price' => $price,
                 'image'=>$imagePath
             ]);}
+        $order->total = $order->total + $total_damage;
+        $order->save();
         return redirect()->back()->with('success', 'Success');
     }
     public function remindReturnCar(Request $request , Order $order)
@@ -251,5 +344,38 @@ class AdminController extends Controller
     public function billOrderCompleted($id){
         $orders = Order::find($id);
         return view("admin.pages.billOrderCompleted",compact("orders"));
+    }
+    public function feedback(){
+        $feedbacks = Feedback::orderBy('created_at','desc')->paginate(100);
+        $currentDate = Carbon::now()->format('Y-m-d');
+        $feedback_today = Feedback::whereRaw('DATE(created_at) = ?',$currentDate)->paginate(20);
+        return view("admin.pages.feedback",compact("feedbacks","feedback_today"));
+    }
+    public function deleteFeedback(Feedback $feedback){
+        $feedback->delete();
+        return redirect()->to("/admin/feedback")->with("success","Successfully");
+
+    }
+    public function overdueReminder(){
+        $currentDateTime = Carbon::now(); // Lấy thời gian hiện tại
+
+
+        $orders = Order::where('status','3')->join('order_products', 'orders.id', '=', 'order_products.order_id')
+            ->select('orders.*')
+            ->whereRaw("CONCAT(order_products.end_date, ' ', order_products.end_time) < ?", [$currentDateTime])
+            ->get();
+        return view ("admin.pages.overdueReminder",compact("orders","currentDateTime"));
+    }
+    public function remindOverdue(Order $order){
+        $time_remind = Carbon::now();
+        $order->time_remind()->create([
+           'order_id' => $order->id,
+           'time_remind'=> $time_remind
+        ]);
+        Mail::to($order->email)
+//            ->cc("mail nhan vien")
+//            ->bcc("mail quan ly")
+            ->send(new OverdueRemind($order));
+        return redirect()->to("/admin/overdueReminder")->with("success","Successfully");
     }
 }

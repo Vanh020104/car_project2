@@ -60,6 +60,8 @@
                         <th scope="row">
                             @php
                                 $totalCost = 0;
+                                $chiphi = \App\Models\OverdueCosts::where("order_id",$order->id)->first();
+                                $totalCost += $chiphi->costs;
                                 $expenses = $order->costsIncurred; // Lấy danh sách chi phí liên quan đến order hiện tại
                                 foreach ($expenses as $expense) {
                                     $totalCost += $expense->price; // Tính tổng expense
@@ -67,7 +69,7 @@
                                 echo $totalCost; // Hiển thị tổng expense
                             @endphp
                         </th>
-                        <th scope="row">{{$order->grand_total + $totalCost}}</th>
+                        <th scope="row">{{$order->total}}</th>
                     </tr>
                 @endforeach
                 </tbody>

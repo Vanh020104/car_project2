@@ -22,10 +22,14 @@ return new class extends Migration
             $table->string('tel');
             $table->unsignedBigInteger("user_id")->nullable();
             $table->unsignedDecimal("grand_total",14,2);
+            $table->unsignedDecimal("deposit",14,2);
             $table->string("payment_method");
             $table->boolean("is_paid")->default(false);
             $table->smallInteger("status")->default(0);
             $table->dateTime("time_completed")->nullable();
+            $table->string('cccd')->nullable();
+            $table->string('drive_photo')->nullable();
+            $table->unsignedDecimal("total")->nullable();
             $table->timestamps();
         });
     }

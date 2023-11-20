@@ -23,7 +23,7 @@ class Order extends Model
         "payment_method",
         "is_paid",
         "cccd",
-        "drive_photo"
+        "drive_photo","total"
 
     ];
     const WAIT = 0;
@@ -47,7 +47,7 @@ class Order extends Model
 
 
     public function getPaid(){
-        return $this->is_paid?"<span style='border-radius: 7px' class='bg-success p-2 small'>Paid</span>"
+        return $this->is_paid?"<span style='border-radius: 5px;background-color: blue;color: white;padding-left: 7px;padding-right: 7px' >Paid</span>"
             :"<span style='border-radius: 7px' class='bg-secondary p-2 small'>Unpaid</span>";
     }
     public function getStatus(){
@@ -94,7 +94,17 @@ class Order extends Model
     {
         return $this->hasMany(Expense::class,'order_id', 'id');
     }
+    public function feedback()
+    {
+        return $this->hasOne(Feedback::class);
+    }
 
-
-
+    public function time_remind()
+    {
+        return $this->hasMany(OverdueRemind::class,'order_id', 'id');
+    }
+    public function overdueCost()
+    {
+        return $this->hasOne(OverdueCosts::class);
+    }
 }

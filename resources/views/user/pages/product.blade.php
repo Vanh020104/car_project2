@@ -11,9 +11,11 @@
     <meta content="" name="author">
     <!-- CSS Files
     ================================================== -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
     @yield("before_css")
     @include("user.layouts.head")
     @yield("after_css")
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </head>
 <style>
@@ -379,7 +381,34 @@
                 </div>
             </div>
     </section>
+    <section id="section-settings" class="bg-gray-100">
+        <div class="container">
+            <div class="col-lg-6 offset-lg-3 text-center">
+                <h2>Product Reviews</h2>
+                <div class="field-set mb20">
+                    <div id="rateYo" style="margin-left: 230px"></div>
+                </div>
+            </div>
+            <div class="row">
+                @foreach($productReview as $review)
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="review-container">
+                                    <h4>{{ $review->user->name }}</h4>
+                                    <div class="rateYo-{{ $review->id }}"></div>
+                                    <p style="display: none">Rating: {{ $review->rating }}</p>
 
+                                    <p style="margin-top:10px ">{{ $review->feedback }}</p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
 
     {{--    một số car--}}
     <section id="section-cars">
@@ -566,6 +595,14 @@
 <!-- content close -->
 </body>
 <style>
+    .review-container {
+        border: 1px solid #D62D2D;
+        padding: 30px;
+        margin-left: 100px;
+        margin-right: 100px;
+        border-radius: 5px;
+
+    }
     .giay_to_xe{
         margin: 80px 0;
     }
@@ -699,7 +736,33 @@
             document.getElementById("start_date").value = "";
         }
     }
+
+
 </script>
+{{-- script cho product review--}}
+<script >
+    $(function () {
+        @foreach($productReview as $review)
+        $(".rateYo-{{ $review->id }}").rateYo({
+            rating: {{ $review->rating }},
+            readOnly: true // Nếu bạn muốn rating là chỉ đọc
+        });
+        @endforeach
+    });
+    $(function () {
+        // Lấy giá trị số sao trung bình từ Blade view
+        var averageRating = {{ $averageRating }};
+
+// Khởi tạo plugin rateYo với giá trị ban đầu là số sao trung bình và readOnly: true
+        $("#rateYo").rateYo({
+            rating: averageRating,
+            readOnly: true
+        });
+
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+
 {{--css modal--}}
 <style>
     /* CSS cho modal */
@@ -812,7 +875,11 @@
     document.getElementById("end_time").addEventListener("change", calculateTotalPrice);
     document.getElementById("start_time").addEventListener("change", calculateTotalPrice);
 
+
 </script>
+
+
+
 
 
 <a href="#" id="back-to-top"></a>

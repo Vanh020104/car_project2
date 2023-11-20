@@ -1,7 +1,7 @@
 @extends("admin.layouts.admin_app")
 @section("content")
     @if($remind->count() == 0)
-        <div  style="margin: auto;border: blue solid 1px ; background-color: blue;padding-left: 15px;padding-right: 15px;padding-top: 5px;padding-bottom: 5px;color: white;border-radius: 6px">
+        <div  style="margin: auto;border: blue solid 1px ; background-color: #3f3f5b;padding-left: 15px;padding-right: 15px;padding-top: 5px;padding-bottom: 5px;color: white;border-radius: 6px">
             <h1 style="font-size: 25px;">There are no car rental payments due soon</h1>
         </div>
     @else

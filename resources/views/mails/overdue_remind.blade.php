@@ -67,6 +67,7 @@
 </head>
 
 <body>
+<h1 style="text-align: center;color: blue;font-size: 24px;">Notification That The Rental Is Overdue</h1>
 <div class="card">
     <div class="card-body">
         <div class="container mb-5 mt-3">
@@ -117,6 +118,7 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Price</th>
+                        <th>License plates</th>
                         <th>Start date</th>
                         <th>End date</th>
                         <th>Time</th>
@@ -130,11 +132,16 @@
                             <td>{{$item->id}}</td>
                             <td>{{$item->name}}</td>
                             <td>${{$item->pivot->price}}</td>
+                            <td>29 – B1 <br> 8 8 8 . 8 8</td>
                             <td>{{$item->pivot->start_date}} <br> {{$item->pivot->start_time}}</td>
                             <td>{{$item->pivot->end_date}} <br> {{$item->pivot->end_time}}</td>
-                            <td>{{$item->pivot->buy_qty}}</td>
-                            {{--                            <td>${{$item->pivot->buy_qty*$item->pivot->price}}</td>--}}
-                            <td>{{$order->total}}</td>
+                            <td>{{$item->pivot->buy_qty}}
+                                @if($item->start_date == $item->end_date)
+                                    hours
+                                @else
+                                    days
+                                @endif</td>
+                            <td>${{$order->grand_total}}</td>
                             <td>${{$item->deposit}}</td>
                         </tr>
                     @endforeach
@@ -144,14 +151,7 @@
 
             <hr>
 
-            <div class="row">
-                <div class="col-md-10 thank-you">
-                    <p>If you have completed your order and received your deposit and personal documents in full, please press confirm</p>
-                    <form action="{{url("confirmUserCompleted",['order'=>$order->id ]  )}}">
-                        <center><button  name="user_id" value="{{$order->user_id}}"  style="background-color: blue;color: white;padding-top: 6px;padding-bottom: 6px;border-radius: 6px;border: blue solid 1px" class="codepro-custom-btn codepro-btn-6" target="blank" title="Code Pro" onclick="window.open('https://www.code.pro.vn/')"><span>Confirmation Completed</span></button></center>
-                    </form>
-                </div>
-            </div>
+
         </div>
     </div>
 </div>

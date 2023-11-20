@@ -30,10 +30,11 @@ class HomeController extends Controller
     }
 
     public function product(Product $product){
+        $productReview = Feedback::where('product_id',$product->id)->get();
+        $averageRating = $productReview->avg('rating');
 
 
-
-        return view("user.pages.product", compact("product"));
+        return view("user.pages.product", compact("product","averageRating","productReview"));
     }
 
     public function category(Category $category, Order $order){
@@ -153,7 +154,6 @@ class HomeController extends Controller
 
         return redirect()->to("/checkout")->with("success", "Your vehicle has just been added to the cart!");
     }
-
 
 
 
@@ -292,6 +292,7 @@ class HomeController extends Controller
             "location"=>$request->get("location"),
             "payment_method"=>$request->get("payment_method"),
             "cccd"=>$request->get("cccd"),
+            "total" => $total,
             "drive_photo"=>$request->get("drive_photo")
         ]);
         foreach ($cart as $item){
@@ -386,7 +387,9 @@ class HomeController extends Controller
        $product_id = $request->get("product_id");
        $message = $request->get("message");
        $rating = $request->get("rating");
+       $order_id = $request->get("order_id");
         Feedback::create([
+            'order_id' =>$order_id,
             'user_id'=>$user_id,
             'product_id'=>$product_id,
             'feedback'=>$message,
@@ -533,13 +536,7 @@ class HomeController extends Controller
 
         return view("user.pages.cars",compact("products","categoryName","category","id"));
     }
-    public  function filterProduct(Request $request, Category $category){
-        $products = Product::where("category_id",$category->id)->Search($request)->FilterSeat($request)->FilterColor($request)->PriceMin($request)->PriceMax($request)->orderBy("created_at","desc")->paginate(20);
-        $categoryName = $category->name;
 
-
-        return view("user.pages.cars",compact("categoryName","category","products"));
-    }
     public function confirmUser($order , Request $request){
         $orders = Order::find("$order");
 
@@ -588,18 +585,8 @@ class HomeController extends Controller
         return view("user.pages.detailsBill",compact("orders"));
     }
 
-    public function cars_list(){
 
-        $products = Product::orderBy("created_at","desc")->paginate(9);
-        return view("user.pages.cars_list",compact("products"));
-    }
-    public function filterProducts(Request $request){
-        $products = Product::Search($request)->FilterSeat($request)->FilterColor($request)->PriceMin($request)->PriceMax($request)->orderBy("id","desc")->paginate(20);
 
-        return view("user.pages.cars_list",[
-            "products"=>$products
-        ]);
-    }
 
     public function addExtend(Product $product, Order $order){
 
