@@ -308,8 +308,9 @@
                             @php
                                 $totalCost = 0;
                                 $chiphi = \App\Models\OverdueCosts::where('order_id',$orders->id)->first();
-                                $cp = $chiphi->costs;
-                                $totalCost = $totalCost + $cp;
+                                if ($chiphi)
+                                    {$totalCost += $chiphi->costs;}
+
                                 $expenses = $orders->costsIncurred; // Lấy danh sách chi phí liên quan đến order hiện tại
                                 foreach ($expenses as $expense) {
                                     $totalCost += $expense->price; // Tính tổng expense
@@ -349,8 +350,8 @@
                                 @php
                                     $totalCost = 0;
                                     $chiphi = \App\Models\OverdueCosts::where('order_id',$orders->id)->first();
-                            $cp = $chiphi->costs;
-                            $totalCost = $totalCost + $cp;
+                                  if ($chiphi)
+                                    {$totalCost += $chiphi->costs;}
                                     $expenses = $orders->costsIncurred; // Lấy danh sách chi phí liên quan đến order hiện tại
                                     foreach ($expenses as $expense) {
                                         $totalCost += $expense->price; // Tính tổng expense
