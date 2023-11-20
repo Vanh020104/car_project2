@@ -6,10 +6,11 @@
         <div style="margin: auto;overflow: auto;max-height:100%">
            @if($feedback_today->count() > 0)
                 <table >
-                    <h1 style="margin-top: 20px;margin-bottom: 20px;text-align: center;color: darkolivegreen;font-size: 20px" class="text-xl font-bold text-black dark:text-white" >Feedbacks New</h1>
+                    <h1 style="margin-top: 20px;margin-bottom: 20px;text-align: center;color: darkolivegreen;font-size: 28px" class="text-xl font-bold text-black dark:text-white" >Feedbacks New</h1>
 
                     <thead>
                     <tr>
+                        <th style="text-align: center">Order Id</th>
                         <th style="text-align: center">NameCustomer</th>
                         <th style="text-align: center">NameCar</th>
                         <th style="width: 230px;text-align: center">Thumbnail</th>
@@ -21,11 +22,12 @@
                     @foreach($feedback_today as $item)
                         <tbody>
                         <tr>
+                            <td style="text-align: center">{{$item->order_id}}</td>
                             <td style="text-align: center">{{$item->user->name}}</td>
                             <td style="text-align: center;">{{$item->product->name}}</td>
                             <td><img style="border-radius: 4px" src="{{$item->product->thumbnail}}" alt=""></td>
                             <td style=" width: 200px; /* Đặt chiều rộng của phần tử chứa văn bản */
- word-break: break-all;">{{$item->feedback}}</td>
+ word-break: break-all;text-align: center">{{$item->feedback}}</td>
                             <td style="text-align: center">
                                 @for($i = 1 ;$i<=$item->rating;$i++)
                                     <i style="color: #cece05" class="fa-solid fa-star"></i>
@@ -48,6 +50,7 @@
 
                 <thead>
                 <tr>
+                    <th style="text-align: center">Order Id</th>
                     <th style="text-align: center">NameCustomer</th>
                     <th style="text-align: center">NameCar</th>
                     <th style="width: 230px;text-align: center">Thumbnail</th>
@@ -59,11 +62,12 @@
                 @foreach($feedbacks as $item)
                     <tbody>
                     <tr>
+                        <td style="text-align: center">{{$item->order_id}}</td>
                         <td style="text-align: center">{{$item->user->name}}</td>
                         <td style="text-align: center;">{{$item->product->name}}</td>
                         <td><img style="border-radius: 4px" src="{{$item->product->thumbnail}}" alt=""></td>
                         <td style=" width: 200px; /* Đặt chiều rộng của phần tử chứa văn bản */
- word-break: break-all;">{{$item->feedback}}</td>
+ word-break: break-all;text-align: center">{{$item->feedback}}</td>
                         <td style="text-align: center">
                             @for($i = 1 ;$i<=$item->rating;$i++)
                                 <i style="color: #cece05" class="fa-solid fa-star"></i>

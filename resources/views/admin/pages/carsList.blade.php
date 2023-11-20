@@ -1,6 +1,18 @@
 @extends("admin.layouts.admin_app")
 @section("content")
+<style>table {
+        border-collapse: separate;
+        border-spacing: 0;
+    }
 
+    th,
+    td {
+
+        border-right: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        border-top: 1px solid #ccc;
+
+    }</style>
 
             <div style="overflow: auto">
                 <h2 style="text-align: center;color: #1a1af8;font-size: 28px;margin-top: 20px;margin-bottom: 20px" class="text-xl font-bold text-black dark:text-white">
@@ -36,8 +48,15 @@
                 <div class="card-body table-responsive p-0">
                     <table style="margin-left: 50px" class="table table-hover text-nowrap">
                         <thead>
+                        <style>
+                            th{
+                                background-color: blue;
+                                padding-top: 12px;padding-bottom: 12px;
+                                color: white;
+                            }
+                        </style>
                         <tr>
-                            <th style="width: 50px;margin-left: 50px">No.</th>
+                            <th  style="width: 50px;margin-left: 50px; border-left: 1px solid #ccc;">No.</th>
                             <th style="width: 250px">Image</th>
                             <th style="width: 200px">Name</th>
                             <th style="width: 130px">Price</th>
@@ -49,8 +68,8 @@
                         <tbody>
                         @foreach($products as $item)
                             <tr>
-                                <td style="text-align: center;">#{{$loop->index+1}}</td>
-                                <td  style="text-align: center;"><img style="border-radius: 8px;margin-bottom: 15px;margin-left: 25px" width="200px" src="{{$item->thumbnail}}" /></td>
+                                <td style="text-align: center; border-left: 1px solid #ccc;">#{{$loop->index+1}}</td>
+                                <td  style="text-align: center;"><img style="border-radius: 8px;margin-bottom: 15px;margin-left: 25px;margin-top: 15px;" width="200px" src="{{$item->thumbnail}}" /></td>
                                 <td style="text-align: center;">{{$item->name}}</td>
                                 <td style="text-align: center;">{{$item->price}}</td>
                                 <td style="text-align: center;">{{$item->qty}}</td>

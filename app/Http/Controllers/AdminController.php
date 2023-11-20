@@ -16,6 +16,7 @@ use App\Models\Expense;
 use App\Models\Feedback;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -184,11 +185,6 @@ class AdminController extends Controller
         $stt = $request->get("status");
         $order->status = $stt;
         $order->save();
-
-
-
-
-
         if ($request->hasFile('images')) {
             $images = $request->file('images');
 
@@ -217,7 +213,20 @@ class AdminController extends Controller
         $product = Product::find($od->product_id);
         $product_price = $product->price;
         $price_hours = $product->hourly_price;
-        if( $end_date!= $start_date && $date_now<$end_date){
+        if($start_date != $end_date && $date_now == $start_date) {
+            $grandtotal = $product_price * 1;
+            $order->grand_total = $grandtotal;
+            $order->total = $grandtotal;
+            $order->save();
+            $result = DB::table("order_products")
+                ->where('order_id',$order->id)
+                ->update([
+                    'end_date' => $date_now,
+                    'end_time' => $time_now,
+                    'buy_qty' => "1",
+                ]);
+        }
+        if( $end_date!= $start_date && $date_now<$end_date && $date_now!= $start_date){
             $ngay1 = Carbon::createFromFormat('Y-m-d H:i:s', $start_date . ' ' . $start_time); // Mốc thời gian đầu
             $ngay2 = Carbon::createFromFormat('Y-m-d H:i:s', $date_now . ' ' . $time_now); // Mốc thời gian cuối
             $hieuGio = $ngay2->diffInHours($ngay1);
@@ -252,7 +261,8 @@ class AdminController extends Controller
             $order->grand_total = $amount_new;
             $order->save();
 
-        } else if ($endDateTime < $time){
+        }
+        else if ($endDateTime < $time){
             $diffInHours = $time->diffInHours($endDateTime);
             $so_hour = round($diffInHours);
             $db_hour = 30;
@@ -267,7 +277,8 @@ class AdminController extends Controller
                     $order->total = $order->total + $denbu;
                     $order->save();
 
-            } else if ($so_hour > 24){
+            } else
+                if ($so_hour > 24){
                 $db_day = 300;
                 $so_ngay = $so_hour / 24 ;
                 $ngay = ceil($so_ngay);
@@ -283,10 +294,7 @@ class AdminController extends Controller
 
 
             }
-
         }
-
-
 
         return redirect()->back()->with('success', 'Success');
     }
@@ -377,5 +385,34 @@ class AdminController extends Controller
 //            ->bcc("mail quan ly")
             ->send(new OverdueRemind($order));
         return redirect()->to("/admin/overdueReminder")->with("success","Successfully");
+    }
+    public function users(){
+        $users = User::whereNull('role')->orderBy('created_at','desc')->paginate(10);
+        return view("admin.pages.users",compact("users"));
+    }
+    public function newUser(){
+        return view("admin.pages.newUser");
+    }
+    public function postNewUser(Request $request){
+        // Validate dữ liệu
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+            'confirm-password' => 'required|same:password',
+        ]);
+
+        // Lưu dữ liệu vào cơ sở dữ liệu
+        $user = new User();
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = bcrypt($request->input('password'));
+        $user->save();
+
+        // Thực hiện các thao tác khác sau khi lưu dữ liệu
+
+        // Chuyển hướng hoặc hiển thị thông báo thành công
+        return redirect('/admin/users')->with('success', 'Thêm người dùng thành công!');
+
     }
 }

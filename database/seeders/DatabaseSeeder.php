@@ -23,11 +23,11 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt("12345678"),
             'role' => "ADMIN"
         ]);
-        \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(50)->create();
 
         \App\Models\Category::factory("5")->create();
         \App\Models\Product::factory("10")->create();
-//        \App\Models\Order::factory("100")->create();
+//       \App\Models\Order::factory("20")->create();
 
         $orders = Order::all();// select * from orders
         foreach ($orders as $order) {

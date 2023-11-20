@@ -107,14 +107,7 @@
                                     fill=""
                                 />
                             </svg>
-                            @php
-                                $currentDate = date('Y-m-d');
-                                    $remind_return = \App\Models\Order::where('status','3')->whereHas('products', function ($query) use ($currentDate) {
-                                               $query->whereDate('end_date', $currentDate)->where('stt_remind','0');
-                                           })->get();
-                                    $totalRemind = $remind_return->count();
-
-echo "Cars Nearing The End Of Rental Period ($totalRemind)";@endphp
+        Cars Nearing The End Of Rental Period
 
                         </a>
                     </li>
@@ -182,6 +175,18 @@ echo "Expired Car Rental Application($totalRemind)";@endphp
                         </a>
                     </li>
                     <!-- Menu Item Tables -->
+                    <li>
+                        <a
+                            class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
+                            href="{{url("admin/users")}}"
+                            @click="selected = (selected === 'Tables' ? '':'Tables')"
+                            :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Tables') && (page === 'Tables') }"
+                        >
+                            <i class="fa-regular fa-user"></i>
+
+                            Users
+                        </a>
+                    </li>
                     <!-- Menu Item Tables -->
                     <li>
                         <a
