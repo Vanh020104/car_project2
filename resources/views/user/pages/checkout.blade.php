@@ -138,10 +138,16 @@
                                     <div class="col-md-6">
                                         <p>ID card photo<span>*</span></p>
                                         <input type="file" name="cccd" id="cccd"  style="border: none; padding: 0">
+                                        @error("cccd")
+                                        <p class="text-danger"><i>{{$message}}</i></p>
+                                        @enderror
                                     </div>
                                     <div class="col-md-6">
                                         <p>Driver's license photo<span>*</span></p>
                                         <input type="file" name="drive_photo" id="drive_photo"  style="border: none; padding: 0;">
+                                        @error("drive_photo")
+                                        <p class="text-danger"><i>{{$message}}</i></p>
+                                        @enderror
                                     </div>
                                 </div>
 

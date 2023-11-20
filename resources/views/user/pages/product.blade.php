@@ -130,13 +130,7 @@
                         </div>
 
 
-                        {{--                        map--}}
-                        <div style="margin-top: 30px">
-                            <span class="car_rental_paper" >Vehicle location</span>
-                            <iframe style="margin-top: 10px" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.096949073247!2d105.77971427479608!3d21.028806487777867!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313454b32b842a37%3A0xe91a56573e7f9a11!2zOGEgVMO0biBUaOG6pXQgVGh1eeG6v3QsIE3hu7kgxJDDrG5oLCBD4bqndSBHaeG6pXksIEjDoCBO4buZaSAxMDAwMDAsIFZpZXRuYW0!5e0!3m2!1sen!2s!4v1696752723180!5m2!1sen!2s" width="600" height="370" style="border:0;"
-                                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                        </div>
-                        {{--                        end map--}}
+
                     </div>
                 </div>
 
@@ -293,6 +287,7 @@
                         </div>
                     </div>
 
+
 {{--////////////////////////////--}}
 {{--                    ?modal--}}
                     <div id="myModal" class="modal_vanh">
@@ -377,38 +372,51 @@
                     </div>
 
 
-
                 </div>
             </div>
     </section>
-    <section id="section-settings" class="bg-gray-100">
-        <div class="container">
-            <div class="col-lg-6 offset-lg-3 text-center">
-                <h2>Product Reviews</h2>
-                <div class="field-set mb20">
-                    <div id="rateYo" style="margin-left: 230px"></div>
+
+
+<div style="display:flex; margin: 0 120px; justify-content: space-between;position: relative;bottom: 100px">
+    {{--                        map--}}
+    <div style=" display: grid">
+        <span class="car_rental_paper" >Vehicle location</span>
+        <iframe style="margin-top: 10px" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.096949073247!2d105.77971427479608!3d21.028806487777867!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313454b32b842a37%3A0xe91a56573e7f9a11!2zOGEgVMO0biBUaOG6pXQgVGh1eeG6v3QsIE3hu7kgxJDDrG5oLCBD4bqndSBHaeG6pXksIEjDoCBO4buZaSAxMDAwMDAsIFZpZXRuYW0!5e0!3m2!1sen!2s!4v1696752723180!5m2!1sen!2s" width="600" height="370" style="border:0;"
+                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    {{--                        end map--}}
+
+
+    {{--    feedback--}}
+    <div id="section-settings" style="width: 600px">
+        <span class="car_rental_paper">Product Reviews</span>
+        <div style=" margin-top: 14px" class="de-box mb25">
+            <div style="text-align: center">
+                <span class="car_rental_paper" >Average rating</span>
+                <div class="field-set mb20" style="text-align: center">
+                    <div style="margin-left: 32%" id="rateYo"></div>
                 </div>
             </div>
             <div class="row">
-                @foreach($productReview as $review)
+                @foreach($productReview->sortByDesc('created_at')->take(2) as $review)
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-body">
-                                <div class="review-container">
-                                    <h4>{{ $review->user->name }}</h4>
-                                    <div class="rateYo-{{ $review->id }}"></div>
-                                    <p style="display: none">Rating: {{ $review->rating }}</p>
-
-                                    <p style="margin-top:10px ">{{ $review->feedback }}</p>
-
-                                </div>
+                            <div>
+                                <span style="font-size: 18px; font-weight: 500">{{$review->user_id}}.{{ $review->user->name }}</span>
+                                <div class="rateYo-{{ $review->id }}"></div>
+                                <p style="display: none">Rating: {{ $review->rating }}</p>
+                                <p style="margin-top:10px "><i class="fa-solid fa-pen" style="color: #1ecb15; margin-right: 5px"></i>{{ $review->feedback }}</p>
                             </div>
                         </div>
                     </div>
                 @endforeach
+
             </div>
         </div>
-    </section>
+    </div>
+    {{--    end feedback--}}
+</div>
+
 
     {{--    một số car--}}
     <section id="section-cars">
@@ -595,14 +603,6 @@
 <!-- content close -->
 </body>
 <style>
-    .review-container {
-        border: 1px solid #D62D2D;
-        padding: 30px;
-        margin-left: 100px;
-        margin-right: 100px;
-        border-radius: 5px;
-
-    }
     .giay_to_xe{
         margin: 80px 0;
     }
@@ -877,10 +877,6 @@
 
 
 </script>
-
-
-
-
 
 <a href="#" id="back-to-top"></a>
 </html>
