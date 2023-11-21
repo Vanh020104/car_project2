@@ -300,7 +300,7 @@ class AdminController extends Controller
     }
     public function damage (Request $request , Order $order){
         $stt = $request->get("status");
-
+        $product_id = $request->get("product_id");
         $names = $request->input('name');
         $prices = $request->input('price');
         $images = $request->file('image');
@@ -319,7 +319,8 @@ class AdminController extends Controller
                 'order_id' => $order->id,
                 'damage' => $name,
                 'price' => $price,
-                'image'=>$imagePath
+                'image'=>$imagePath,
+                "product_id"=>$product_id
             ]);}
         $order->total = $order->total + $total_damage;
         $order->save();
@@ -416,5 +417,14 @@ class AdminController extends Controller
         // Chuyển hướng hoặc hiển thị thông báo thành công
         return redirect('/admin/users')->with('success', 'Thêm người dùng thành công!');
 
+    }
+    public function historyDamages(Request $request){
+        $products = Product::all();
+        $expenses = Expense::FilterProduct($request)->orderBy("created_at","desc")->paginate(5);
+        return view("admin.pages.historyDamages",compact("expenses","products"));
+    }
+    public function historyUser(User $user){
+        $user_id = $user->id;
+        return view("admin.pages.historyUser");
     }
 }

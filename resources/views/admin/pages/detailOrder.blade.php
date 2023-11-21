@@ -265,6 +265,11 @@
                                 <form id="expense-form" method="POST" action="{{url("/admin/damage",$order->id)}}" enctype="multipart/form-data">
                                     @csrf
                                     <div id="expense-rows">
+                                        @php
+                                            $orderProducts = DB::table('order_products')->where('order_id', $order->id)->first();
+                                            $product_id = $orderProducts->product_id;
+                                        @endphp
+                                        <input type="hidden" name="product_id" value="{{$product_id}}">
                                         <div style="display: flex" class="expense-row">
                                             <div><input style="margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;padding-left: 10px" type="text" name="name[]" placeholder="Damage"></div>
                                             <div><input onchange="handleFileSelect(this)" style="margin-left:30px;width:100px;margin-top: 10px;border: #949393 solid 2px;border-radius: 5px;" type="file" name="image[]" accept="image/*" placeholder="Image">

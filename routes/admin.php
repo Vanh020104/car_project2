@@ -24,6 +24,10 @@ Route::post("/remindOverdue/{order}", [\App\Http\Controllers\AdminController::cl
 Route::get("/users", [\App\Http\Controllers\AdminController::class, "users"]);
 Route::get("/newUser", [\App\Http\Controllers\AdminController::class, "newUser"]);
 Route::post("/newUser",[\App\Http\Controllers\AdminController::class,"postNewUser"]);
+Route::get("/historyDamages",[\App\Http\Controllers\AdminController::class,"historyDamages"]);
+Route::get("/historyUser/{user}",[\App\Http\Controllers\AdminController::class,"historyUser"]);
+
+
 Route::prefix("product")->group(function (){
     Route::get("/create", [\App\Http\Controllers\ProductController::class, "create"]);
     Route::post("/create", [\App\Http\Controllers\ProductController::class, "store"]);

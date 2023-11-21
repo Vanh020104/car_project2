@@ -9,7 +9,7 @@
         table {
             border-collapse: collapse;
             width: 100%;
-            max-width: 800px; /* Chiều rộng tối đa của bảng */
+            max-width: 1000px; /* Chiều rộng tối đa của bảng */
             height: 230px; /* Chiều cao của bảng */
             margin-left: auto; /* Cân nhau khoảng cách trái */
             margin-right: auto; /* Cân nhau khoảng cách phải */
@@ -45,10 +45,13 @@
         }
     </style>
 
-   <div style="display: block;margin-right: auto;margin-left: auto">
-    <div> <h2 style="text-align: center;color: #1a1af8;font-size: 28px;margin-top: 20px;margin-bottom: 20px" class="text-xl font-bold text-black dark:text-white">
+   <div style="display: block;margin-right: auto;margin-left: auto;overflow: auto;::-webkit-scrollbar {
+    width: 0.5em; /* Đặt độ rộng của thanh cuộn */
+    background-color: transparent; /* Đặt màu nền của thanh cuộn */
+}">
+    <div> <h2 style="text-align: center;color: #1a1af8;font-size: 28px;margin-top: 40px;margin-bottom: 20px" class="text-xl font-bold text-black dark:text-white">
 
-            Users
+            Customers
         </h2>
         <style>
             .button {
@@ -79,14 +82,20 @@
            <table  >
                <tr>
                    <th style="width: 100px">ID</th>
-                   <th style="width: 300px">Name</th>
-                   <th style="width: 500px">Email</th>
+                   <th style="width: 380px">Name</th>
+                   <th style="width: 600px">Email</th>
+                   <th style="width: 400px">Car Rental History</th>
                </tr>
                @foreach($users as $item)
                    <tr>
                        <td>{{$item->id}}</td>
                        <td>{{$item->name}}</td>
                        <td>{{$item->email}}</td>
+                       <td>
+                           <form action="{{url("admin/historyUser",['user'=>$item->id])}}">
+                               <button style="padding-top: 5px;padding-bottom: 5px;padding-left: 10px;padding-right: 10px;background-color: blue;color: white;border-radius: 6px ;">Details</button>
+                           </form>
+                       </td>
                    </tr>
                @endforeach
 

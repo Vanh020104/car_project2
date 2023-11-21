@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedDecimal("price");
             $table->string("image");
             $table->unsignedBigInteger("order_id")->nullable();
+            $table->integer("product_id");
             $table->foreign("order_id")->references("id")->on("orders");
             $table->timestamps();
         });
