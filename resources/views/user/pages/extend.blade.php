@@ -181,10 +181,7 @@
                                             <a href="{{url("confirmUser",['order'=>$order->id ] )}}" style="background-color: blue;color: white;padding-left: 5px;padding-right: 5px;border-radius: 8px;padding-top: 4px;padding-bottom: 4px;">Car Received</a>
                                         @endif
                                         @if($order->status == 3)
-                                            <p style="font-size: 11px;background-color:#a9a919;color: white ;border-radius: 15px;padding-left: 4px;padding-right: 4px">Currently Renting</p>
-                                        @endif
-                                        @if($order->status == 4)
-                                            <a href="{{url("add_extend",['order'=>$order->id ] )}}" style="background-color: blue;color: white;padding:10px 20px;border-radius: 8px;padding-top: 4px;padding-bottom: 4px;">Extend</a>
+                                                <a href="{{url("add_extend",['order'=>$order->id ] )}}" style="background-color: blue;color: white;padding:10px 20px;border-radius: 8px;padding-top: 4px;padding-bottom: 4px;">Extend</a>
                                         @endif
                                         @if($order->status == 5)
                                             <p style="text-align:center;font-size: 11px;background-color:#a9a919;color: white ;border-radius: 15px;padding-left: 4px;padding-right: 4px">Car Returned</p>

@@ -267,7 +267,7 @@
             </div>
             <div style="display: flex;width: 650px;margin-left: auto; margin-right: auto ; margin-top: 10px">
                 <i class="fa-solid fa-arrows-turn-right" style="color: #1ecb15; margin: 3px 10px 0 10px;font-size: 20px"></i>
-                <p style=" padding: 0; text-align: center">Your deposit of  ${{$item->deposit}} will be refunded when the car rental is completed!</p>
+                <p style=" padding: 0; text-align: center">Your deposit of will be refunded when the car rental is completed!</p>
                 <i class="fa-solid fa-arrows-turn-right fa-flip-horizontal" style="color: #1ecb15; margin: 3px 10px 0 10px;font-size: 20px"></i>
             </div>
 

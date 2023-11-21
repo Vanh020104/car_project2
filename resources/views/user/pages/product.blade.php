@@ -381,8 +381,8 @@
     {{--                        map--}}
     <div style=" display: grid">
         <span class="car_rental_paper" >Vehicle location</span>
-        <iframe style="margin-top: 10px" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.096949073247!2d105.77971427479608!3d21.028806487777867!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313454b32b842a37%3A0xe91a56573e7f9a11!2zOGEgVMO0biBUaOG6pXQgVGh1eeG6v3QsIE3hu7kgxJDDrG5oLCBD4bqndSBHaeG6pXksIEjDoCBO4buZaSAxMDAwMDAsIFZpZXRuYW0!5e0!3m2!1sen!2s!4v1696752723180!5m2!1sen!2s" width="600" height="370" style="border:0;"
-                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+        <iframe style="margin-top: 10px" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1862.048279038311!2d105.78124841145892!3d21.028822135272527!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab4cd376479b%3A0xbc2e0bb9db373ed2!2zOGEgVMO0biBUaOG6pXQgVGh1eeG6v3QsIE3hu7kgxJDDrG5oLCBD4bqndSBHaeG6pXksIEjDoCBO4buZaSAxMDAwMDAsIFZpZXRuYW0!5e0!3m2!1sen!2s!4v1700493075329!5m2!1sen!2s" width="600" height="370" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
     {{--                        end map--}}
 
