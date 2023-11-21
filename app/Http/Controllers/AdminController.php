@@ -354,6 +354,10 @@ class AdminController extends Controller
         $orders = Order::find($id);
         return view("admin.pages.billOrderCompleted",compact("orders"));
     }
+    public function billOrderCompletedUser($id){
+        $orders = Order::find($id);
+        return view("admin.pages.billOrderCompletedUser",compact("orders"));
+    }
     public function feedback(Request $request){
         $products = Product::all();
         $categories = Category::all();
@@ -425,6 +429,7 @@ class AdminController extends Controller
     }
     public function historyUser(User $user){
         $user_id = $user->id;
-        return view("admin.pages.historyUser");
+        $orders_completed = Order::where("user_id",$user_id)->where('status','7')->paginate(10);
+        return view("admin.pages.historyUser",compact("orders_completed"));
     }
 }

@@ -26,7 +26,7 @@ Route::get("/newUser", [\App\Http\Controllers\AdminController::class, "newUser"]
 Route::post("/newUser",[\App\Http\Controllers\AdminController::class,"postNewUser"]);
 Route::get("/historyDamages",[\App\Http\Controllers\AdminController::class,"historyDamages"]);
 Route::get("/historyUser/{user}",[\App\Http\Controllers\AdminController::class,"historyUser"]);
-
+Route::get("/billOrderCompletedUser/{id}", [\App\Http\Controllers\AdminController::class, "billOrderCompletedUser"]);
 
 Route::prefix("product")->group(function (){
     Route::get("/create", [\App\Http\Controllers\ProductController::class, "create"]);
