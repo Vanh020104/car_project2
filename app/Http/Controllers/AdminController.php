@@ -13,6 +13,7 @@ use App\Mail\OrderMail;
 use App\Mail\OverdueRemind;
 use App\Models\Category;
 use App\Models\Expense;
+use App\Models\Favorite;
 use App\Models\Feedback;
 use App\Models\Order;
 use App\Models\Product;
@@ -430,6 +431,8 @@ class AdminController extends Controller
     public function historyUser(User $user){
         $user_id = $user->id;
         $orders_completed = Order::where("user_id",$user_id)->where('status','7')->paginate(10);
-        return view("admin.pages.historyUser",compact("orders_completed"));
+        $orders_dt = Order::where("status",'!=','7')->where('status','!=','6')->paginate(10);
+        $favorites = Favorite::where('user_id',$user_id)->paginate(10);
+        return view("admin.pages.historyUser",compact("orders_completed","favorites","orders_dt"));
     }
 }
