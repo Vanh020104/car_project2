@@ -728,6 +728,7 @@
 {{--cấm ng dùng chọn date sau ngày hiện tại--}}
 <script>
     function checkDate() {
+        // check date
         var selectedDate = new Date(document.getElementById("start_date").value);
         var currentDate = new Date();
         currentDate.setHours(0, 0, 0, 0);
@@ -735,6 +736,8 @@
             alert("Please select the rental start date again!");
             document.getElementById("start_date").value = "";
         }
+
+
     }
 
 

@@ -113,7 +113,8 @@
         $(function () {
 
             $("#rateYo").rateYo({
-                rating: 0
+                rating: 0,
+                precision: 0,
             }).on("rateyo.set", function (e, data) {
                 $('#rating').val(data.rating);
                 //alert("The rating is set to " + data.rating + "!");
