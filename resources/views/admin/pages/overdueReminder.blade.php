@@ -76,8 +76,8 @@
             </style>
         </div>
     @else
-        <div  style="margin: auto;border: #29293a solid 1px ; background-color: #3f3f5b;padding-left: 15px;padding-right: 15px;padding-top: 5px;padding-bottom: 5px;color: white;border-radius: 6px">
-            <h1 style="font-size: 25px;">No Overdue Car Rental Applications</h1>
-        </div>
+        <p style="font-size: 25px;text-align: center;color: blue;margin-top: auto;margin-bottom: auto;margin-left: auto;margin-right: auto" class="text-xl font-bold text-black dark:text-white">
+            No Overdue Car Rental Applications</p>
+
     @endif
 @endsection

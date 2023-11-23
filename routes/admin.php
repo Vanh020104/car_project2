@@ -29,6 +29,8 @@ Route::get("/historyUser/{user}",[\App\Http\Controllers\AdminController::class,"
 Route::get("/billOrderCompletedUser/{id}", [\App\Http\Controllers\AdminController::class, "billOrderCompletedUser"]);
 Route::get("/remind/{order}",[\App\Http\Controllers\AdminController::class,"remind"]);
 Route::put("/processingCancel/{order}",[\App\Http\Controllers\AdminController::class,"processingCancel"]);
+Route::get("/cancellationRequest",[\App\Http\Controllers\AdminController::class,"cancellationRequest"]);
+Route::put("/confirmCancel/{order}",[\App\Http\Controllers\AdminController::class,"confirmCancel"]);
 Route::prefix("product")->group(function (){
     Route::get("/create", [\App\Http\Controllers\ProductController::class, "create"]);
     Route::post("/create", [\App\Http\Controllers\ProductController::class, "store"]);

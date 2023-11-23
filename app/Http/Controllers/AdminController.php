@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CreateConfirmCancel;
 use App\Events\CreateConfirmCompleted;
 use App\Events\CreateConfirmOrder;
 use App\Events\CreateNewOrder;
 use App\Events\CreateNewRemindReturnCar;
+use App\Mail\ConfirmCancel;
 use App\Mail\ConfirmCompleted;
 use App\Mail\ConfirmOrder;
 use App\Mail\NewRemindReturnCar;
@@ -454,6 +456,24 @@ class AdminController extends Controller
         $stt = $request->get("status");
         $order->status = $stt;
         $order->save();
+        return redirect()->back()->with('success', 'Success');
+
+    }
+    public function cancellationRequest(){
+        $orders_wc = Order::where("status","9")->paginate(10);
+        return view("admin.pages.cancellationRequest",compact("orders_wc"));
+    }
+    public function confirmCancel($order , Request $request){
+        $stt = $request->get("status");
+        $order = Order::find($order);
+        $order->status = $stt;
+        $order->save();
+        Mail::to($order->email)
+//            ->cc("mail nhan vien")
+//            ->bcc("mail quan ly")
+            ->send(new ConfirmCancel($order));
+
+        event(new CreateConfirmCancel($order));
         return redirect()->back()->with('success', 'Success');
 
     }
