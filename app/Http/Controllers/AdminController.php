@@ -205,6 +205,8 @@ class AdminController extends Controller
             }
         }
         $time = Carbon::now();
+        $order->time_completed = $time;
+        $order->save();
         $date_now = Carbon::now()->format('Y-m-d');
         $time_now = Carbon::now()->format('H:i:s');
         $od = DB::table('order_products')->where("order_id",$order->id)->first();

@@ -558,8 +558,12 @@ class HomeController extends Controller
                 ->whereNotIn('status', [ Order::COMPLETE,Order::CANCEL])
                 ->with('productss')
                 ->get();
+            $orders_cancel = $user->orders()
+                ->whereIn('status', [ Order::CANCEL])
+                ->with('productss')
+                ->get();
 
-            return view('user.pages.extend', ['orders' => $orders ,'orders_dt'=> $order_dt]);
+            return view('user.pages.extend', ['orders' => $orders ,'orders_dt'=> $order_dt,'orders_cancel'=>$orders_cancel]);
         }}
     public function confirmUserCompleted($order , Request $request){
         $orders = Order::find("$order");
@@ -579,8 +583,12 @@ class HomeController extends Controller
                 ->whereNotIn('status', [ Order::COMPLETE,Order::CANCEL])
                 ->with('productss')
                 ->get();
+            $orders_cancel = $user->orders()
+                ->whereIn('status', [ Order::CANCEL])
+                ->with('productss')
+                ->get();
 
-            return view('user.pages.extend', ['orders' => $orders ,'orders_dt'=> $order_dt]);
+            return view('user.pages.extend', ['orders' => $orders ,'orders_dt'=> $order_dt,'orders_cancel'=>$orders_cancel]);
         }
     }
     public function detailsBill($order){

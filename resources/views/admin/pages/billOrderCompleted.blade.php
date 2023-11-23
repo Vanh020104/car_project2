@@ -405,7 +405,7 @@
                                                             </table>
                                                         </div>
                                                     @endif
-                                                        @if($orders->overdueCost->count() > 0)
+                                                        @if($orders->overdueCost)
                                                         <h1 style="margin: auto;font-size: 30px;color: #75943f">Overdue Compensation</h1>
                                                         <table style="margin-bottom: 20px">
                                                             <tr>
