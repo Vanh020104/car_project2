@@ -22,6 +22,7 @@
                         <div class="form-group">
                             <label>Category</label> <br>
                             <select name="category_id" class="category_form">
+                                <option value="">Choose category</option>
                                 @foreach($categories as $item)
                                     <option @if($item->id==old("category_id")) selected @endif value="{{$item->id}}">{{$item->name}}</option>
                                 @endforeach

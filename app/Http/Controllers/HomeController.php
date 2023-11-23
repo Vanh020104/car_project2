@@ -620,6 +620,6 @@ class HomeController extends Controller
         $orderProduct->update($orderProductData);
 
         // Redirect hoặc trả về thông báo thành công
-        return redirect()->back()->with('success', 'Cập nhật thông tin thành công!');
+        return redirect()->to("/renewed")->with('success', 'Cập nhật thông tin thành công!');
     }
 }
