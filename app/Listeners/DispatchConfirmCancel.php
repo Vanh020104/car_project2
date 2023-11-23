@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Events\CreateConfirmCancel;
 use App\Events\CreateConfirmCompleted;
 use App\Mail\ConfirmCancel;
 use App\Mail\ConfirmCompleted;
@@ -17,7 +18,7 @@ class DispatchConfirmCancel
     /**
      * Handle the event.
      */
-    public function handle(CreateConfirmCompleted $event): void
+    public function handle(CreateConfirmCancel $event): void
     {
         $order = $event->order;
         Mail::to($order->email)
