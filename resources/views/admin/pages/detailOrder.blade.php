@@ -170,11 +170,10 @@
         @endif
         @if($order->status == 3)
             <div style="display: flex;justify-content: space-between">
-                <form action="{{url("admin/updateStatus",['order'=>$order->id])}}" method="POST">
-                    @csrf
-                    @method('PUT')
+                <form action="{{url("admin/remind",['order'=>$order->id])}}" >
+
                     <div style="display:flex;justify-content: space-between" class="btn-xn">
-                        <a style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: green;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" href="">Reminder to return the car</a>
+                        <button style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: green;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px" href="">Reminder to return the car</button>
                     </div>
                 </form>
                 <button id="openModalButton" style="margin-left:50px;margin-top: 15px;border: red solid 1px;border-radius: 6px;background-color: blue;color: white;padding-left: 17px;padding-right: 17px;padding-top: 4px;padding-bottom: 4px"  type="submit"  data-bs-toggle="modal" data-bs-target="#exampleModal">

@@ -427,8 +427,11 @@ class HomeController extends Controller
                 ->whereNotIn('status', [ Order::COMPLETE,Order::CANCEL])
                 ->with('productss')
                 ->get();
-
-            return view('user.pages.extend', ['orders' => $orders ,'orders_dt'=> $order_dt]);
+            $orders_cancel = $user->orders()
+                ->whereIn('status', [ Order::CANCEL])
+                ->with('productss')
+                ->get();
+            return view('user.pages.extend', ['orders' => $orders ,'orders_dt'=> $order_dt,'orders_cancel'=>$orders_cancel]);
         } else {
             return redirect()->route('login');
         }

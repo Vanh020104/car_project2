@@ -435,4 +435,26 @@ class AdminController extends Controller
         $favorites = Favorite::where('user_id',$user_id)->paginate(10);
         return view("admin.pages.historyUser",compact("orders_completed","favorites","orders_dt"));
     }
+    public function remind($order){
+        $stt = 1;
+
+
+
+        $order = Order::find($order);
+        Mail::to($order->email)
+//            ->cc("mail nhan vien")
+//            ->bcc("mail quan ly")
+            ->send(new NewRemindReturnCar($order));
+
+        event(new CreateNewRemindReturnCar($order));
+        return redirect()->back()->with('success', 'Success');
+    }
+    public function processingCancel($order , Request $request){
+        $order = Order::find($order);
+        $stt = $request->get("status");
+        $order->status = $stt;
+        $order->save();
+        return redirect()->back()->with('success', 'Success');
+
+    }
 }

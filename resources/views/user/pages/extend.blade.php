@@ -140,14 +140,14 @@
                         <table class="table de-table">
                             <thead>
                             <tr>
-                                <th scope="col"><span class="text-uppercase fs-12 text-gray">Order ID</span></th>
-                                <th scope="col"><span class="text-uppercase fs-12 text-gray">Car Name</span></th>
-                                <th scope="col"><span class="text-uppercase fs-12 text-gray">Pick Up Location</span></th>
+                                <th style="text-align: center" scope="col"><span class="text-uppercase fs-12 text-gray">Order ID</span></th>
+                                <th style="text-align: center" scope="col"><span class="text-uppercase fs-12 text-gray">Car Name</span></th>
+                                <th style="text-align: center" scope="col"><span class="text-uppercase fs-12 text-gray">Pick Up Location</span></th>
 
-                                <th scope="col"><span class="text-uppercase fs-12 text-gray">Pick Up Date</span></th>
-                                <th scope="col"><span class="text-uppercase fs-12 text-gray">Return Date</span></th>
-                                <th scope="col"><span style="width: 100px" class="text-uppercase fs-12 text-gray">Status</span></th>
-                                <th style="margin-left: 15px" scope="col"><span class="text-uppercase fs-12 text-gray">Action</span></th>
+                                <th style="text-align: center" scope="col"><span class="text-uppercase fs-12 text-gray">Pick Up Date</span></th>
+                                <th style="text-align: center" scope="col"><span class="text-uppercase fs-12 text-gray">Return Date</span></th>
+                                <th style="text-align: center" scope="col"><span style="width: 100px" class="text-uppercase fs-12 text-gray">Status</span></th>
+                                <th style="margin-left: 15px;text-align: center;" scope="col"><span class="text-uppercase fs-12 text-gray">Action</span></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -173,6 +173,7 @@
                                     <td style="margin-right: 10px">
                                         @if($order->status == 0)
                                             <p style="text-align:center;font-size: 11px;background-color:#a9a919;color: white ;border-radius: 15px;padding-left: 4px;padding-right: 4px">Processing</p>
+
                                         @endif
                                         @if($order->status == 1)
                                             <p style="text-align:center;font-size: 11px;background-color:#a9a919;color: white ;border-radius: 15px;padding-left: 4px;padding-right: 4px">Confirmed</p>
@@ -189,11 +190,32 @@
                                         @if($order->status == 8)
                                             <a href="{{url("confirmUserCompleted",['order'=>$order->id ] )}}" style="background-color: blue;color: white;padding-left: 5px;padding-right: 5px;border-radius: 8px;padding-top: 4px;padding-bottom: 4px;">Complete</a>
                                         @endif
+                                        @if($order->status ==9)
+                                                <p style="text-align:center;font-size: 11px;background-color:#a9a919;color: white ;border-radius: 15px;padding-left: 4px;padding-right: 4px">Pending Cancellation</p>
+                                            @endif
 
                                     </td>
                                     <td><div style="display:flex;margin-left: 10px">
-                                            <div><button style="background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Details</button></div>
-                                            <div><button style="margin-left:10px;background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Rent</button></div>
+                                            <div>
+                                                <form action="{{url("detailsBill",['order'=>$order->id])}}">
+                                                    <button type="submit" style="background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Details</button>
+                                                </form>
+                                            </div>
+                                            @if($order->status == 1)
+                                                <form action="{{url("admin/processingCancel",['order'=>$order->id])}}" method="post">
+                                                    @csrf
+                                                    @method("put")
+                                                    <div><button name="status" value="9" style="margin-left:10px;background-color: #B3FFCC;padding-left: 4px;padding-right: 4px;color: red;border-radius: 8px">Cancel</button></div>
+                                                </form>
+                                            @endif
+                                            @if($order->status == 0)
+                                                <form action="{{url("admin/processingCancel",['order'=>$order->id])}}" method="post">
+                                                    @csrf
+                                                    @method("put")
+                                                    <div><button name="status" value="9" style="margin-left:10px;background-color: #B3FFCC;padding-left: 4px;padding-right: 4px;color: red;border-radius: 8px">Cancel</button></div>
+                                                </form>
+                                            @endif
+
                                         </div></td>
                                 </tr>
                             @endforeach
@@ -253,7 +275,8 @@
                                                     <form action="{{url("detail",['products' => $product->slug])}}">
                                                         <button style="margin-left:10px;background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Rent</button>
                                                     </form>
-                                                @endforeach </div>
+                                                @endforeach
+                                            </div>
                                         </div></td>
                                     <td><form action="{{url("feedback",['order'=>$order->id])}}">
                                             <button type="submit" style="background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Feedback</button>
@@ -263,6 +286,61 @@
                         </table>
                     </div>
                 @endif
+                    @if($orders_cancel->count() >0)
+                        <div class="card p-4 rounded-5 mb25">
+                            <h4>Cancelled Orders</h4>
+
+                            <table class="table de-table">
+                                <thead>
+                                <tr>
+                                    <th style="text-align: center" scope="col"><span class="text-uppercase fs-12 text-gray">Order ID</span></th>
+                                    <th style="text-align: center" scope="col"><span class="text-uppercase fs-12 text-gray">Car Name</span></th>
+                                    <th style="text-align: center" scope="col"><span class="text-uppercase fs-12 text-gray">Pick Up Location</span></th>
+
+                                    <th style="text-align: center" scope="col"><span class="text-uppercase fs-12 text-gray">Pick Up Date</span></th>
+                                    <th style="text-align: center" scope="col"><span class="text-uppercase fs-12 text-gray">Return Date</span></th>
+                                    <th style="text-align: center" scope="col"><span style="width: 100px" class="text-uppercase fs-12 text-gray">Status</span></th>
+                                    <th style="margin-left: 15px;text-align: center;" scope="col"><span class="text-uppercase fs-12 text-gray">Action</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($orders_cancel as $order)
+                                    <tr>
+                                        <td style="text-align: center"><span class="d-lg-none d-sm-block">Order ID</span><div class="badge bg-gray-100 text-dark">#{{$order->id}}</div></td>
+                                        <td><span class="d-lg-none d-sm-block">Car Name</span><span class="bold">@foreach ($order->products as $product)
+                                                    {{ $product->name }}<br>
+                                                @endforeach
+                                        </span></td>
+                                        <td style="width: 280px"><span class="d-lg-none d-sm-block">Pick Up Location</span>{{$order->location}}</td>
+
+                                        <td style="text-align: center"><span class="d-lg-none d-sm-block">Pick Up Date</span>
+                                            @foreach ($order->products as $product)
+                                                {{ sprintf('%s %s',  $product->pivot->start_date,$product->pivot->start_time) }}
+                                            @endforeach
+                                        </td>
+                                        <td style="text-align: center"><span class="d-lg-none d-sm-block">Return Date</span>
+                                            @foreach ($order->products as $product)
+                                                {{ sprintf('%s %s',  $product->pivot->end_date,$product->pivot->end_time) }}
+                                            @endforeach
+                                        </td>
+                                        <td style="margin-right: 10px">
+                                            <p style="text-align:center;font-size: 11px;background-color:red;color: white;border-radius: 15px;padding-left: 4px;padding-right: 4px">Cancel</p>
+
+                                        </td>
+                                        <td><div style="display:flex;margin-left: 10px">
+                                                <div> @foreach($order->Products as $product)
+                                                        <form action="{{url("detail",['products' => $product->slug])}}">
+                                                            <button style="margin-left:10px;background-color: #54ea54;padding-left: 4px;padding-right: 4px;color: white;border-radius: 8px">Rent</button>
+                                                        </form>
+                                                    @endforeach </div>
+
+                                            </div></td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
 
 
             </div>

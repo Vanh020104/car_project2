@@ -35,6 +35,7 @@ class Order extends Model
     const COMPLETE = 7;
     const CANCEL = 6;
     const COMPLETED_ORDER=8;
+    const PROCESSING = 9;
 
     public function Products(){
         return $this->belongsToMany(Product::class,"order_products")->withPivot(["buy_qty","price","start_date","end_date","start_time","end_time","stt_remind"]);
@@ -61,6 +62,7 @@ class Order extends Model
             case self::COMPLETE: return "<span class='text-success'>Complete</span>";
             case self::CAR_RETURNED: return "<span class='text-danger'>Car Returned</span>";
             case self::CANCEL: return "<span class='text-danger'>Cancel</span>";
+            case self::PROCESSING: return "<span class='text-danger'>Wait For Cancellation</span>";
 
         }
     }
