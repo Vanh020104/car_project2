@@ -22,6 +22,7 @@ use App\Models\Product;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -478,5 +479,56 @@ class AdminController extends Controller
         event(new CreateConfirmCancel($order));
         return redirect()->back()->with('success', 'Success');
 
+    }
+    public function confirmUser($order , Request $request){
+        $orders = Order::find("$order");
+
+        $orders->status = '3';
+        $orders->save();
+        $id = $request->get("user_id");
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            // Truy vấn các đơn hàng của người dùng với thông tin sản phẩm (xe)
+            $orders = $user->orders()
+                ->whereIn('status', [ Order::COMPLETE])
+                ->with('productss')
+                ->get();
+            $order_dt = $user->orders()
+                ->whereNotIn('status', [ Order::COMPLETE,Order::CANCEL])
+                ->with('productss')
+                ->get();
+            $orders_cancel = $user->orders()
+                ->whereIn('status', [ Order::CANCEL])
+                ->with('productss')
+                ->get();
+
+            return view('user.pages.extend', ['orders' => $orders ,'orders_dt'=> $order_dt,'orders_cancel'=>$orders_cancel]);
+        }}
+    public function confirmUserCompleted($order , Request $request){
+        $orders = Order::find("$order");
+
+        $orders->status = '7';
+        $orders->save();
+        $id = $request->get("user_id");
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            // Truy vấn các đơn hàng của người dùng với thông tin sản phẩm (xe)
+            $orders = $user->orders()
+                ->whereIn('status', [ Order::COMPLETE])
+                ->with('productss')
+                ->get();
+            $order_dt = $user->orders()
+                ->whereNotIn('status', [ Order::COMPLETE,Order::CANCEL])
+                ->with('productss')
+                ->get();
+            $orders_cancel = $user->orders()
+                ->whereIn('status', [ Order::CANCEL])
+                ->with('productss')
+                ->get();
+
+            return view('user.pages.extend', ['orders' => $orders ,'orders_dt'=> $order_dt,'orders_cancel'=>$orders_cancel]);
+        }
     }
 }

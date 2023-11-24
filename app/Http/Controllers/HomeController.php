@@ -622,4 +622,11 @@ class HomeController extends Controller
         // Redirect hoặc trả về thông báo thành công
         return redirect()->to("/renewed")->with('success', 'Cập nhật thông tin thành công!');
     }
+    public  function filterProduct(Request $request, Category $category){
+        $products = Product::where("category_id",$category->id)->Search($request)->FilterSeat($request)->FilterColor($request)->PriceMin($request)->PriceMax($request)->orderBy("created_at","desc")->paginate(20);
+        $categoryName = $category->name;
+
+
+        return view("user.pages.cars",compact("categoryName","category","products"));
+    }
 }

@@ -26,8 +26,8 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory(50)->create();
 
         \App\Models\Category::factory("5")->create();
-        \App\Models\Product::factory("10")->create();
-//       \App\Models\Order::factory("20")->create();
+        \App\Models\Product::factory("30")->create();
+       \App\Models\Order::factory("20")->create();
 
         $orders = Order::all();// select * from orders
         foreach ($orders as $order) {

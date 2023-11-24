@@ -202,14 +202,14 @@
                                                 </form>
                                             </div>
                                             @if($order->status == 1)
-                                                <form action="{{url("admin/processingCancel",['order'=>$order->id])}}" method="post">
+                                                <form action="{{url("processingCancel",['order'=>$order->id])}}" method="post">
                                                     @csrf
                                                     @method("put")
                                                     <div><button name="status" value="9" style="margin-left:10px;background-color: #B3FFCC;padding-left: 4px;padding-right: 4px;color: red;border-radius: 8px">Cancel</button></div>
                                                 </form>
                                             @endif
                                             @if($order->status == 0)
-                                                <form action="{{url("admin/processingCancel",['order'=>$order->id])}}" method="post">
+                                                <form action="{{url("processingCancel",['order'=>$order->id])}}" method="post">
                                                     @csrf
                                                     @method("put")
                                                     <div><button name="status" value="9" style="margin-left:10px;background-color: #B3FFCC;padding-left: 4px;padding-right: 4px;color: red;border-radius: 8px">Cancel</button></div>

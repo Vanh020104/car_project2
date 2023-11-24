@@ -55,7 +55,8 @@ Route::middleware("auth")->group(function (){
     Route::get('/cars_list', [\App\Http\Controllers\HomeController::class,"cars_list"]);
     Route::get('/filters', [\App\Http\Controllers\HomeController::class,"filterProducts"]);
     Route::get('/add_extend/{order}', [\App\Http\Controllers\HomeController::class,"addExtend"]);
-
+    Route::put("/processingCancel/{order}",[\App\Http\Controllers\AdminController::class,"processingCancel"]);
+    Route::get("/confirmUser/{order}", [\App\Http\Controllers\AdminController::class, "confirmUser"]);
     Route::post('/update/{id}', [\App\Http\Controllers\HomeController::class,"update"])->name('update');
 });
 
